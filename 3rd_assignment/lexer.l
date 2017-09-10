@@ -7,6 +7,7 @@ dgt [0-9]
 %%
 {dgt}+ {return INTCONST;}
 [a-zA-Z_][a-zA-Z0-9_]* {return INTCONST;}
+"/*"([^*]|\*+[^*/])*"*/" {}
 "while" {return WHILE_TOK;}
 "for" {return FOR_TOK;}
 "if" {return IF_TOK;}
