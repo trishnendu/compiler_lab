@@ -26,7 +26,7 @@ dgt [0-9]
 "<<" {return LEFT_SHIFT_TOK;}
 "--" {return MINUS_MINUS_TOK;}
 "++" {return PLUS_PLUS_TOK;}
-[-(){}#=><+\*/%^!&|;,] {return (int)yytext[0];}
+[-(){}#=><+\*/%^!&|;,] {return atoi(yytext[0]);}
 %%
 
 int main(int argc, char *argv[]){
