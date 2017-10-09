@@ -1,0 +1,7 @@
+int main(){}
+
+int inivnoi(int jsdvin, char vbsbv){
+for(int i = 0; i < 6; i++){
+    count++;
+}
+}

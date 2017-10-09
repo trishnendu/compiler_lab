@@ -193,7 +193,7 @@ class Grammer{
         }
 };
 
-/*int main(){
+int main(){
     Grammer G(set<string>{"E","E'","T","T'","F"}, set<string>{"id","+","*","(","$",")"}, "E");    
     G.insert_rule("E", vector<string>{"T","E'"});
     G.insert_rule("E'", vector<string>{"+","T","E'"});
@@ -213,8 +213,9 @@ class Grammer{
     }
     return 0;
     
-}*/
+}
 
+/*
 int main(){
     Grammer G(set<string>{"S","A","B"}, set<string>{"a","b","c","$"}, "S");    
     G.insert_rule("S", vector<string>{"a","A","a"});
@@ -227,17 +228,10 @@ int main(){
     if(G.create_ptable()){
         cout << ":)" << endl;
     }
-/*    G.insert_ptable("S", "a", vector<string>{"a","A","a"}); 
-    G.insert_ptable("A", "a", vector<string>{EPS}); 
-    G.insert_ptable("S", "b", vector<string>{"B","A","a"}); 
-    G.insert_ptable("A", "b", vector<string>{"b","A"}); 
-    G.insert_ptable("B", "b", vector<string>{"b"}); 
-    G.insert_ptable("A", "c", vector<string>{"c","A"}); 
-    G.insert_ptable("S", "$", vector<string>{EPS}); */
     if(G.parse_string(vector<string>{"b","c","b","a"})){
         cout << "Parsing successful! Correct syntax :)" << endl;
     } else{
         cout << "Parsing faild! Incorrect syntax :(" << endl;
     }
     return 0;
-}
+}*/

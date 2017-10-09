@@ -287,11 +287,11 @@ static void yy_fatal_error YY_PROTO(( yyconst char msg[] ));
 static yyconst short int yy_accept[54] =
     {   0,
         0,    0,   24,   23,   22,   22,   22,   22,   22,   22,
-       22,    1,   22,   22,   22,    2,    2,    2,    2,    2,
+       22,    1,   22,   22,   22,    6,    6,    6,    6,    6,
        22,   11,   17,   12,   21,   14,   20,   15,    0,   16,
-        1,   19,   10,    8,    9,   18,    2,    2,    2,    2,
-        2,   13,    0,    0,    2,    2,    2,    0,    3,    2,
-        2,    2,    0
+        1,   19,   10,    8,    9,   18,    6,    6,    6,    4,
+        6,   13,    0,    0,    6,    3,    6,    0,    7,    5,
+        6,    2,    0
     } ;
 
 static yyconst int yy_ec[256] =
@@ -638,32 +638,32 @@ YY_RULE_SETUP
 case 2:
 YY_RULE_SETUP
 #line 9 "lexer.l"
-{return INTCONST;}
+{return WHILE_TOK;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 10 "lexer.l"
-{}
+{return FOR_TOK;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
 #line 11 "lexer.l"
-{return WHILE_TOK;}
+{return IF_TOK;}
 	YY_BREAK
 case 5:
 YY_RULE_SETUP
 #line 12 "lexer.l"
-{return FOR_TOK;}
+{return ELSE_TOK;}
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
 #line 13 "lexer.l"
-{return IF_TOK;}
+{return INTCONST;}
 	YY_BREAK
 case 7:
 YY_RULE_SETUP
 #line 14 "lexer.l"
-{return ELSE_TOK;}
+{}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
@@ -738,7 +738,7 @@ YY_RULE_SETUP
 case 22:
 YY_RULE_SETUP
 #line 29 "lexer.l"
-{return atoi(yytext[0]);}
+{return (int)yytext[0];}
 	YY_BREAK
 case 23:
 YY_RULE_SETUP
@@ -1643,7 +1643,7 @@ int main(int argc, char *argv[]){
 		yyin = fopen(argv[1], "r");
 	}	
 	while(token = yylex()){
-        printf("%d\n",token);
+        printf("%s %d\n",yytext,token);
 	}
     fclose(yyin);	
     return 0;
