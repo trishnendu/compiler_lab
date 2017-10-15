@@ -4,7 +4,6 @@ extern FILE *yyin;
 extern int lineno;
 extern int yylineno;
 extern char* yytext;
-int success = 1;
 %}
 
 %union {
@@ -142,14 +141,12 @@ int main(int argc, char *argv[]){
 	} else {
 		yyin = fopen(argv[1], "r");
 	}	
-    yyparse();
-	fclose(yyin);
-    if(success)
+    if(!yyparse());
 	    fprintf(stdout, "Parsing success :)\n");
+    fclose(yyin);
     return 0;
 }
 
 void yyerror (char const *s) {
-    success = 0;
     fprintf(stderr, "Parsing error :( - %s \n", yytext);
 }

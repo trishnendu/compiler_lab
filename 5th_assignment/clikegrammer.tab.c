@@ -69,9 +69,8 @@ extern FILE *yyin;
 extern int lineno;
 extern int yylineno;
 extern char* yytext;
-int success = 1;
 
-#line 75 "clikegrammer.tab.c" /* yacc.c:339  */
+#line 74 "clikegrammer.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -158,12 +157,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 10 "clikegrammer.y" /* yacc.c:355  */
+#line 9 "clikegrammer.y" /* yacc.c:355  */
 
     int i;
     char *s;
 
-#line 167 "clikegrammer.tab.c" /* yacc.c:355  */
+#line 166 "clikegrammer.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -180,7 +179,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 184 "clikegrammer.tab.c" /* yacc.c:358  */
+#line 183 "clikegrammer.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -482,16 +481,16 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    25,    25,    27,    29,    29,    31,    33,    34,    35,
-      36,    39,    39,    41,    43,    44,    44,    46,    46,    47,
-      47,    49,    50,    50,    52,    53,    56,    56,    56,    56,
-      56,    56,    58,    59,    60,    61,    62,    63,    63,    63,
-      63,    63,    66,    67,    70,    71,    74,    74,    74,    75,
-      75,    77,    77,    78,    78,    80,    80,    81,    81,    83,
-      85,    86,    87,    88,    89,    92,    93,    94,    95,    96,
-      97,    98,    99,   102,   103,   104,   105,   106,   107,   108,
-     111,   112,   113,   114,   117,   118,   119,   120,   121,   122,
-     125,   126,   127,   128,   131,   132
+       0,    24,    24,    26,    28,    28,    30,    32,    33,    34,
+      35,    38,    38,    40,    42,    43,    43,    45,    45,    46,
+      46,    48,    49,    49,    51,    52,    55,    55,    55,    55,
+      55,    55,    57,    58,    59,    60,    61,    62,    62,    62,
+      62,    62,    65,    66,    69,    70,    73,    73,    73,    74,
+      74,    76,    76,    77,    77,    79,    79,    80,    80,    82,
+      84,    85,    86,    87,    88,    91,    92,    93,    94,    95,
+      96,    97,    98,   101,   102,   103,   104,   105,   106,   107,
+     110,   111,   112,   113,   116,   117,   118,   119,   120,   121,
+     124,   125,   126,   127,   130,   131
 };
 #endif
 
@@ -1395,7 +1394,7 @@ yyreduce:
   switch (yyn)
     {
       
-#line 1399 "clikegrammer.tab.c" /* yacc.c:1646  */
+#line 1398 "clikegrammer.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1623,7 +1622,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 135 "clikegrammer.y" /* yacc.c:1906  */
+#line 134 "clikegrammer.y" /* yacc.c:1906  */
 
 
 int main(int argc, char *argv[]){
@@ -1634,14 +1633,12 @@ int main(int argc, char *argv[]){
 	} else {
 		yyin = fopen(argv[1], "r");
 	}	
-    yyparse();
-	fclose(yyin);
-    if(success)
+    if(!yyparse());
 	    fprintf(stdout, "Parsing success :)\n");
+    fclose(yyin);
     return 0;
 }
 
 void yyerror (char const *s) {
-    success = 0;
     fprintf(stderr, "Parsing error :( - %s \n", yytext);
 }
