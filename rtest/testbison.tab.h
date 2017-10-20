@@ -64,31 +64,28 @@ extern int yydebug;
     OR_TOK = 274,
     SEMICOLON_TOK = 275,
     COMMA_TOK = 276,
-    WHILE_TOK = 277,
-    FOR_TOK = 278,
-    IF_TOK = 279,
-    ELSE_TOK = 280,
-    COMPARE_TOK = 281,
-    GTEQ_TOK = 282,
-    LTEQ_TOK = 283,
-    NOT_EQ_TOK = 284,
-    BIT_AND_TOK = 285,
-    BIT_OR_TOK = 286,
-    PLUS_EQ_TOK = 287,
-    MINUS_EQ_TOK = 288,
-    MULT_EQ_TOK = 289,
-    DIVIDE_EQ_TOK = 290,
-    RIGHT_SHIFT_TOK = 291,
-    LEFT_SHIFT_TOK = 292,
-    MINUS_MINUS_TOK = 293,
-    PLUS_PLUS_TOK = 294,
-    MOD_EQ_TOK = 295,
-    ID_TOK = 296,
-    INTCONST = 297,
-    ERROR_TOK = 298,
-    MAIN_TOK = 299,
-    TYPE_TOK = 300,
-    RETURN_TOK = 301
+    COMPARE_TOK = 277,
+    GTEQ_TOK = 278,
+    LTEQ_TOK = 279,
+    NOT_EQ_TOK = 280,
+    BIT_AND_TOK = 281,
+    BIT_OR_TOK = 282,
+    PLUS_EQ_TOK = 283,
+    MINUS_EQ_TOK = 284,
+    MULT_EQ_TOK = 285,
+    DIVIDE_EQ_TOK = 286,
+    RIGHT_SHIFT_TOK = 287,
+    LEFT_SHIFT_TOK = 288,
+    MINUS_MINUS_TOK = 289,
+    PLUS_PLUS_TOK = 290,
+    MOD_EQ_TOK = 291,
+    MAIN_TOK = 292,
+    RETURN_TOK = 293,
+    INTCONST = 294,
+    TYPE_TOK = 295,
+    DOUBLECONST = 296,
+    CHARCONST = 297,
+    ID_TOK = 298
   };
 #endif
 
@@ -97,10 +94,13 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 9 "testbison.y" /* yacc.c:1909  */
+#line 10 "testbison.y" /* yacc.c:1909  */
 
-    int i;
-    char *s;
+    int itype;
+    double dtype;
+    char ctype;
+    char* idtype;
+    _gentype gentype;
 
 #line 106 "testbison.tab.h" /* yacc.c:1909  */
 };
