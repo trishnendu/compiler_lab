@@ -3,6 +3,7 @@
 #ifndef INCLUDEME_H
 #   include"includeme.h"
 #endif
+#define MAX(a,b) (((a)>(b))?(a):(b))
 #define YYDEBUG 1
 extern FILE *yyin;
 extern int yylineno;
@@ -27,7 +28,9 @@ extern char printtype[][10];
 %token<idtype> ID_TOK
 
 %left PLUS_TOK MINUS_TOK MULT_TOK DIVIDE_TOK
-%type<othertype> var vardec ids
+
+%type<othertype> var vardec exp0 exp1 exp2 exp
+%type<idtype> ids
 %%
 DEBUG: START;
 
@@ -35,10 +38,10 @@ START:  returntype MAIN_TOK LPAREN_TOK RPAREN_TOK block funcdeflist;
 
 vardeclines: vardec vardeclines | %empty;
 
-vardec: TYPE_TOK ids   {symt_insert($2, $1);}
+vardec: TYPE_TOK ids   {    symt_insert($2, $1);    }
         ; 
 
-ids: ID_TOK COMMA_TOK ids 
+ids: ID_TOK COMMA_TOK ids
   | ID_TOK EQ_TOK exp2 COMMA_TOK ids
   | ID_TOK SEMICOLON_TOK
   | ID_TOK EQ_TOK exp2 SEMICOLON_TOK 
@@ -107,42 +110,52 @@ exp3: LPAREN_TOK exp3 RPAREN_TOK
     | exp2
     ;
 
-exp: ID_TOK EQ_TOK exp2
-    | ID_TOK PLUS_EQ_TOK exp2
-    | ID_TOK MINUS_EQ_TOK exp2
-    | ID_TOK MULT_EQ_TOK exp2
-    | ID_TOK DIVIDE_EQ_TOK exp2
+exp: ID_TOK EQ_TOK exp2     {  $$ = symt_gettype($1); check_compatibility($$, $3);  }
+    | ID_TOK PLUS_EQ_TOK exp2   {   $$ = symt_gettype($1); check_compatibility($$, $3);  }
+    | ID_TOK MINUS_EQ_TOK exp2  {   $$ = symt_gettype($1); check_compatibility($$, $3);  }
+    | ID_TOK MULT_EQ_TOK exp2   {   $$ = symt_gettype($1); check_compatibility($$, $3);  }
+    | ID_TOK DIVIDE_EQ_TOK exp2 {   $$ = symt_gettype($1); check_compatibility($$, $3);  }
     | ID_TOK MOD_EQ_TOK exp2
     | exp0
     ;
 
-exp2: LPAREN_TOK exp2 RPAREN_TOK
-    | exp1 PLUS_TOK exp2
-    | exp1 MINUS_TOK exp2
+exp2: LPAREN_TOK exp2 RPAREN_TOK    {   $$ = $2; }
+    | exp1 PLUS_TOK exp2    {   $$ = MAX($1, $3); }
+    | exp1 MINUS_TOK exp2   {   $$ = MAX($1, $3); }
     | exp1
     ;
 
-exp1: var MULT_TOK exp1
-    | var DIVIDE_TOK exp1
-    | var MOD_TOK exp1
+exp1: var MULT_TOK exp1     {   $$ = MAX($1, $3); }
+    | var DIVIDE_TOK exp1   {   $$ = MAX($1, $3); }
+    | var MOD_TOK exp1  
     | var
     | exp0
     | funccall
     ;
 
-exp0: ID_TOK PLUS_PLUS_TOK
-    | ID_TOK MINUS_MINUS_TOK
-    | PLUS_PLUS_TOK ID_TOK
-    | MINUS_MINUS_TOK ID_TOK
+exp0: ID_TOK PLUS_PLUS_TOK  {   $$ = symt_gettype($1);  } 
+    | ID_TOK MINUS_MINUS_TOK    {   $$ = symt_gettype($1);  }
+    | PLUS_PLUS_TOK ID_TOK  { $$ = symt_gettype($2); }
+    | MINUS_MINUS_TOK ID_TOK    { $$ = symt_gettype($2); }
     ;
 
-var: ID_TOK {$$ = symt_gettype($1);}
-    | INTCONST
+var: ID_TOK {   $$ = symt_gettype($1);  }
+    | INTCONST  
     | DOUBLECONST
     | CHARCONST
     ;
    
 %%
+int check_compatibility(int a, int b){
+    if(a == NONE || b == NONE){
+        printf("@line no - %d: error - one or more variables are undeclared!!\n", yylineno);
+        return 1;
+    } else if(a != b){
+        printf("@line no - %d: Warning - type mismatch!! trying to assign <%s> in <%s>\n", yylineno, printtype[b], printtype[a]);
+        return 1;
+    }
+    return 0;
+}
 
 int main(int argc, char *argv[]){
 	int token;
@@ -153,7 +166,7 @@ int main(int argc, char *argv[]){
 		//exit(1);		
 	} else {
 		yyin = fopen(argv[1], "r");
-	}	
+    }	
     if(!yyparse());
 	    fprintf(stdout, "Total %d line parsed successfully :)\n", yylineno);
     fclose(yyin);

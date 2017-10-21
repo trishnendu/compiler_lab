@@ -68,13 +68,14 @@
 #ifndef INCLUDEME_H
 #   include"includeme.h"
 #endif
+#define MAX(a,b) (((a)>(b))?(a):(b))
 #define YYDEBUG 1
 extern FILE *yyin;
 extern int yylineno;
 extern char* yytext;
 extern char printtype[][10];    
 
-#line 78 "clikegrammer.tab.c" /* yacc.c:339  */
+#line 79 "clikegrammer.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -163,12 +164,12 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 13 "clikegrammer.y" /* yacc.c:355  */
+#line 14 "clikegrammer.y" /* yacc.c:355  */
 
     char* idtype;
     _datatype othertype;
 
-#line 172 "clikegrammer.tab.c" /* yacc.c:355  */
+#line 173 "clikegrammer.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -185,7 +186,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 189 "clikegrammer.tab.c" /* yacc.c:358  */
+#line 190 "clikegrammer.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -487,16 +488,16 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    32,    32,    34,    36,    36,    38,    41,    42,    43,
-      44,    47,    47,    49,    51,    52,    52,    54,    54,    55,
-      55,    57,    58,    58,    60,    61,    64,    64,    64,    64,
-      64,    64,    66,    67,    68,    69,    70,    71,    71,    71,
-      71,    71,    74,    75,    78,    79,    82,    82,    82,    83,
-      83,    85,    85,    86,    86,    88,    88,    89,    89,    91,
-      93,    94,    95,    96,    97,   100,   101,   102,   103,   104,
-     105,   106,   107,   110,   111,   112,   113,   114,   115,   116,
-     119,   120,   121,   122,   125,   126,   127,   128,   129,   130,
-     133,   134,   135,   136,   139,   140,   141,   142
+       0,    35,    35,    37,    39,    39,    41,    44,    45,    46,
+      47,    50,    50,    52,    54,    55,    55,    57,    57,    58,
+      58,    60,    61,    61,    63,    64,    67,    67,    67,    67,
+      67,    67,    69,    70,    71,    72,    73,    74,    74,    74,
+      74,    74,    77,    78,    81,    82,    85,    85,    85,    86,
+      86,    88,    88,    89,    89,    91,    91,    92,    92,    94,
+      96,    97,    98,    99,   100,   103,   104,   105,   106,   107,
+     108,   109,   110,   113,   114,   115,   116,   117,   118,   119,
+     122,   123,   124,   125,   128,   129,   130,   131,   132,   133,
+     136,   137,   138,   139,   142,   143,   144,   145
 };
 #endif
 
@@ -1403,19 +1404,103 @@ yyreduce:
   switch (yyn)
     {
         case 6:
-#line 38 "clikegrammer.y" /* yacc.c:1646  */
-    {symt_insert((yyvsp[0].othertype), (yyvsp[-1].othertype));}
-#line 1409 "clikegrammer.tab.c" /* yacc.c:1646  */
+#line 41 "clikegrammer.y" /* yacc.c:1646  */
+    {    symt_insert((yyvsp[0].idtype), (yyvsp[-1].othertype));    }
+#line 1410 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 73:
+#line 113 "clikegrammer.y" /* yacc.c:1646  */
+    {  (yyval.othertype) = symt_gettype((yyvsp[-2].idtype)); check_compatibility((yyval.othertype), (yyvsp[0].othertype));  }
+#line 1416 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 74:
+#line 114 "clikegrammer.y" /* yacc.c:1646  */
+    {   (yyval.othertype) = symt_gettype((yyvsp[-2].idtype)); check_compatibility((yyval.othertype), (yyvsp[0].othertype));  }
+#line 1422 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 75:
+#line 115 "clikegrammer.y" /* yacc.c:1646  */
+    {   (yyval.othertype) = symt_gettype((yyvsp[-2].idtype)); check_compatibility((yyval.othertype), (yyvsp[0].othertype));  }
+#line 1428 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 76:
+#line 116 "clikegrammer.y" /* yacc.c:1646  */
+    {   (yyval.othertype) = symt_gettype((yyvsp[-2].idtype)); check_compatibility((yyval.othertype), (yyvsp[0].othertype));  }
+#line 1434 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 77:
+#line 117 "clikegrammer.y" /* yacc.c:1646  */
+    {   (yyval.othertype) = symt_gettype((yyvsp[-2].idtype)); check_compatibility((yyval.othertype), (yyvsp[0].othertype));  }
+#line 1440 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 80:
+#line 122 "clikegrammer.y" /* yacc.c:1646  */
+    {   (yyval.othertype) = (yyvsp[-1].othertype); }
+#line 1446 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 81:
+#line 123 "clikegrammer.y" /* yacc.c:1646  */
+    {   (yyval.othertype) = MAX((yyvsp[-2].othertype), (yyvsp[0].othertype)); }
+#line 1452 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 82:
+#line 124 "clikegrammer.y" /* yacc.c:1646  */
+    {   (yyval.othertype) = MAX((yyvsp[-2].othertype), (yyvsp[0].othertype)); }
+#line 1458 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 84:
+#line 128 "clikegrammer.y" /* yacc.c:1646  */
+    {   (yyval.othertype) = MAX((yyvsp[-2].othertype), (yyvsp[0].othertype)); }
+#line 1464 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 85:
+#line 129 "clikegrammer.y" /* yacc.c:1646  */
+    {   (yyval.othertype) = MAX((yyvsp[-2].othertype), (yyvsp[0].othertype)); }
+#line 1470 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 90:
+#line 136 "clikegrammer.y" /* yacc.c:1646  */
+    {   (yyval.othertype) = symt_gettype((yyvsp[-1].idtype));  }
+#line 1476 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 91:
+#line 137 "clikegrammer.y" /* yacc.c:1646  */
+    {   (yyval.othertype) = symt_gettype((yyvsp[-1].idtype));  }
+#line 1482 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 92:
+#line 138 "clikegrammer.y" /* yacc.c:1646  */
+    { (yyval.othertype) = symt_gettype((yyvsp[0].idtype)); }
+#line 1488 "clikegrammer.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 93:
+#line 139 "clikegrammer.y" /* yacc.c:1646  */
+    { (yyval.othertype) = symt_gettype((yyvsp[0].idtype)); }
+#line 1494 "clikegrammer.tab.c" /* yacc.c:1646  */
     break;
 
   case 94:
-#line 139 "clikegrammer.y" /* yacc.c:1646  */
-    {(yyval.othertype) = symt_gettype((yyvsp[0].idtype));}
-#line 1415 "clikegrammer.tab.c" /* yacc.c:1646  */
+#line 142 "clikegrammer.y" /* yacc.c:1646  */
+    {   (yyval.othertype) = symt_gettype((yyvsp[0].idtype));  }
+#line 1500 "clikegrammer.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1419 "clikegrammer.tab.c" /* yacc.c:1646  */
+#line 1504 "clikegrammer.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1643,8 +1728,18 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 145 "clikegrammer.y" /* yacc.c:1906  */
+#line 148 "clikegrammer.y" /* yacc.c:1906  */
 
+int check_compatibility(int a, int b){
+    if(a == NONE || b == NONE){
+        printf("@line no - %d: error - one or more variables are undeclared!!\n", yylineno);
+        return 1;
+    } else if(a != b){
+        printf("@line no - %d: Warning - type mismatch!! trying to assign <%s> in <%s>\n", yylineno, printtype[b], printtype[a]);
+        return 1;
+    }
+    return 0;
+}
 
 int main(int argc, char *argv[]){
 	int token;
@@ -1655,7 +1750,7 @@ int main(int argc, char *argv[]){
 		//exit(1);		
 	} else {
 		yyin = fopen(argv[1], "r");
-	}	
+    }	
     if(!yyparse());
 	    fprintf(stdout, "Total %d line parsed successfully :)\n", yylineno);
     fclose(yyin);

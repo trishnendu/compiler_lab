@@ -8,7 +8,7 @@ lalpha [a-z]
 calpha [A-Z]
 dgt [0-9]
 %%
-{dgt}+ {yylval.othertype = INT; return INTCONST;}
+{dgt}+ { yylval.othertype = INT; return INTCONST;}
 {dgt}*"."{dgt}+ {yylval.othertype = DOUBLE; return DOUBLECONST;}
 "\'"."\'" {yylval.othertype = CHAR; return CHARCONST;}
 "main" {return MAIN_TOK;}
@@ -21,6 +21,7 @@ dgt [0-9]
 "double" {yylval.othertype = DOUBLE; return TYPE_TOK;}
 [a-zA-Z_][a-zA-Z0-9_]* {char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.idtype = tmp; return ID_TOK;}
 "/*"([^*]|\*+[^*/])*"*/" {}
+"//".*"\n" {}
 "==" {return COMPARE_TOK;}
 ">=" {return GTEQ_TOK;}
 "<=" {return LTEQ_TOK;}

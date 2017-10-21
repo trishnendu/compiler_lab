@@ -99,7 +99,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 13 "clikegrammer.y" /* yacc.c:1909  */
+#line 14 "clikegrammer.y" /* yacc.c:1909  */
 
     char* idtype;
     _datatype othertype;

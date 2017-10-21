@@ -16,7 +16,7 @@ typedef struct t{
 } symt_node;
 
 symt_node* symt[HASHSIZE];
-char printtype[][10] = {"char\0", "int\0", "double\0"};   
+char printtype[][10] = {"none\0", "char\0", "int\0", "double\0"};   
 
 int printhashtable();
 
@@ -52,14 +52,17 @@ _datatype symt_gettype(char key[]){
         }
     }
     //printf("NOthing FoUnd\n");
-    return -1;
+    return NONE;
 } 
 
 int printhashtable(){
     int i, flag = 1;
     for(i = 0; i < HASHSIZE; i++){
         if(symt[i]){
-            flag = 0;
+            if(flag){
+                printf("======== PRINTING HASHTABLE ============\n");
+                flag = 0;
+            }
             printf("%d ",i);
             symt_node *tmp;
             for(tmp = symt[i]; tmp != (symt_node *)0; tmp = tmp->next){
@@ -69,7 +72,6 @@ int printhashtable(){
         }
     }
     if(flag)    printf("Nothing found in hashtable :(\n");
-    else    printf("That's all :)\n");
     return 0;
 }
 /*
@@ -79,5 +81,5 @@ int main(){
     symt_insert("abc\0",0);
     symt_insert("bca\0", 1);
     printhashtable();
-    //symt_getval("abc");
+    printf("%d", symt_gettype("bca"));
 }*/
