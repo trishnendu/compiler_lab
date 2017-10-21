@@ -65,13 +65,16 @@
 #line 1 "testbison.y" /* yacc.c:339  */
 
 #include<stdio.h>
-#include"includeme.h"
+#ifndef INCLUDEME_H
+#   include"includeme.h"
+#endif
 #define YYDEBUG 1
 extern FILE *yyin;
 extern int yylineno;
 extern char* yytext;
+extern char printtype[][10];    
 
-#line 75 "testbison.tab.c" /* yacc.c:339  */
+#line 78 "testbison.tab.c" /* yacc.c:339  */
 
 # ifndef YY_NULLPTR
 #  if defined __cplusplus && 201103L <= __cplusplus
@@ -155,7 +158,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 10 "testbison.y" /* yacc.c:355  */
+#line 13 "testbison.y" /* yacc.c:355  */
 
     int itype;
     double dtype;
@@ -163,7 +166,7 @@ union YYSTYPE
     char* idtype;
     _gentype gentype;
 
-#line 167 "testbison.tab.c" /* yacc.c:355  */
+#line 170 "testbison.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -180,7 +183,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 184 "testbison.tab.c" /* yacc.c:358  */
+#line 187 "testbison.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -420,18 +423,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  37
+#define YYFINAL  36
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   110
+#define YYLAST   175
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  44
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  14
+#define YYNNTS  13
 /* YYNRULES -- Number of rules.  */
 #define YYNRULES  51
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  93
+#define YYNSTATES  94
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -481,12 +484,12 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    36,    36,    38,    38,    40,    42,    43,    44,    45,
-      49,    50,    51,    51,    54,    56,    57,    58,    59,    60,
-      63,    64,    65,    66,    67,    68,    69,    70,    73,    74,
-      75,    76,    77,    78,    79,    82,    83,    84,    85,    88,
-      89,    90,    91,    92,    95,    96,    97,    98,   101,   102,
-     103,   104
+       0,    39,    39,    41,    41,    43,    45,    46,    47,    48,
+      52,    53,    54,    54,    57,    59,    60,    61,    62,    63,
+      66,    67,    68,    69,    70,    71,    72,    73,    73,    76,
+      85,    86,    87,    88,    89,    90,    93,    94,   125,   156,
+     187,   218,   224,   227,   228,   229,   230,   231,   234,   235,
+     236,   237
 };
 #endif
 
@@ -505,7 +508,7 @@ static const char *const yytname[] =
   "PLUS_PLUS_TOK", "MOD_EQ_TOK", "MAIN_TOK", "RETURN_TOK", "INTCONST",
   "TYPE_TOK", "DOUBLECONST", "CHARCONST", "ID_TOK", "$accept", "DEBUG",
   "vardeclines", "vardec", "ids", "statements", "condexp", "exp4", "exp3",
-  "exp", "exp2", "exp1", "exp0", "var", YY_NULLPTR
+  "exp", "exp2", "exp1", "var", YY_NULLPTR
 };
 #endif
 
@@ -522,30 +525,30 @@ static const yytype_uint16 yytoknum[] =
 };
 # endif
 
-#define YYPACT_NINF -61
+#define YYPACT_NINF -59
 
 #define yypact_value_is_default(Yystate) \
-  (!!((Yystate) == (-61)))
+  (!!((Yystate) == (-59)))
 
-#define YYTABLE_NINF -1
+#define YYTABLE_NINF -36
 
 #define yytable_value_is_error(Yytable_value) \
   0
 
   /* YYPACT[STATE-NUM] -- Index in YYTABLE of the portion describing
      STATE-NUM.  */
-static const yytype_int8 yypact[] =
+static const yytype_int16 yypact[] =
 {
-      29,     9,   -35,   -30,   -22,    60,    24,   -61,    29,   -61,
-      25,    51,   -61,     9,     9,   -61,   -61,   -61,   -24,    77,
-      57,    75,    66,   -61,   -11,   -61,   -61,    62,   -61,    19,
-      19,    19,    19,    19,   -61,   -61,    19,   -61,   -61,    22,
-      22,    99,    55,     5,   -61,   -61,     9,     9,    19,    19,
-      19,    19,    19,    19,    19,    19,    67,    67,    67,    19,
-     -61,   -22,    19,   -61,   -61,   -61,   -61,   -61,   -61,   -61,
-     -61,   -61,   -61,   -61,   -61,   -61,   -61,   -61,   -61,   -61,
-     -61,   -61,   -61,   -61,   -61,   -61,   -61,    59,   -61,   100,
-     -61,   -22,   -61
+      22,    55,   -37,   -33,   -59,   -19,   -59,   -59,    84,    26,
+     -59,    22,   -59,     8,    10,   -59,   -59,    55,    55,    29,
+     -10,   -59,   129,     1,   -59,   -59,    15,   -59,    45,    45,
+      45,    45,    45,   -59,   -59,    45,   -59,   -59,    68,    68,
+      33,     3,   112,   -59,   -59,    55,    55,    45,    45,   132,
+     132,   132,   132,   132,    45,    45,    45,    45,    45,   -59,
+     -19,    45,   -22,    63,   -59,    63,    63,    63,    63,    63,
+     -59,   -59,   -59,   -59,   -59,   -59,   -59,    63,    63,   -59,
+     -59,   -59,   -59,   -59,    63,    63,    63,    63,   149,   -59,
+     144,   -59,   -19,   -59
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -553,81 +556,93 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       0,     0,     0,     0,     0,     0,     0,     2,     0,     4,
-       0,     0,    34,     0,     0,    49,    50,    51,    48,     0,
-      19,    27,    38,    43,    42,    47,    46,     0,     5,     0,
-       0,     0,     0,     0,    45,    44,     0,     1,     3,    13,
-      12,     0,     0,    27,    18,    14,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
-       8,     0,     0,    28,    29,    30,    31,    32,    33,    11,
-      10,    15,    20,    35,    17,    16,    22,    21,    25,    23,
-      24,    26,    37,    36,    39,    40,    41,     0,     6,     0,
-       9,     0,     7
+       0,     0,     0,     0,    49,     0,    50,    51,    48,     0,
+       2,     0,     4,     0,     0,    35,    47,     0,     0,     0,
+      19,    28,    27,    42,    46,    45,     0,     5,     0,     0,
+       0,     0,     0,    44,    43,     0,     1,     3,    13,    12,
+       0,     0,    27,    18,    14,     0,     0,     0,     0,     0,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     8,
+       0,     0,    48,    29,    42,    30,    31,    32,    33,    34,
+      11,    10,    15,    20,    36,    17,    16,    22,    21,    38,
+      37,    40,    39,    41,    25,    23,    24,    26,     0,     6,
+       0,     9,     0,     7
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -61,   -61,    97,   -61,   -60,    53,   -61,    20,    94,   -61,
-     -13,   -51,    47,   -61
+     -59,   -59,    70,   -59,   -58,   -24,   -59,   -14,    65,    16,
+      12,     0,   -59
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     6,     7,     8,    28,     9,    10,    19,    20,    11,
-      21,    22,    23,    24
+      -1,     9,    10,    11,    27,    12,    13,    19,    20,    21,
+      22,    64,    16
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
      positive, shift that token.  If negative, reduce the rule whose
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_uint8 yytable[] =
+static const yytype_int8 yytable[] =
 {
-      43,    88,    56,    57,    58,    84,    85,    86,    25,    73,
-      34,    35,    13,    26,    48,    49,    63,    64,    65,    66,
-      67,    27,    62,    68,    37,     1,    14,    50,    51,    52,
-      53,    92,     1,    41,    44,    76,    77,    78,    79,    80,
-      81,    82,    83,     2,     3,    39,    87,    12,    15,    89,
-      16,    17,    18,     2,     3,    12,     2,     3,    15,    72,
-      16,    17,    18,     2,     3,     5,    74,    75,    29,     4,
-      59,    40,     5,    46,    47,    46,    47,    54,    55,    90,
-      91,    45,    60,    61,    48,    49,    12,    12,    30,    31,
-      32,    33,    69,    70,    34,    35,    36,    50,    51,    52,
-      53,     2,     3,    71,    73,    38,    15,    42,    16,    17,
-      18
+      15,    23,    89,    40,    43,   -35,    24,    73,    45,    46,
+      25,    15,    33,    34,    70,    71,    14,    23,    23,   -35,
+     -35,    45,    46,    58,    26,     1,    36,    14,    38,    42,
+      39,    75,    76,    44,    93,    59,    60,    72,    15,    15,
+      63,    65,    66,    67,    68,    23,    23,    69,    61,    79,
+      80,    81,    82,    83,    14,    14,     2,     3,    17,    77,
+      78,     4,     5,     6,     7,     8,    84,    85,    86,    87,
+      88,     1,    18,    90,    49,    50,    51,    52,    53,     2,
+       3,    37,    41,     0,     4,     0,     6,     7,    62,     2,
+       3,     0,    28,     0,     4,     0,     6,     7,     8,     0,
+       0,     0,     2,     3,     0,     0,     0,     4,     0,     6,
+       7,     8,    29,    30,    31,    32,    74,     0,    33,    34,
+      35,    47,    48,    49,    50,    51,    52,    53,     0,     0,
+       0,     0,     0,     0,    54,    55,    56,    57,    47,    48,
+      49,    50,    51,    52,    53,     0,     0,     0,    74,     0,
+       0,    54,    55,    56,    57,    49,    50,    51,    52,    53,
+      49,    50,    51,    52,    53,     0,     2,     3,     0,    91,
+      92,     4,     0,     6,     7,    62
 };
 
-static const yytype_uint8 yycheck[] =
+static const yytype_int8 yycheck[] =
 {
-      13,    61,    13,    14,    15,    56,    57,    58,    43,     4,
-      34,    35,     3,    43,     9,    10,    29,    30,    31,    32,
-      33,    43,     3,    36,     0,     3,    17,    22,    23,    24,
-      25,    91,     3,    13,    14,    48,    49,    50,    51,    52,
-      53,    54,    55,    34,    35,    20,    59,     0,    39,    62,
-      41,    42,    43,    34,    35,     8,    34,    35,    39,     4,
-      41,    42,    43,    34,    35,    43,    46,    47,     8,    40,
-       8,    20,    43,    18,    19,    18,    19,    11,    12,    20,
-      21,     4,    20,    21,     9,    10,    39,    40,    28,    29,
-      30,    31,    39,    40,    34,    35,    36,    22,    23,    24,
-      25,    34,    35,     4,     4,     8,    39,    13,    41,    42,
-      43
+       0,     1,    60,    17,    18,     4,    43,     4,    18,    19,
+      43,    11,    34,    35,    38,    39,     0,    17,    18,    18,
+      19,    18,    19,     8,    43,     3,     0,    11,    20,    17,
+      20,    45,    46,     4,    92,    20,    21,     4,    38,    39,
+      28,    29,    30,    31,    32,    45,    46,    35,     3,    49,
+      50,    51,    52,    53,    38,    39,    34,    35,     3,    47,
+      48,    39,    40,    41,    42,    43,    54,    55,    56,    57,
+      58,     3,    17,    61,    11,    12,    13,    14,    15,    34,
+      35,    11,    17,    -1,    39,    -1,    41,    42,    43,    34,
+      35,    -1,     8,    -1,    39,    -1,    41,    42,    43,    -1,
+      -1,    -1,    34,    35,    -1,    -1,    -1,    39,    -1,    41,
+      42,    43,    28,    29,    30,    31,     4,    -1,    34,    35,
+      36,     9,    10,    11,    12,    13,    14,    15,    -1,    -1,
+      -1,    -1,    -1,    -1,    22,    23,    24,    25,     9,    10,
+      11,    12,    13,    14,    15,    -1,    -1,    -1,     4,    -1,
+      -1,    22,    23,    24,    25,    11,    12,    13,    14,    15,
+      11,    12,    13,    14,    15,    -1,    34,    35,    -1,    20,
+      21,    39,    -1,    41,    42,    43
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     3,    34,    35,    40,    43,    45,    46,    47,    49,
-      50,    53,    56,     3,    17,    39,    41,    42,    43,    51,
-      52,    54,    55,    56,    57,    43,    43,    43,    48,     8,
-      28,    29,    30,    31,    34,    35,    36,     0,    46,    20,
-      20,    51,    52,    54,    51,     4,    18,    19,     9,    10,
-      22,    23,    24,    25,    11,    12,    13,    14,    15,     8,
-      20,    21,     3,    54,    54,    54,    54,    54,    54,    49,
-      49,     4,     4,     4,    51,    51,    54,    54,    54,    54,
-      54,    54,    54,    54,    55,    55,    55,    54,    48,    54,
-      20,    21,    48
+       0,     3,    34,    35,    39,    40,    41,    42,    43,    45,
+      46,    47,    49,    50,    53,    55,    56,     3,    17,    51,
+      52,    53,    54,    55,    43,    43,    43,    48,     8,    28,
+      29,    30,    31,    34,    35,    36,     0,    46,    20,    20,
+      51,    52,    54,    51,     4,    18,    19,     9,    10,    11,
+      12,    13,    14,    15,    22,    23,    24,    25,     8,    20,
+      21,     3,    43,    54,    55,    54,    54,    54,    54,    54,
+      49,    49,     4,     4,     4,    51,    51,    54,    54,    55,
+      55,    55,    55,    55,    54,    54,    54,    54,    54,    48,
+      54,    20,    21,    48
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
@@ -635,10 +650,10 @@ static const yytype_uint8 yyr1[] =
 {
        0,    44,    45,    46,    46,    47,    48,    48,    48,    48,
       49,    49,    49,    49,    50,    51,    51,    51,    51,    51,
-      52,    52,    52,    52,    52,    52,    52,    52,    53,    53,
-      53,    53,    53,    53,    53,    54,    54,    54,    54,    55,
-      55,    55,    55,    55,    56,    56,    56,    56,    57,    57,
-      57,    57
+      52,    52,    52,    52,    52,    52,    52,    52,    52,    53,
+      53,    53,    53,    53,    53,    53,    54,    54,    54,    54,
+      54,    54,    54,    55,    55,    55,    55,    55,    56,    56,
+      56,    56
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -646,9 +661,9 @@ static const yytype_uint8 yyr2[] =
 {
        0,     2,     1,     2,     1,     2,     3,     5,     2,     4,
        3,     3,     2,     2,     3,     3,     3,     3,     2,     1,
-       3,     3,     3,     3,     3,     3,     3,     1,     3,     3,
-       3,     3,     3,     3,     1,     3,     3,     3,     1,     3,
-       3,     3,     1,     1,     2,     2,     2,     2,     1,     1,
+       3,     3,     3,     3,     3,     3,     3,     1,     1,     3,
+       3,     3,     3,     3,     3,     1,     3,     3,     3,     3,
+       3,     3,     1,     2,     2,     2,     2,     1,     1,     1,
        1,     1
 };
 
@@ -1326,103 +1341,248 @@ yyreduce:
   switch (yyn)
     {
         case 5:
-#line 40 "testbison.y" /* yacc.c:1646  */
+#line 43 "testbison.y" /* yacc.c:1646  */
     {symt_insert((yyvsp[0].idtype), (yyvsp[-1].itype));/*printf("key found %s | type found %d\n",$2,$1);*/}
-#line 1332 "testbison.tab.c" /* yacc.c:1646  */
+#line 1347 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
-  case 28:
-#line 73 "testbison.y" /* yacc.c:1646  */
-    {symt_update((yyvsp[-2].idtype),(yyvsp[0].gentype).val); (yyval.gentype) = (yyvsp[0].gentype);}
-#line 1338 "testbison.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 35:
-#line 82 "testbison.y" /* yacc.c:1646  */
-    { }
-#line 1344 "testbison.tab.c" /* yacc.c:1646  */
+  case 29:
+#line 76 "testbison.y" /* yacc.c:1646  */
+    {   
+            _gentype tmp; 
+            if(symt_getval((yyvsp[-2].idtype), &tmp) || symt_update((yyvsp[-2].idtype),(yyvsp[0].gentype)))
+                printf("@line no %d - ERROR: use before declaration! variable \'%s\' is not declared\n",yylineno,(yyvsp[-2].idtype));
+            if(tmp.datatype != (yyvsp[0].gentype).datatype)  
+                printf("@line no %d - WARNING: type mismatch! trying to assign <%s> in <%s>\n" \ 
+                ,yylineno, printtype[(yyvsp[0].gentype).datatype], printtype[tmp.datatype]);
+            (yyval.gentype) = (yyvsp[0].gentype);    
+           }
+#line 1361 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 36:
-#line 83 "testbison.y" /* yacc.c:1646  */
-    { }
-#line 1350 "testbison.tab.c" /* yacc.c:1646  */
+#line 93 "testbison.y" /* yacc.c:1646  */
+    { (yyval.gentype) = (yyvsp[-1].gentype); }
+#line 1367 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 37:
-#line 84 "testbison.y" /* yacc.c:1646  */
-    { }
-#line 1356 "testbison.tab.c" /* yacc.c:1646  */
+#line 94 "testbison.y" /* yacc.c:1646  */
+    { 
+        (yyval.gentype).datatype = (yyvsp[-2].gentype).datatype > (yyvsp[0].gentype).datatype ? (yyvsp[-2].gentype).datatype : (yyvsp[-1].itype).datatype; 
+        switch((yyval.gentype).datatype){
+            case DOUBLE:  switch((yyvsp[-2].gentype).datatype){
+                            case DOUBLE:  switch((yyvsp[0].gentype).datatype){
+                                case CHAR:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.dval + (yyvsp[0].gentype).val.chval;
+                                            break;
+                                case INT:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.dval + (yyvsp[0].gentype).val.ival;
+                                            break;
+                                case DOUBLE:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.dval + (yyvsp[0].gentype).val.dval;
+                                            break;
+                            }   break;
+                            case INT:   (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.ival + (yyvsp[0].gentype).val.dval;
+                                        break;
+                            case CHAR:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.chval + (yyvsp[0].gentype).val.ival;
+                                        break;
+            }   break;
+            case INT:  switch((yyvsp[-2].gentype).datatype){
+                            case INT:  switch((yyvsp[0].gentype).datatype){
+                                case CHAR:  (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.ival + (yyvsp[0].gentype).val.chval;
+                                            break;
+                                case INT:  (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.ival + (yyvsp[0].gentype).val.ival;
+                                            break;
+                            }   break;
+                            case CHAR:  (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.chval + (yyvsp[0].gentype).val.ival;
+                                        break;
+            }   break;
+            case CHAR:  (yyval.gentype).val.chval = (yyvsp[-2].gentype).val.chval + (yyvsp[0].gentype).val.chval;
+                        break;
+        }
+    }
+#line 1403 "testbison.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 38:
+#line 125 "testbison.y" /* yacc.c:1646  */
+    { 
+        (yyval.gentype).datatype = (yyvsp[-2].gentype).datatype > (yyvsp[0].gentype).datatype ? (yyvsp[-2].gentype).datatype : (yyvsp[-1].itype).datatype; 
+        switch((yyval.gentype).datatype){
+            case DOUBLE:  switch((yyvsp[-2].gentype).datatype){
+                            case DOUBLE:  switch((yyvsp[0].gentype).datatype){
+                                case CHAR:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.dval - (yyvsp[0].gentype).val.chval;
+                                            break;
+                                case INT:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.dval - (yyvsp[0].gentype).val.ival;
+                                            break;
+                                case DOUBLE:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.dval - (yyvsp[0].gentype).val.dval;
+                                            break;
+                            }   break;
+                            case INT:   (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.ival - (yyvsp[0].gentype).val.dval;
+                                        break;
+                            case CHAR:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.chval - (yyvsp[0].gentype).val.ival;
+                                        break;
+            }   break;
+            case INT:  switch((yyvsp[-2].gentype).datatype){
+                            case INT:  switch((yyvsp[0].gentype).datatype){
+                                case CHAR:  (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.ival - (yyvsp[0].gentype).val.chval;
+                                            break;
+                                case INT:  (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.ival - (yyvsp[0].gentype).val.ival;
+                                            break;
+                            }   break;
+                            case CHAR:  (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.chval - (yyvsp[0].gentype).val.ival;
+                                        break;
+            }   break;
+            case CHAR:  (yyval.gentype).val.chval = (yyvsp[-2].gentype).val.chval - (yyvsp[0].gentype).val.chval;
+                        break;
+        }
+    }
+#line 1439 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 39:
-#line 88 "testbison.y" /* yacc.c:1646  */
-    { }
-#line 1362 "testbison.tab.c" /* yacc.c:1646  */
+#line 156 "testbison.y" /* yacc.c:1646  */
+    { 
+        (yyval.gentype).datatype = (yyvsp[-2].gentype).datatype > (yyvsp[0].gentype).datatype ? (yyvsp[-2].gentype).datatype : (yyvsp[-1].itype).datatype; 
+        switch((yyval.gentype).datatype){
+            case DOUBLE:  switch((yyvsp[-2].gentype).datatype){
+                            case DOUBLE:  switch((yyvsp[0].gentype).datatype){
+                                case CHAR:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.dval / (yyvsp[0].gentype).val.chval;
+                                            break;
+                                case INT:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.dval / (yyvsp[0].gentype).val.ival;
+                                            break;
+                                case DOUBLE:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.dval / (yyvsp[0].gentype).val.dval;
+                                            break;
+                            }   break;
+                            case INT:   (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.ival / (yyvsp[0].gentype).val.dval;
+                                        break;
+                            case CHAR:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.chval / (yyvsp[0].gentype).val.ival;
+                                        break;
+            }   break;
+            case INT:  switch((yyvsp[-2].gentype).datatype){
+                            case INT:  switch((yyvsp[0].gentype).datatype){
+                                case CHAR:  (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.ival / (yyvsp[0].gentype).val.chval;
+                                            break;
+                                case INT:  (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.ival / (yyvsp[0].gentype).val.ival;
+                                            break;
+                            }   break;
+                            case CHAR:  (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.chval / (yyvsp[0].gentype).val.ival;
+                                        break;
+            }   break;
+            case CHAR:  (yyval.gentype).val.chval = (yyvsp[-2].gentype).val.chval / (yyvsp[0].gentype).val.chval;
+                        break;
+        }
+    }
+#line 1475 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 40:
-#line 89 "testbison.y" /* yacc.c:1646  */
-    { }
-#line 1368 "testbison.tab.c" /* yacc.c:1646  */
+#line 187 "testbison.y" /* yacc.c:1646  */
+    { 
+        (yyval.gentype).datatype = (yyvsp[-2].gentype).datatype > (yyvsp[0].gentype).datatype ? (yyvsp[-2].gentype).datatype : (yyvsp[-1].itype).datatype; 
+        switch((yyval.gentype).datatype){
+            case DOUBLE:  switch((yyvsp[-2].gentype).datatype){
+                            case DOUBLE:  switch((yyvsp[0].gentype).datatype){
+                                case CHAR:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.dval * (yyvsp[0].gentype).val.chval;
+                                            break;
+                                case INT:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.dval * (yyvsp[0].gentype).val.ival;
+                                            break;
+                                case DOUBLE:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.dval * (yyvsp[0].gentype).val.dval;
+                                            break;
+                            }   break;
+                            case INT:   (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.ival * (yyvsp[0].gentype).val.dval;
+                                        break;
+                            case CHAR:  (yyval.gentype).val.dval = (yyvsp[-2].gentype).val.chval * (yyvsp[0].gentype).val.ival;
+                                        break;
+            }   break;
+            case INT:  switch((yyvsp[-2].gentype).datatype){
+                            case INT:  switch((yyvsp[0].gentype).datatype){
+                                case CHAR:  (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.ival * (yyvsp[0].gentype).val.chval;
+                                            break;
+                                case INT:  (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.ival * (yyvsp[0].gentype).val.ival;
+                                            break;
+                            }   break;
+                            case CHAR:  (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.chval * (yyvsp[0].gentype).val.ival;
+                                        break;
+            }   break;
+            case CHAR:  (yyval.gentype).val.chval = (yyvsp[-2].gentype).val.chval * (yyvsp[0].gentype).val.chval;
+                        break;
+        }
+    }
+#line 1511 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 41:
-#line 90 "testbison.y" /* yacc.c:1646  */
+#line 218 "testbison.y" /* yacc.c:1646  */
+    { 
+                            if((yyvsp[-2].gentype).datatype==(yyvsp[0].gentype).datatype==INT) {
+                                (yyval.gentype).val.ival = (yyvsp[-2].gentype).val.ival % (yyvsp[0].gentype).val.ival;
+                                (yyval.gentype).datatype = INT;
+                            }   else    printf("@line no %d - ERROR: modulo operation is only permited on <int>\n");
+                          }
+#line 1522 "testbison.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 42:
+#line 224 "testbison.y" /* yacc.c:1646  */
+    { (yyval.gentype) = (yyvsp[0].gentype); }
+#line 1528 "testbison.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 43:
+#line 227 "testbison.y" /* yacc.c:1646  */
     { }
-#line 1374 "testbison.tab.c" /* yacc.c:1646  */
+#line 1534 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 44:
-#line 95 "testbison.y" /* yacc.c:1646  */
+#line 228 "testbison.y" /* yacc.c:1646  */
     { }
-#line 1380 "testbison.tab.c" /* yacc.c:1646  */
+#line 1540 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 45:
-#line 96 "testbison.y" /* yacc.c:1646  */
-    { }
-#line 1386 "testbison.tab.c" /* yacc.c:1646  */
+#line 229 "testbison.y" /* yacc.c:1646  */
+    {  }
+#line 1546 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 46:
-#line 97 "testbison.y" /* yacc.c:1646  */
-    {  }
-#line 1392 "testbison.tab.c" /* yacc.c:1646  */
+#line 230 "testbison.y" /* yacc.c:1646  */
+    { }
+#line 1552 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 47:
-#line 98 "testbison.y" /* yacc.c:1646  */
-    { }
-#line 1398 "testbison.tab.c" /* yacc.c:1646  */
+#line 231 "testbison.y" /* yacc.c:1646  */
+    { (yyval.gentype) = (yyvsp[0].gentype);}
+#line 1558 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 48:
-#line 101 "testbison.y" /* yacc.c:1646  */
+#line 234 "testbison.y" /* yacc.c:1646  */
     {symt_getval((yyvsp[0].idtype), &(yyval.gentype));}
-#line 1404 "testbison.tab.c" /* yacc.c:1646  */
+#line 1564 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 49:
-#line 102 "testbison.y" /* yacc.c:1646  */
+#line 235 "testbison.y" /* yacc.c:1646  */
     { (yyval.gentype).val.ival =  (yyvsp[0].itype); (yyval.gentype).datatype = INT;}
-#line 1410 "testbison.tab.c" /* yacc.c:1646  */
+#line 1570 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 50:
-#line 103 "testbison.y" /* yacc.c:1646  */
+#line 236 "testbison.y" /* yacc.c:1646  */
     { (yyval.gentype).datatype = DOUBLE; (yyval.gentype).val.dval = (yyvsp[0].dtype); }
-#line 1416 "testbison.tab.c" /* yacc.c:1646  */
+#line 1576 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
   case 51:
-#line 104 "testbison.y" /* yacc.c:1646  */
-    { (yyval.gentype).datatype = CHAR; (yyval.gentype).val.cval = (yyvsp[0].ctype); }
-#line 1422 "testbison.tab.c" /* yacc.c:1646  */
+#line 237 "testbison.y" /* yacc.c:1646  */
+    { (yyval.gentype).datatype = CHAR; (yyval.gentype).val.chval = (yyvsp[0].ctype); }
+#line 1582 "testbison.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1426 "testbison.tab.c" /* yacc.c:1646  */
+#line 1586 "testbison.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1650,7 +1810,7 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 107 "testbison.y" /* yacc.c:1906  */
+#line 240 "testbison.y" /* yacc.c:1906  */
 
 
 int main(int argc, char *argv[]){
@@ -1671,5 +1831,5 @@ int main(int argc, char *argv[]){
 }
 
 void yyerror (char const *s) {
-    fprintf(stderr, "Parsing error :( - %s \n", yytext);
+    fprintf(stderr, "Parsing error :( - %s \n", s);
 }

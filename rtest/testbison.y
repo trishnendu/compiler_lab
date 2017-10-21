@@ -1,10 +1,13 @@
 %{
 #include<stdio.h>
-#include"includeme.h"
+#ifndef INCLUDEME_H
+#   include"includeme.h"
+#endif
 #define YYDEBUG 1
 extern FILE *yyin;
 extern int yylineno;
 extern char* yytext;
+extern char printtype[][10];    
 %}
 
 %union {
@@ -16,19 +19,19 @@ extern char* yytext;
 }
 
 %start DEBUG
-%token LPAREN_TOK RPAREN_TOK CURL_LPAREN_TOK CURL_RPAREN_TOK DEFINE_TOK 
-%token EQ_TOK GT_TOK LT_TOK MINUS_TOK PLUS_TOK MULT_TOK DIVIDE_TOK MOD_TOK XOR_TOK NOT_TOK AND_TOK OR_TOK SEMICOLON_TOK COMMA_TOK 
-%token COMPARE_TOK GTEQ_TOK LTEQ_TOK NOT_EQ_TOK 
-%token BIT_AND_TOK BIT_OR_TOK PLUS_EQ_TOK MINUS_EQ_TOK MULT_EQ_TOK DIVIDE_EQ_TOK RIGHT_SHIFT_TOK LEFT_SHIFT_TOK 
-%token MINUS_MINUS_TOK PLUS_PLUS_TOK MOD_EQ_TOK  
-%token MAIN_TOK RETURN_TOK
+%token<itype> LPAREN_TOK RPAREN_TOK CURL_LPAREN_TOK CURL_RPAREN_TOK DEFINE_TOK 
+%token<itype> EQ_TOK GT_TOK LT_TOK MINUS_TOK PLUS_TOK MULT_TOK DIVIDE_TOK MOD_TOK XOR_TOK NOT_TOK AND_TOK OR_TOK SEMICOLON_TOK COMMA_TOK 
+%token<itype> COMPARE_TOK GTEQ_TOK LTEQ_TOK NOT_EQ_TOK 
+%token<itype> BIT_AND_TOK BIT_OR_TOK PLUS_EQ_TOK MINUS_EQ_TOK MULT_EQ_TOK DIVIDE_EQ_TOK RIGHT_SHIFT_TOK LEFT_SHIFT_TOK 
+%token<itype> MINUS_MINUS_TOK PLUS_PLUS_TOK MOD_EQ_TOK  
+%token<itype> MAIN_TOK RETURN_TOK
 
 %token<itype> INTCONST TYPE_TOK
 %token<dtype> DOUBLECONST
 %token<ctype> CHARCONST
 %token<idtype> ID_TOK
 
-%type<gentype> var exp0 exp1 exp2 exp vardec
+%type<gentype> var exp1 exp2 exp vardec
 %type<idtype> ids
 
 %left PLUS_TOK MINUS_TOK MULT_TOK DIVIDE_TOK
@@ -67,41 +70,171 @@ exp3: LPAREN_TOK exp3 RPAREN_TOK
     | exp2 LTEQ_TOK exp2 
     | exp2 COMPARE_TOK exp2 
     | exp2 NOT_EQ_TOK exp2
-    | exp2
+    | exp2 | exp
     ;
 
-exp: ID_TOK EQ_TOK exp2 {symt_update($1,$3.val); $$ = $3;}
+exp: ID_TOK EQ_TOK exp2 {   
+            _gentype tmp; 
+            if(symt_getval($1, &tmp) || symt_update($1,$3))
+                printf("@line no %d - ERROR: use before declaration! variable \'%s\' is not declared\n",yylineno,$1);
+            if(tmp.datatype != $3.datatype)  
+                printf("@line no %d - WARNING: type mismatch! trying to assign <%s> in <%s>\n" \ 
+                ,yylineno, printtype[$3.datatype], printtype[tmp.datatype]);
+            $$ = $3;    
+           }
     | ID_TOK PLUS_EQ_TOK exp2
     | ID_TOK MINUS_EQ_TOK exp2
     | ID_TOK MULT_EQ_TOK exp2
     | ID_TOK DIVIDE_EQ_TOK exp2
     | ID_TOK MOD_EQ_TOK exp2
-    | exp0 
+    | exp1
     ;
 
-exp2: LPAREN_TOK exp2 RPAREN_TOK { }
-    | exp1 PLUS_TOK exp2    { }
-    | exp1 MINUS_TOK exp2   { }
-    | exp1     
+exp2: LPAREN_TOK exp2 RPAREN_TOK { $$ = $2; }
+    | exp2 PLUS_TOK exp1    { 
+        $$.datatype = $1.datatype > $3.datatype ? $1.datatype : $2.datatype; 
+        switch($$.datatype){
+            case DOUBLE:  switch($1.datatype){
+                            case DOUBLE:  switch($3.datatype){
+                                case CHAR:  $$.val.dval = $1.val.dval + $3.val.chval;
+                                            break;
+                                case INT:  $$.val.dval = $1.val.dval + $3.val.ival;
+                                            break;
+                                case DOUBLE:  $$.val.dval = $1.val.dval + $3.val.dval;
+                                            break;
+                            }   break;
+                            case INT:   $$.val.dval = $1.val.ival + $3.val.dval;
+                                        break;
+                            case CHAR:  $$.val.dval = $1.val.chval + $3.val.ival;
+                                        break;
+            }   break;
+            case INT:  switch($1.datatype){
+                            case INT:  switch($3.datatype){
+                                case CHAR:  $$.val.ival = $1.val.ival + $3.val.chval;
+                                            break;
+                                case INT:  $$.val.ival = $1.val.ival + $3.val.ival;
+                                            break;
+                            }   break;
+                            case CHAR:  $$.val.ival = $1.val.chval + $3.val.ival;
+                                        break;
+            }   break;
+            case CHAR:  $$.val.chval = $1.val.chval + $3.val.chval;
+                        break;
+        }
+    }
+    | exp2 MINUS_TOK exp1   { 
+        $$.datatype = $1.datatype > $3.datatype ? $1.datatype : $2.datatype; 
+        switch($$.datatype){
+            case DOUBLE:  switch($1.datatype){
+                            case DOUBLE:  switch($3.datatype){
+                                case CHAR:  $$.val.dval = $1.val.dval - $3.val.chval;
+                                            break;
+                                case INT:  $$.val.dval = $1.val.dval - $3.val.ival;
+                                            break;
+                                case DOUBLE:  $$.val.dval = $1.val.dval - $3.val.dval;
+                                            break;
+                            }   break;
+                            case INT:   $$.val.dval = $1.val.ival - $3.val.dval;
+                                        break;
+                            case CHAR:  $$.val.dval = $1.val.chval - $3.val.ival;
+                                        break;
+            }   break;
+            case INT:  switch($1.datatype){
+                            case INT:  switch($3.datatype){
+                                case CHAR:  $$.val.ival = $1.val.ival - $3.val.chval;
+                                            break;
+                                case INT:  $$.val.ival = $1.val.ival - $3.val.ival;
+                                            break;
+                            }   break;
+                            case CHAR:  $$.val.ival = $1.val.chval - $3.val.ival;
+                                        break;
+            }   break;
+            case CHAR:  $$.val.chval = $1.val.chval - $3.val.chval;
+                        break;
+        }
+    }
+    | exp2 DIVIDE_TOK exp1   { 
+        $$.datatype = $1.datatype > $3.datatype ? $1.datatype : $2.datatype; 
+        switch($$.datatype){
+            case DOUBLE:  switch($1.datatype){
+                            case DOUBLE:  switch($3.datatype){
+                                case CHAR:  $$.val.dval = $1.val.dval / $3.val.chval;
+                                            break;
+                                case INT:  $$.val.dval = $1.val.dval / $3.val.ival;
+                                            break;
+                                case DOUBLE:  $$.val.dval = $1.val.dval / $3.val.dval;
+                                            break;
+                            }   break;
+                            case INT:   $$.val.dval = $1.val.ival / $3.val.dval;
+                                        break;
+                            case CHAR:  $$.val.dval = $1.val.chval / $3.val.ival;
+                                        break;
+            }   break;
+            case INT:  switch($1.datatype){
+                            case INT:  switch($3.datatype){
+                                case CHAR:  $$.val.ival = $1.val.ival / $3.val.chval;
+                                            break;
+                                case INT:  $$.val.ival = $1.val.ival / $3.val.ival;
+                                            break;
+                            }   break;
+                            case CHAR:  $$.val.ival = $1.val.chval / $3.val.ival;
+                                        break;
+            }   break;
+            case CHAR:  $$.val.chval = $1.val.chval / $3.val.chval;
+                        break;
+        }
+    }
+    | exp2 MULT_TOK exp1   { 
+        $$.datatype = $1.datatype > $3.datatype ? $1.datatype : $2.datatype; 
+        switch($$.datatype){
+            case DOUBLE:  switch($1.datatype){
+                            case DOUBLE:  switch($3.datatype){
+                                case CHAR:  $$.val.dval = $1.val.dval * $3.val.chval;
+                                            break;
+                                case INT:  $$.val.dval = $1.val.dval * $3.val.ival;
+                                            break;
+                                case DOUBLE:  $$.val.dval = $1.val.dval * $3.val.dval;
+                                            break;
+                            }   break;
+                            case INT:   $$.val.dval = $1.val.ival * $3.val.dval;
+                                        break;
+                            case CHAR:  $$.val.dval = $1.val.chval * $3.val.ival;
+                                        break;
+            }   break;
+            case INT:  switch($1.datatype){
+                            case INT:  switch($3.datatype){
+                                case CHAR:  $$.val.ival = $1.val.ival * $3.val.chval;
+                                            break;
+                                case INT:  $$.val.ival = $1.val.ival * $3.val.ival;
+                                            break;
+                            }   break;
+                            case CHAR:  $$.val.ival = $1.val.chval * $3.val.ival;
+                                        break;
+            }   break;
+            case CHAR:  $$.val.chval = $1.val.chval * $3.val.chval;
+                        break;
+        }
+    }
+    | exp2 MOD_TOK exp1   { 
+                            if($1.datatype==$3.datatype==INT) {
+                                $$.val.ival = $1.val.ival % $3.val.ival;
+                                $$.datatype = INT;
+                            }   else    printf("@line no %d - ERROR: modulo operation is only permited on <int>\n");
+                          }
+    | exp1 { $$ = $1; }
     ;
 
-exp1: var MULT_TOK exp1 { }
-    | var DIVIDE_TOK exp1 { }
-    | var MOD_TOK exp1 { }
-    | var 
-    | exp0 
-    ;
-
-exp0: ID_TOK PLUS_PLUS_TOK { }
+exp1: ID_TOK PLUS_PLUS_TOK { }
     | ID_TOK MINUS_MINUS_TOK { }
     | PLUS_PLUS_TOK ID_TOK          {  }
     | MINUS_MINUS_TOK ID_TOK       { }
+    | var { $$ = $1;}
     ;
 
 var: ID_TOK     {symt_getval($1, &$$);}
     | INTCONST      { $$.val.ival =  $1; $$.datatype = INT;}
     | DOUBLECONST   { $$.datatype = DOUBLE; $$.val.dval = $1; }
-    | CHARCONST { $$.datatype = CHAR; $$.val.cval = $1; }
+    | CHARCONST { $$.datatype = CHAR; $$.val.chval = $1; }
     ;
    
 %%
@@ -124,5 +257,5 @@ int main(int argc, char *argv[]){
 }
 
 void yyerror (char const *s) {
-    fprintf(stderr, "Parsing error :( - %s \n", yytext);
+    fprintf(stderr, "Parsing error :( - %s \n", s);
 }

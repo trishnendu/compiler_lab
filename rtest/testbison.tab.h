@@ -94,7 +94,7 @@ extern int yydebug;
 
 union YYSTYPE
 {
-#line 10 "testbison.y" /* yacc.c:1909  */
+#line 13 "testbison.y" /* yacc.c:1909  */
 
     int itype;
     double dtype;

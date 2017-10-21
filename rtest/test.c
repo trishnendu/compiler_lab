@@ -11,6 +11,7 @@ struct {
 typedef union{
     int a;
     char c;
+    double d;
 } U;
 
 int valreturn(U d){
@@ -20,14 +21,11 @@ int valreturn(U d){
 }
 
 int main(){
-    int i = 9;
-    char c = 'c';
-    float f = 9.843;
-    double d = f;
+    U s,u,v;
     s.a = 4;
-    s.i = 7;
-    s.d = 10.0432;
-    //printf("%d %e\n",s.a,s.d);
-    valreturn((U)'3');
+    u.c = 'G';
+    v.d = 10.0432;
+    printf("%e\n",s.d*v.d);
+    //valreturn((U)'3');
     return 0;
 }

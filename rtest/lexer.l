@@ -1,5 +1,7 @@
 %{
-#include"includeme.h"
+#ifndef INCLUDEME_H
+#   include"includeme.h"
+#endif
 #include "testbison.tab.h"  
 %}
 lalpha [a-z]
@@ -46,7 +48,8 @@ dgt [0-9]
 "=" {return EQ_TOK;}
 ">" {return GT_TOK;}
 "<" {return LT_TOK;}
-[ \t\n] ;
+"\n" {yylineno++;}
+[ \t\n] {}
 %%
 
 int yywrap(){

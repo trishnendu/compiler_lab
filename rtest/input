@@ -1,9 +1,13 @@
 int X;
 int Y;
+int A;
+int Bcd;
 double z;
 char c;
 X = 2;
 Y = 4;
-z = 42321.1;
+A = 6;
+B = 2;
+z = X;
 c = 'a';
-X = Y;
+X = Y * A + B;

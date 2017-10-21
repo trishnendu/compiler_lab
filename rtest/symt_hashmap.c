@@ -4,7 +4,6 @@
 #ifndef INCLUDEME_H
 #   include"includeme.h"
 #endif
-
 #define HASHKEY 101
 #define HASHSIZE 32
 #define GLOBAL 0
@@ -17,6 +16,7 @@ typedef struct t{
 } symt_node;
 
 symt_node* symt[HASHSIZE];
+char printtype[][10] = {"char\0", "int\0", "double\0"};   
 
 int printhashtable();
 
@@ -43,23 +43,22 @@ int symt_insert(char key[], int type){
     return 0;
 }
 
-int symt_update(char key[], _val v){
+int symt_update(char key[], _gentype v){
     int hashkey = symt_hashfunc(key);
     symt_node *tmp;
     for(tmp = symt[hashkey]; tmp != (symt_node*)0; tmp = tmp->next){
         if(tmp && !strcmp(tmp->name, key)){
-            tmp->data.val = v;
+            tmp->data.val = v.val;
             //printhashtable();
             return 0;
         }
     }
-    printf("ERROR:- Key not found\n");
+    //printf("ERROR:- Key not found\n");
     return 1;
 }
 
-int symt_getval(char key[], _gentype *tgt){
+int symt_getval(char key[], _gentype *tgt){ /* make sure that memory has been allocated to *tgt */ 
     int hashkey = symt_hashfunc(key);
-    _gentype retval = {0,(_val)0};
     symt_node *tmp;
     for(tmp = symt[hashkey]; tmp != (symt_node*)0; tmp = tmp->next){
         if(tmp && !strcmp(tmp->name, key)){
@@ -67,7 +66,7 @@ int symt_getval(char key[], _gentype *tgt){
             return 0;
         }
     }
-    printf("NOthing FoUnd\n");
+    //printf("NOthing FoUnd\n");
     return 1;
 } 
 
@@ -79,9 +78,9 @@ int printhashtable(){
             printf("%d ",i);
             symt_node *tmp;
             for(tmp = symt[i]; tmp != (symt_node *)0; tmp = tmp->next){
-                printf(" -> (%s,%d,", tmp->name, tmp->data.datatype);
+                printf(" -> (%s,%s,", tmp->name, printtype[tmp->data.datatype]);
                 if(tmp->data.datatype == DOUBLE)   printf("%e) ->", tmp->data.val.dval);
-                else if(tmp->data.datatype == CHAR)   printf("\'%c\') ->", tmp->data.val.cval);
+                else if(tmp->data.datatype == CHAR)   printf("\'%c\') ->", tmp->data.val.chval);
                 else    printf("%d) -> ", tmp->data.val.ival);
             }
             printf("null\n");
