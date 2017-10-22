@@ -1,6 +1,8 @@
 #ifndef INCLUDEME_H
 #   define INCLUDEME_H
 
+    #define GLOBAL 0
+
     typedef enum {NONE, CHAR, INT, DOUBLE } _datatype;
 
     typedef union{

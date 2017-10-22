@@ -1,0 +1,10 @@
+int a;
+int i;
+int d;
+int main(){
+    int i;
+    double d;
+    double a;
+    d = 8.9;
+    a = 4;
+}

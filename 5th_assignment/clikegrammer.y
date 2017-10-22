@@ -1,5 +1,7 @@
 %{
 #include<stdio.h>
+#define YYDEBUG 1
+
 extern FILE *yyin;
 extern int lineno;
 extern int yylineno;
@@ -16,16 +18,16 @@ extern char* yytext;
 %token EQ_TOK GT_TOK LT_TOK MINUS_TOK PLUS_TOK MULT_TOK DIVIDE_TOK MOD_TOK XOR_TOK NOT_TOK AND_TOK OR_TOK SEMICOLON_TOK COMMA_TOK 
 %token WHILE_TOK FOR_TOK IF_TOK ELSE_TOK COMPARE_TOK GTEQ_TOK LTEQ_TOK NOT_EQ_TOK 
 %token BIT_AND_TOK BIT_OR_TOK PLUS_EQ_TOK MINUS_EQ_TOK MULT_EQ_TOK DIVIDE_EQ_TOK RIGHT_SHIFT_TOK LEFT_SHIFT_TOK 
-%token MINUS_MINUS_TOK PLUS_PLUS_TOK MOD_EQ_TOK ID_TOK INTCONST ERROR_TOK
+%token MINUS_MINUS_TOK PLUS_PLUS_TOK MOD_EQ_TOK ID_TOK INTCONST ERROR_TOK DOUBLECONST CHARCONST
 %token MAIN_TOK TYPE_TOK RETURN_TOK
 
 %left PLUS_TOK MINUS_TOK MULT_TOK DIVIDE_TOK
 %%
 DEBUG: START;
 
-START:  returntype MAIN_TOK LPAREN_TOK RPAREN_TOK block funcdeflist;
+START: vardeclines returntype MAIN_TOK LPAREN_TOK RPAREN_TOK block funcdeflist;
 
-vardeclines: vardec vardeclines | %empty;
+vardeclines: vardeclines vardec  | %empty;
 
 vardec: TYPE_TOK ids;
 
@@ -129,12 +131,15 @@ exp0: ID_TOK PLUS_PLUS_TOK
 
 var: ID_TOK 
     | INTCONST
+    | DOUBLECONST
+    | CHARCONST
     ;
    
 %%
 
 int main(int argc, char *argv[]){
 	int token;
+    yydebug = 0;
 	if(argc != 2){
 		fprintf(stderr, "Usage: ./lexer <input_file>");
 		exit(1);		

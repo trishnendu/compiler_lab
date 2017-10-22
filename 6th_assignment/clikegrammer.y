@@ -8,7 +8,8 @@
 extern FILE *yyin;
 extern int yylineno;
 extern char* yytext;
-extern char printtype[][10];    
+extern char printtype[][10]; 
+extern int curscope;   
 %}
 
 %union {
@@ -29,17 +30,16 @@ extern char printtype[][10];
 
 %left PLUS_TOK MINUS_TOK MULT_TOK DIVIDE_TOK
 
-%type<othertype> var vardec exp0 exp1 exp2 exp
+%type<othertype> var vardec exp0 exp1 exp2 exp funccall returntype
 %type<idtype> ids
 %%
 DEBUG: START;
 
-START:  returntype MAIN_TOK LPAREN_TOK RPAREN_TOK block funcdeflist;
+START:  vardeclines returntype MAIN_TOK LPAREN_TOK RPAREN_TOK block funcdeflist;
 
-vardeclines: vardec vardeclines | %empty;
+vardeclines: vardeclines vardec | %empty;
 
-vardec: TYPE_TOK ids   {    symt_insert($2, $1);    }
-        ; 
+vardec: TYPE_TOK ids   { symt_insert($2, $1); } ; 
 
 ids: ID_TOK COMMA_TOK ids
   | ID_TOK EQ_TOK exp2 COMMA_TOK ids
@@ -49,19 +49,18 @@ ids: ID_TOK COMMA_TOK ids
 
 funcdeflist: funcdef funcdeflist | %empty;
 
-funcdef: returntype ID_TOK LPAREN_TOK arglist RPAREN_TOK block;
+funcdef: returntype ID_TOK LPAREN_TOK arglist RPAREN_TOK block {   symt_insert($2, $1);} ;
 
 returnstatement: RETURN_TOK exp2 SEMICOLON_TOK;
-returntype: TYPE_TOK | %empty;
+returntype: TYPE_TOK | %empty   { $$ = NONE; };
 
 arglist: TYPE_TOK ID_TOK arglistex | %empty;
 arglistex: COMMA_TOK TYPE_TOK ID_TOK arglistex | COMMA_TOK TYPE_TOK ID_TOK;
 
-funccall: ID_TOK LPAREN_TOK paramlist RPAREN_TOK SEMICOLON_TOK;
+funccall: ID_TOK LPAREN_TOK paramlist RPAREN_TOK SEMICOLON_TOK {  $$ = symt_gettype($1); };
 paramlist: exp COMMA_TOK paramlist | exp;
 
-block: CURL_LPAREN_TOK vardeclines statements CURL_RPAREN_TOK 
-    | CURL_LPAREN_TOK vardeclines CURL_RPAREN_TOK 
+block: CURL_LPAREN_TOK {newscope();} vardeclines statements CURL_RPAREN_TOK {endscope();}
     ;
 
 nonfunctionblock: exp SEMICOLON_TOK | ifstatement | loopstatement | returnstatement | funccall | block;
@@ -71,7 +70,7 @@ statements: exp SEMICOLON_TOK statements
     | loopstatement statements
     | returnstatement statements
     | funccall statements
-    | exp SEMICOLON_TOK | ifstatement | loopstatement | returnstatement | funccall
+    | exp SEMICOLON_TOK | ifstatement | loopstatement | returnstatement | funccall | %empty
     ;
 
 ifstatement: IF_TOK condexp nonfunctionblock
@@ -115,7 +114,10 @@ exp: ID_TOK EQ_TOK exp2     {  $$ = symt_gettype($1); check_compatibility($$, $3
     | ID_TOK MINUS_EQ_TOK exp2  {   $$ = symt_gettype($1); check_compatibility($$, $3);  }
     | ID_TOK MULT_EQ_TOK exp2   {   $$ = symt_gettype($1); check_compatibility($$, $3);  }
     | ID_TOK DIVIDE_EQ_TOK exp2 {   $$ = symt_gettype($1); check_compatibility($$, $3);  }
-    | ID_TOK MOD_EQ_TOK exp2
+    | ID_TOK MOD_EQ_TOK exp2    {   
+        if(symt_gettype($1)!=INT || $3!=INT)    
+            printf("Modulo operation is not permitted on <int> only\n");
+        $$ = INT; }
     | exp0
     ;
 
@@ -170,10 +172,9 @@ int main(int argc, char *argv[]){
     if(!yyparse());
 	    fprintf(stdout, "Total %d line parsed successfully :)\n", yylineno);
     fclose(yyin);
-    printhashtable();
     return 0;
 }
 
 void yyerror (char const *s) {
-    fprintf(stderr, "@line no - %d: Parsing error @symbol '%s' :( - %s \n", yylineno, yytext, s);
+    fprintf(stderr, "%s!! @line no - %d:  @symbol '%s' :( -  \n",s ,yylineno, yytext);
 }
