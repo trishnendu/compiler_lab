@@ -12,6 +12,7 @@ dgt [0-9]
 "while" {return WHILE_TOK;}
 "for" {return FOR_TOK;}
 "if" {return IF_TOK;}
+"else if" {return ELSEIF_TOK;}
 "else" {return ELSE_TOK;}
 "int"|"char"|"char*"|"double"|"void" {return TYPE_TOK;}
 "return" {return RETURN_TOK;}

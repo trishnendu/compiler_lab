@@ -12,6 +12,8 @@ Terminals unused in grammar
 State 129 conflicts: 1 shift/reduce
 State 133 conflicts: 1 shift/reduce
 State 134 conflicts: 1 shift/reduce
+State 151 conflicts: 1 shift/reduce
+State 176 conflicts: 1 shift/reduce
 
 
 Grammar
@@ -71,197 +73,203 @@ Grammar
    38           | returnstatement
    39           | funccall
 
-   40 ifstatement: IF_TOK condexp nonfunctionblock
-   41            | IF_TOK condexp nonfunctionblock ELSE_TOK nonfunctionblock
+   40 ifstatement: IF_TOK condexp nonfunctionblock ifstatementex
+   41            | IF_TOK condexp nonfunctionblock ifstatementex ELSE_TOK nonfunctionblock
 
-   42 loopstatement: WHILE_TOK condexp nonfunctionblock
-   43              | FOR_TOK LPAREN_TOK forpart1 forpart2 forpart3 RPAREN_TOK nonfunctionblock
+   42 ifstatementex: ELSEIF_TOK condexp nonfunctionblock ifstatementex
+   43              | %empty
 
-   44 forpart1: varinitlist
-   45         | vardec
-   46         | SEMICOLON_TOK
+   44 loopstatement: WHILE_TOK condexp nonfunctionblock
+   45              | FOR_TOK LPAREN_TOK forpart1 forpart2 forpart3 RPAREN_TOK nonfunctionblock
 
-   47 varinitlist: ID_TOK EQ_TOK exp2 COMMA_TOK varinitlist
-   48            | ID_TOK EQ_TOK exp2 SEMICOLON_TOK
+   46 forpart1: varinitlist
+   47         | vardec
+   48         | SEMICOLON_TOK
 
-   49 forpart2: exp4 forpart2ex SEMICOLON_TOK
-   50         | SEMICOLON_TOK
+   49 varinitlist: ID_TOK EQ_TOK exp2 COMMA_TOK varinitlist
+   50            | ID_TOK EQ_TOK exp2 SEMICOLON_TOK
 
-   51 forpart2ex: COMMA_TOK exp4 forpart2ex
-   52           | %empty
+   51 forpart2: exp4 forpart2ex SEMICOLON_TOK
+   52         | SEMICOLON_TOK
 
-   53 forpart3: exp forpart3ex
-   54         | %empty
+   53 forpart2ex: COMMA_TOK exp4 forpart2ex
+   54           | %empty
 
-   55 forpart3ex: COMMA_TOK exp forpart3ex
-   56           | %empty
+   55 forpart3: exp forpart3ex
+   56         | %empty
 
-   57 condexp: LPAREN_TOK exp4 RPAREN_TOK
+   57 forpart3ex: COMMA_TOK exp forpart3ex
+   58           | %empty
 
-   58 exp4: LPAREN_TOK exp4 RPAREN_TOK
-   59     | exp3 OR_TOK exp4
-   60     | exp3 AND_TOK exp4
-   61     | NOT_TOK exp4
-   62     | exp3
+   59 condexp: LPAREN_TOK exp4 RPAREN_TOK
 
-   63 exp3: LPAREN_TOK exp3 RPAREN_TOK
-   64     | exp2 LT_TOK exp2
-   65     | exp2 GT_TOK exp2
-   66     | exp2 GTEQ_TOK exp2
-   67     | exp2 LTEQ_TOK exp2
-   68     | exp2 COMPARE_TOK exp2
-   69     | exp2 NOT_EQ_TOK exp2
-   70     | exp2
+   60 exp4: LPAREN_TOK exp4 RPAREN_TOK
+   61     | exp3 OR_TOK exp4
+   62     | exp3 AND_TOK exp4
+   63     | NOT_TOK exp4
+   64     | exp3
 
-   71 exp: ID_TOK EQ_TOK exp2
-   72    | ID_TOK PLUS_EQ_TOK exp2
-   73    | ID_TOK MINUS_EQ_TOK exp2
-   74    | ID_TOK MULT_EQ_TOK exp2
-   75    | ID_TOK DIVIDE_EQ_TOK exp2
-   76    | ID_TOK MOD_EQ_TOK exp2
-   77    | exp0
+   65 exp3: LPAREN_TOK exp3 RPAREN_TOK
+   66     | exp2 LT_TOK exp2
+   67     | exp2 GT_TOK exp2
+   68     | exp2 GTEQ_TOK exp2
+   69     | exp2 LTEQ_TOK exp2
+   70     | exp2 COMPARE_TOK exp2
+   71     | exp2 NOT_EQ_TOK exp2
+   72     | exp2
 
-   78 exp2: LPAREN_TOK exp2 RPAREN_TOK
-   79     | exp1 PLUS_TOK exp2
-   80     | exp1 MINUS_TOK exp2
-   81     | exp1
+   73 exp: ID_TOK EQ_TOK exp2
+   74    | ID_TOK PLUS_EQ_TOK exp2
+   75    | ID_TOK MINUS_EQ_TOK exp2
+   76    | ID_TOK MULT_EQ_TOK exp2
+   77    | ID_TOK DIVIDE_EQ_TOK exp2
+   78    | ID_TOK MOD_EQ_TOK exp2
+   79    | exp0
 
-   82 exp1: var MULT_TOK exp1
-   83     | var DIVIDE_TOK exp1
-   84     | var MOD_TOK exp1
-   85     | var
-   86     | exp0
-   87     | funccall
+   80 exp2: LPAREN_TOK exp2 RPAREN_TOK
+   81     | exp1 PLUS_TOK exp2
+   82     | exp1 MINUS_TOK exp2
+   83     | exp1
 
-   88 exp0: ID_TOK PLUS_PLUS_TOK
-   89     | ID_TOK MINUS_MINUS_TOK
-   90     | PLUS_PLUS_TOK ID_TOK
-   91     | MINUS_MINUS_TOK ID_TOK
+   84 exp1: var MULT_TOK exp1
+   85     | var DIVIDE_TOK exp1
+   86     | var MOD_TOK exp1
+   87     | var
+   88     | exp0
+   89     | funccall
 
-   92 var: ID_TOK
-   93    | INTCONST
-   94    | DOUBLECONST
-   95    | CHARCONST
+   90 exp0: ID_TOK PLUS_PLUS_TOK
+   91     | ID_TOK MINUS_MINUS_TOK
+   92     | PLUS_PLUS_TOK ID_TOK
+   93     | MINUS_MINUS_TOK ID_TOK
+
+   94 var: ID_TOK
+   95    | INTCONST
+   96    | DOUBLECONST
+   97    | CHARCONST
 
 
 Terminals, with rules where they appear
 
 $end (0) 0
 error (256)
-LPAREN_TOK (258) 12 13 19 43 57 58 63 78
-RPAREN_TOK (259) 12 13 19 43 57 58 63 78
+LPAREN_TOK (258) 12 13 19 45 59 60 65 80
+RPAREN_TOK (259) 12 13 19 45 59 60 65 80
 CURL_LPAREN_TOK (260) 22 23
 CURL_RPAREN_TOK (261) 22 23
 DEFINE_TOK (262)
-EQ_TOK (263) 8 10 47 48 71
-GT_TOK (264) 65
-LT_TOK (265) 64
-MINUS_TOK (266) 80
-PLUS_TOK (267) 79
-MULT_TOK (268) 82
-DIVIDE_TOK (269) 83
-MOD_TOK (270) 84
+EQ_TOK (263) 8 10 49 50 73
+GT_TOK (264) 67
+LT_TOK (265) 66
+MINUS_TOK (266) 82
+PLUS_TOK (267) 81
+MULT_TOK (268) 84
+DIVIDE_TOK (269) 85
+MOD_TOK (270) 86
 XOR_TOK (271)
-NOT_TOK (272) 61
-AND_TOK (273) 60
-OR_TOK (274) 59
-SEMICOLON_TOK (275) 7 8 14 19 24 30 35 46 48 49 50
-COMMA_TOK (276) 9 10 17 18 20 47 51 55
-WHILE_TOK (277) 42
-FOR_TOK (278) 43
+NOT_TOK (272) 63
+AND_TOK (273) 62
+OR_TOK (274) 61
+SEMICOLON_TOK (275) 7 8 14 19 24 30 35 48 50 51 52
+COMMA_TOK (276) 9 10 17 18 20 49 53 57
+WHILE_TOK (277) 44
+FOR_TOK (278) 45
 IF_TOK (279) 40 41
 ELSE_TOK (280) 41
-COMPARE_TOK (281) 68
-GTEQ_TOK (282) 66
-LTEQ_TOK (283) 67
-NOT_EQ_TOK (284) 69
-BIT_AND_TOK (285)
-BIT_OR_TOK (286)
-PLUS_EQ_TOK (287) 72
-MINUS_EQ_TOK (288) 73
-MULT_EQ_TOK (289) 74
-DIVIDE_EQ_TOK (290) 75
-RIGHT_SHIFT_TOK (291)
-LEFT_SHIFT_TOK (292)
-MINUS_MINUS_TOK (293) 89 91
-PLUS_PLUS_TOK (294) 88 90
-MOD_EQ_TOK (295) 76
-ID_TOK (296) 7 8 9 10 12 13 15 17 18 19 47 48 71 72 73 74 75 76 88
-    89 90 91 92
-INTCONST (297) 93
-ERROR_TOK (298)
-DOUBLECONST (299) 94
-CHARCONST (300) 95
-TYPE_TOK (301) 7 8 12 15 17 18
-RETURN_TOK (302) 14
+ELSEIF_TOK (281) 42
+COMPARE_TOK (282) 70
+GTEQ_TOK (283) 68
+LTEQ_TOK (284) 69
+NOT_EQ_TOK (285) 71
+BIT_AND_TOK (286)
+BIT_OR_TOK (287)
+PLUS_EQ_TOK (288) 74
+MINUS_EQ_TOK (289) 75
+MULT_EQ_TOK (290) 76
+DIVIDE_EQ_TOK (291) 77
+RIGHT_SHIFT_TOK (292)
+LEFT_SHIFT_TOK (293)
+MINUS_MINUS_TOK (294) 91 93
+PLUS_PLUS_TOK (295) 90 92
+MOD_EQ_TOK (296) 78
+ID_TOK (297) 7 8 9 10 12 13 15 17 18 19 49 50 73 74 75 76 77 78 90
+    91 92 93 94
+INTCONST (298) 95
+ERROR_TOK (299)
+DOUBLECONST (300) 96
+CHARCONST (301) 97
+TYPE_TOK (302) 7 8 12 15 17 18
+RETURN_TOK (303) 14
 
 
 Nonterminals, with rules where they appear
 
-$accept (48)
+$accept (49)
     on left: 0
-DEBUG (49)
+DEBUG (50)
     on left: 1, on right: 0
-START (50)
+START (51)
     on left: 2 3 4, on right: 1 2 3
-vardeclines (51)
+vardeclines (52)
     on left: 5 6, on right: 5 22 23
-vardec (52)
-    on left: 7 8, on right: 2 5 45
-vardecex (53)
+vardec (53)
+    on left: 7 8, on right: 2 5 47
+vardecex (54)
     on left: 9 10 11, on right: 7 8 9 10
-funcdef (54)
+funcdef (55)
     on left: 12 13, on right: 3
-returnstatement (55)
+returnstatement (56)
     on left: 14, on right: 27 33 38
-arglist (56)
+arglist (57)
     on left: 15 16, on right: 12 13
-arglistex (57)
+arglistex (58)
     on left: 17 18, on right: 15 17
-funccall (58)
-    on left: 19, on right: 28 34 39 87
-paramlist (59)
+funccall (59)
+    on left: 19, on right: 28 34 39 89
+paramlist (60)
     on left: 20 21, on right: 19 20
-block (60)
+block (61)
     on left: 22 23, on right: 12 13 29
-nonfunctionblock (61)
-    on left: 24 25 26 27 28 29, on right: 40 41 42 43
-statements (62)
+nonfunctionblock (62)
+    on left: 24 25 26 27 28 29, on right: 40 41 42 44 45
+statements (63)
     on left: 30 31 32 33 34 35 36 37 38 39, on right: 22 30 31 32 33
     34
-ifstatement (63)
+ifstatement (64)
     on left: 40 41, on right: 25 31 36
-loopstatement (64)
-    on left: 42 43, on right: 26 32 37
-forpart1 (65)
-    on left: 44 45 46, on right: 43
-varinitlist (66)
-    on left: 47 48, on right: 44 47
-forpart2 (67)
-    on left: 49 50, on right: 43
-forpart2ex (68)
-    on left: 51 52, on right: 49 51
-forpart3 (69)
-    on left: 53 54, on right: 43
-forpart3ex (70)
-    on left: 55 56, on right: 53 55
-condexp (71)
-    on left: 57, on right: 40 41 42
-exp4 (72)
-    on left: 58 59 60 61 62, on right: 49 51 57 58 59 60 61
-exp3 (73)
-    on left: 63 64 65 66 67 68 69 70, on right: 59 60 62 63
-exp (74)
-    on left: 71 72 73 74 75 76 77, on right: 20 21 24 30 35 53 55
-exp2 (75)
-    on left: 78 79 80 81, on right: 8 10 14 47 48 64 65 66 67 68 69
-    70 71 72 73 74 75 76 78 79 80
-exp1 (76)
-    on left: 82 83 84 85 86 87, on right: 79 80 81 82 83 84
-exp0 (77)
-    on left: 88 89 90 91, on right: 77 86
-var (78)
-    on left: 92 93 94 95, on right: 82 83 84 85
+ifstatementex (65)
+    on left: 42 43, on right: 40 41 42
+loopstatement (66)
+    on left: 44 45, on right: 26 32 37
+forpart1 (67)
+    on left: 46 47 48, on right: 45
+varinitlist (68)
+    on left: 49 50, on right: 46 49
+forpart2 (69)
+    on left: 51 52, on right: 45
+forpart2ex (70)
+    on left: 53 54, on right: 51 53
+forpart3 (71)
+    on left: 55 56, on right: 45
+forpart3ex (72)
+    on left: 57 58, on right: 55 57
+condexp (73)
+    on left: 59, on right: 40 41 42 44
+exp4 (74)
+    on left: 60 61 62 63 64, on right: 51 53 59 60 61 62 63
+exp3 (75)
+    on left: 65 66 67 68 69 70 71 72, on right: 61 62 64 65
+exp (76)
+    on left: 73 74 75 76 77 78 79, on right: 20 21 24 30 35 55 57
+exp2 (77)
+    on left: 80 81 82 83, on right: 8 10 14 49 50 66 67 68 69 70 71
+    72 73 74 75 76 77 78 80 81 82
+exp1 (78)
+    on left: 84 85 86 87 88 89, on right: 81 82 83 84 85 86
+exp0 (79)
+    on left: 90 91 92 93, on right: 79 88
+var (80)
+    on left: 94 95 96 97, on right: 84 85 86 87
 
 
 State 0
@@ -464,7 +472,7 @@ State 19
 
 State 20
 
-   78 exp2: LPAREN_TOK . exp2 RPAREN_TOK
+   80 exp2: LPAREN_TOK . exp2 RPAREN_TOK
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -483,14 +491,14 @@ State 20
 
 State 21
 
-   91 exp0: MINUS_MINUS_TOK . ID_TOK
+   93 exp0: MINUS_MINUS_TOK . ID_TOK
 
     ID_TOK  shift, and go to state 40
 
 
 State 22
 
-   90 exp0: PLUS_PLUS_TOK . ID_TOK
+   92 exp0: PLUS_PLUS_TOK . ID_TOK
 
     ID_TOK  shift, and go to state 41
 
@@ -498,43 +506,43 @@ State 22
 State 23
 
    19 funccall: ID_TOK . LPAREN_TOK paramlist RPAREN_TOK SEMICOLON_TOK
-   88 exp0: ID_TOK . PLUS_PLUS_TOK
-   89     | ID_TOK . MINUS_MINUS_TOK
-   92 var: ID_TOK .
+   90 exp0: ID_TOK . PLUS_PLUS_TOK
+   91     | ID_TOK . MINUS_MINUS_TOK
+   94 var: ID_TOK .
 
     LPAREN_TOK       shift, and go to state 42
     MINUS_MINUS_TOK  shift, and go to state 43
     PLUS_PLUS_TOK    shift, and go to state 44
 
-    $default  reduce using rule 92 (var)
+    $default  reduce using rule 94 (var)
 
 
 State 24
 
-   93 var: INTCONST .
-
-    $default  reduce using rule 93 (var)
-
-
-State 25
-
-   94 var: DOUBLECONST .
-
-    $default  reduce using rule 94 (var)
-
-
-State 26
-
-   95 var: CHARCONST .
+   95 var: INTCONST .
 
     $default  reduce using rule 95 (var)
 
 
+State 25
+
+   96 var: DOUBLECONST .
+
+    $default  reduce using rule 96 (var)
+
+
+State 26
+
+   97 var: CHARCONST .
+
+    $default  reduce using rule 97 (var)
+
+
 State 27
 
-   87 exp1: funccall .
+   89 exp1: funccall .
 
-    $default  reduce using rule 87 (exp1)
+    $default  reduce using rule 89 (exp1)
 
 
 State 28
@@ -548,35 +556,35 @@ State 28
 
 State 29
 
-   79 exp2: exp1 . PLUS_TOK exp2
-   80     | exp1 . MINUS_TOK exp2
-   81     | exp1 .
+   81 exp2: exp1 . PLUS_TOK exp2
+   82     | exp1 . MINUS_TOK exp2
+   83     | exp1 .
 
     MINUS_TOK  shift, and go to state 46
     PLUS_TOK   shift, and go to state 47
 
-    $default  reduce using rule 81 (exp2)
+    $default  reduce using rule 83 (exp2)
 
 
 State 30
 
-   86 exp1: exp0 .
+   88 exp1: exp0 .
 
-    $default  reduce using rule 86 (exp1)
+    $default  reduce using rule 88 (exp1)
 
 
 State 31
 
-   82 exp1: var . MULT_TOK exp1
-   83     | var . DIVIDE_TOK exp1
-   84     | var . MOD_TOK exp1
-   85     | var .
+   84 exp1: var . MULT_TOK exp1
+   85     | var . DIVIDE_TOK exp1
+   86     | var . MOD_TOK exp1
+   87     | var .
 
     MULT_TOK    shift, and go to state 48
     DIVIDE_TOK  shift, and go to state 49
     MOD_TOK     shift, and go to state 50
 
-    $default  reduce using rule 85 (exp1)
+    $default  reduce using rule 87 (exp1)
 
 
 State 32
@@ -637,23 +645,23 @@ State 38
 
 State 39
 
-   78 exp2: LPAREN_TOK exp2 . RPAREN_TOK
+   80 exp2: LPAREN_TOK exp2 . RPAREN_TOK
 
     RPAREN_TOK  shift, and go to state 55
 
 
 State 40
 
-   91 exp0: MINUS_MINUS_TOK ID_TOK .
+   93 exp0: MINUS_MINUS_TOK ID_TOK .
 
-    $default  reduce using rule 91 (exp0)
+    $default  reduce using rule 93 (exp0)
 
 
 State 41
 
-   90 exp0: PLUS_PLUS_TOK ID_TOK .
+   92 exp0: PLUS_PLUS_TOK ID_TOK .
 
-    $default  reduce using rule 90 (exp0)
+    $default  reduce using rule 92 (exp0)
 
 
 State 42
@@ -671,16 +679,16 @@ State 42
 
 State 43
 
-   89 exp0: ID_TOK MINUS_MINUS_TOK .
+   91 exp0: ID_TOK MINUS_MINUS_TOK .
 
-    $default  reduce using rule 89 (exp0)
+    $default  reduce using rule 91 (exp0)
 
 
 State 44
 
-   88 exp0: ID_TOK PLUS_PLUS_TOK .
+   90 exp0: ID_TOK PLUS_PLUS_TOK .
 
-    $default  reduce using rule 88 (exp0)
+    $default  reduce using rule 90 (exp0)
 
 
 State 45
@@ -695,7 +703,7 @@ State 45
 
 State 46
 
-   80 exp2: exp1 MINUS_TOK . exp2
+   82 exp2: exp1 MINUS_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -714,7 +722,7 @@ State 46
 
 State 47
 
-   79 exp2: exp1 PLUS_TOK . exp2
+   81 exp2: exp1 PLUS_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -733,7 +741,7 @@ State 47
 
 State 48
 
-   82 exp1: var MULT_TOK . exp1
+   84 exp1: var MULT_TOK . exp1
 
     MINUS_MINUS_TOK  shift, and go to state 21
     PLUS_PLUS_TOK    shift, and go to state 22
@@ -750,7 +758,7 @@ State 48
 
 State 49
 
-   83 exp1: var DIVIDE_TOK . exp1
+   85 exp1: var DIVIDE_TOK . exp1
 
     MINUS_MINUS_TOK  shift, and go to state 21
     PLUS_PLUS_TOK    shift, and go to state 22
@@ -767,7 +775,7 @@ State 49
 
 State 50
 
-   84 exp1: var MOD_TOK . exp1
+   86 exp1: var MOD_TOK . exp1
 
     MINUS_MINUS_TOK  shift, and go to state 21
     PLUS_PLUS_TOK    shift, and go to state 22
@@ -835,21 +843,21 @@ State 54
 
 State 55
 
-   78 exp2: LPAREN_TOK exp2 RPAREN_TOK .
+   80 exp2: LPAREN_TOK exp2 RPAREN_TOK .
 
-    $default  reduce using rule 78 (exp2)
+    $default  reduce using rule 80 (exp2)
 
 
 State 56
 
-   71 exp: ID_TOK . EQ_TOK exp2
-   72    | ID_TOK . PLUS_EQ_TOK exp2
-   73    | ID_TOK . MINUS_EQ_TOK exp2
-   74    | ID_TOK . MULT_EQ_TOK exp2
-   75    | ID_TOK . DIVIDE_EQ_TOK exp2
-   76    | ID_TOK . MOD_EQ_TOK exp2
-   88 exp0: ID_TOK . PLUS_PLUS_TOK
-   89     | ID_TOK . MINUS_MINUS_TOK
+   73 exp: ID_TOK . EQ_TOK exp2
+   74    | ID_TOK . PLUS_EQ_TOK exp2
+   75    | ID_TOK . MINUS_EQ_TOK exp2
+   76    | ID_TOK . MULT_EQ_TOK exp2
+   77    | ID_TOK . DIVIDE_EQ_TOK exp2
+   78    | ID_TOK . MOD_EQ_TOK exp2
+   90 exp0: ID_TOK . PLUS_PLUS_TOK
+   91     | ID_TOK . MINUS_MINUS_TOK
 
     EQ_TOK           shift, and go to state 82
     PLUS_EQ_TOK      shift, and go to state 83
@@ -880,9 +888,9 @@ State 58
 
 State 59
 
-   77 exp: exp0 .
+   79 exp: exp0 .
 
-    $default  reduce using rule 77 (exp)
+    $default  reduce using rule 79 (exp)
 
 
 State 60
@@ -894,37 +902,37 @@ State 60
 
 State 61
 
-   80 exp2: exp1 MINUS_TOK exp2 .
+   82 exp2: exp1 MINUS_TOK exp2 .
 
-    $default  reduce using rule 80 (exp2)
+    $default  reduce using rule 82 (exp2)
 
 
 State 62
 
-   79 exp2: exp1 PLUS_TOK exp2 .
+   81 exp2: exp1 PLUS_TOK exp2 .
 
-    $default  reduce using rule 79 (exp2)
+    $default  reduce using rule 81 (exp2)
 
 
 State 63
 
-   82 exp1: var MULT_TOK exp1 .
+   84 exp1: var MULT_TOK exp1 .
 
-    $default  reduce using rule 82 (exp1)
+    $default  reduce using rule 84 (exp1)
 
 
 State 64
 
-   83 exp1: var DIVIDE_TOK exp1 .
+   85 exp1: var DIVIDE_TOK exp1 .
 
-    $default  reduce using rule 83 (exp1)
+    $default  reduce using rule 85 (exp1)
 
 
 State 65
 
-   84 exp1: var MOD_TOK exp1 .
+   86 exp1: var MOD_TOK exp1 .
 
-    $default  reduce using rule 84 (exp1)
+    $default  reduce using rule 86 (exp1)
 
 
 State 66
@@ -967,7 +975,7 @@ State 68
 
 State 69
 
-   42 loopstatement: WHILE_TOK . condexp nonfunctionblock
+   44 loopstatement: WHILE_TOK . condexp nonfunctionblock
 
     LPAREN_TOK  shift, and go to state 92
 
@@ -976,15 +984,15 @@ State 69
 
 State 70
 
-   43 loopstatement: FOR_TOK . LPAREN_TOK forpart1 forpart2 forpart3 RPAREN_TOK nonfunctionblock
+   45 loopstatement: FOR_TOK . LPAREN_TOK forpart1 forpart2 forpart3 RPAREN_TOK nonfunctionblock
 
     LPAREN_TOK  shift, and go to state 94
 
 
 State 71
 
-   40 ifstatement: IF_TOK . condexp nonfunctionblock
-   41            | IF_TOK . condexp nonfunctionblock ELSE_TOK nonfunctionblock
+   40 ifstatement: IF_TOK . condexp nonfunctionblock ifstatementex
+   41            | IF_TOK . condexp nonfunctionblock ifstatementex ELSE_TOK nonfunctionblock
 
     LPAREN_TOK  shift, and go to state 92
 
@@ -994,14 +1002,14 @@ State 71
 State 72
 
    19 funccall: ID_TOK . LPAREN_TOK paramlist RPAREN_TOK SEMICOLON_TOK
-   71 exp: ID_TOK . EQ_TOK exp2
-   72    | ID_TOK . PLUS_EQ_TOK exp2
-   73    | ID_TOK . MINUS_EQ_TOK exp2
-   74    | ID_TOK . MULT_EQ_TOK exp2
-   75    | ID_TOK . DIVIDE_EQ_TOK exp2
-   76    | ID_TOK . MOD_EQ_TOK exp2
-   88 exp0: ID_TOK . PLUS_PLUS_TOK
-   89     | ID_TOK . MINUS_MINUS_TOK
+   73 exp: ID_TOK . EQ_TOK exp2
+   74    | ID_TOK . PLUS_EQ_TOK exp2
+   75    | ID_TOK . MINUS_EQ_TOK exp2
+   76    | ID_TOK . MULT_EQ_TOK exp2
+   77    | ID_TOK . DIVIDE_EQ_TOK exp2
+   78    | ID_TOK . MOD_EQ_TOK exp2
+   90 exp0: ID_TOK . PLUS_PLUS_TOK
+   91     | ID_TOK . MINUS_MINUS_TOK
 
     LPAREN_TOK       shift, and go to state 42
     EQ_TOK           shift, and go to state 82
@@ -1161,7 +1169,7 @@ State 81
 
 State 82
 
-   71 exp: ID_TOK EQ_TOK . exp2
+   73 exp: ID_TOK EQ_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -1180,7 +1188,7 @@ State 82
 
 State 83
 
-   72 exp: ID_TOK PLUS_EQ_TOK . exp2
+   74 exp: ID_TOK PLUS_EQ_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -1199,7 +1207,7 @@ State 83
 
 State 84
 
-   73 exp: ID_TOK MINUS_EQ_TOK . exp2
+   75 exp: ID_TOK MINUS_EQ_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -1218,7 +1226,7 @@ State 84
 
 State 85
 
-   74 exp: ID_TOK MULT_EQ_TOK . exp2
+   76 exp: ID_TOK MULT_EQ_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -1237,7 +1245,7 @@ State 85
 
 State 86
 
-   75 exp: ID_TOK DIVIDE_EQ_TOK . exp2
+   77 exp: ID_TOK DIVIDE_EQ_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -1256,7 +1264,7 @@ State 86
 
 State 87
 
-   76 exp: ID_TOK MOD_EQ_TOK . exp2
+   78 exp: ID_TOK MOD_EQ_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -1309,7 +1317,7 @@ State 91
 
 State 92
 
-   57 condexp: LPAREN_TOK . exp4 RPAREN_TOK
+   59 condexp: LPAREN_TOK . exp4 RPAREN_TOK
 
     LPAREN_TOK       shift, and go to state 112
     NOT_TOK          shift, and go to state 113
@@ -1331,7 +1339,7 @@ State 92
 
 State 93
 
-   42 loopstatement: WHILE_TOK condexp . nonfunctionblock
+   44 loopstatement: WHILE_TOK condexp . nonfunctionblock
 
     CURL_LPAREN_TOK  shift, and go to state 36
     WHILE_TOK        shift, and go to state 69
@@ -1354,7 +1362,7 @@ State 93
 
 State 94
 
-   43 loopstatement: FOR_TOK LPAREN_TOK . forpart1 forpart2 forpart3 RPAREN_TOK nonfunctionblock
+   45 loopstatement: FOR_TOK LPAREN_TOK . forpart1 forpart2 forpart3 RPAREN_TOK nonfunctionblock
 
     SEMICOLON_TOK  shift, and go to state 124
     ID_TOK         shift, and go to state 125
@@ -1367,8 +1375,8 @@ State 94
 
 State 95
 
-   40 ifstatement: IF_TOK condexp . nonfunctionblock
-   41            | IF_TOK condexp . nonfunctionblock ELSE_TOK nonfunctionblock
+   40 ifstatement: IF_TOK condexp . nonfunctionblock ifstatementex
+   41            | IF_TOK condexp . nonfunctionblock ifstatementex ELSE_TOK nonfunctionblock
 
     CURL_LPAREN_TOK  shift, and go to state 36
     WHILE_TOK        shift, and go to state 69
@@ -1469,44 +1477,44 @@ State 103
 
 State 104
 
-   71 exp: ID_TOK EQ_TOK exp2 .
-
-    $default  reduce using rule 71 (exp)
-
-
-State 105
-
-   72 exp: ID_TOK PLUS_EQ_TOK exp2 .
-
-    $default  reduce using rule 72 (exp)
-
-
-State 106
-
-   73 exp: ID_TOK MINUS_EQ_TOK exp2 .
+   73 exp: ID_TOK EQ_TOK exp2 .
 
     $default  reduce using rule 73 (exp)
 
 
-State 107
+State 105
 
-   74 exp: ID_TOK MULT_EQ_TOK exp2 .
+   74 exp: ID_TOK PLUS_EQ_TOK exp2 .
 
     $default  reduce using rule 74 (exp)
 
 
-State 108
+State 106
 
-   75 exp: ID_TOK DIVIDE_EQ_TOK exp2 .
+   75 exp: ID_TOK MINUS_EQ_TOK exp2 .
 
     $default  reduce using rule 75 (exp)
 
 
-State 109
+State 107
 
-   76 exp: ID_TOK MOD_EQ_TOK exp2 .
+   76 exp: ID_TOK MULT_EQ_TOK exp2 .
 
     $default  reduce using rule 76 (exp)
+
+
+State 108
+
+   77 exp: ID_TOK DIVIDE_EQ_TOK exp2 .
+
+    $default  reduce using rule 77 (exp)
+
+
+State 109
+
+   78 exp: ID_TOK MOD_EQ_TOK exp2 .
+
+    $default  reduce using rule 78 (exp)
 
 
 State 110
@@ -1525,9 +1533,9 @@ State 111
 
 State 112
 
-   58 exp4: LPAREN_TOK . exp4 RPAREN_TOK
-   63 exp3: LPAREN_TOK . exp3 RPAREN_TOK
-   78 exp2: LPAREN_TOK . exp2 RPAREN_TOK
+   60 exp4: LPAREN_TOK . exp4 RPAREN_TOK
+   65 exp3: LPAREN_TOK . exp3 RPAREN_TOK
+   80 exp2: LPAREN_TOK . exp2 RPAREN_TOK
 
     LPAREN_TOK       shift, and go to state 112
     NOT_TOK          shift, and go to state 113
@@ -1549,7 +1557,7 @@ State 112
 
 State 113
 
-   61 exp4: NOT_TOK . exp4
+   63 exp4: NOT_TOK . exp4
 
     LPAREN_TOK       shift, and go to state 112
     NOT_TOK          shift, and go to state 113
@@ -1571,32 +1579,32 @@ State 113
 
 State 114
 
-   57 condexp: LPAREN_TOK exp4 . RPAREN_TOK
+   59 condexp: LPAREN_TOK exp4 . RPAREN_TOK
 
     RPAREN_TOK  shift, and go to state 136
 
 
 State 115
 
-   59 exp4: exp3 . OR_TOK exp4
-   60     | exp3 . AND_TOK exp4
-   62     | exp3 .
+   61 exp4: exp3 . OR_TOK exp4
+   62     | exp3 . AND_TOK exp4
+   64     | exp3 .
 
     AND_TOK  shift, and go to state 137
     OR_TOK   shift, and go to state 138
 
-    $default  reduce using rule 62 (exp4)
+    $default  reduce using rule 64 (exp4)
 
 
 State 116
 
-   64 exp3: exp2 . LT_TOK exp2
-   65     | exp2 . GT_TOK exp2
-   66     | exp2 . GTEQ_TOK exp2
-   67     | exp2 . LTEQ_TOK exp2
-   68     | exp2 . COMPARE_TOK exp2
-   69     | exp2 . NOT_EQ_TOK exp2
-   70     | exp2 .
+   66 exp3: exp2 . LT_TOK exp2
+   67     | exp2 . GT_TOK exp2
+   68     | exp2 . GTEQ_TOK exp2
+   69     | exp2 . LTEQ_TOK exp2
+   70     | exp2 . COMPARE_TOK exp2
+   71     | exp2 . NOT_EQ_TOK exp2
+   72     | exp2 .
 
     GT_TOK       shift, and go to state 139
     LT_TOK       shift, and go to state 140
@@ -1605,7 +1613,7 @@ State 116
     LTEQ_TOK     shift, and go to state 143
     NOT_EQ_TOK   shift, and go to state 144
 
-    $default  reduce using rule 70 (exp3)
+    $default  reduce using rule 72 (exp3)
 
 
 State 117
@@ -1631,9 +1639,9 @@ State 119
 
 State 120
 
-   42 loopstatement: WHILE_TOK condexp nonfunctionblock .
+   44 loopstatement: WHILE_TOK condexp nonfunctionblock .
 
-    $default  reduce using rule 42 (loopstatement)
+    $default  reduce using rule 44 (loopstatement)
 
 
 State 121
@@ -1659,29 +1667,29 @@ State 123
 
 State 124
 
-   46 forpart1: SEMICOLON_TOK .
+   48 forpart1: SEMICOLON_TOK .
 
-    $default  reduce using rule 46 (forpart1)
+    $default  reduce using rule 48 (forpart1)
 
 
 State 125
 
-   47 varinitlist: ID_TOK . EQ_TOK exp2 COMMA_TOK varinitlist
-   48            | ID_TOK . EQ_TOK exp2 SEMICOLON_TOK
+   49 varinitlist: ID_TOK . EQ_TOK exp2 COMMA_TOK varinitlist
+   50            | ID_TOK . EQ_TOK exp2 SEMICOLON_TOK
 
     EQ_TOK  shift, and go to state 146
 
 
 State 126
 
-   45 forpart1: vardec .
+   47 forpart1: vardec .
 
-    $default  reduce using rule 45 (forpart1)
+    $default  reduce using rule 47 (forpart1)
 
 
 State 127
 
-   43 loopstatement: FOR_TOK LPAREN_TOK forpart1 . forpart2 forpart3 RPAREN_TOK nonfunctionblock
+   45 loopstatement: FOR_TOK LPAREN_TOK forpart1 . forpart2 forpart3 RPAREN_TOK nonfunctionblock
 
     LPAREN_TOK       shift, and go to state 112
     NOT_TOK          shift, and go to state 113
@@ -1705,20 +1713,22 @@ State 127
 
 State 128
 
-   44 forpart1: varinitlist .
+   46 forpart1: varinitlist .
 
-    $default  reduce using rule 44 (forpart1)
+    $default  reduce using rule 46 (forpart1)
 
 
 State 129
 
-   40 ifstatement: IF_TOK condexp nonfunctionblock .
-   41            | IF_TOK condexp nonfunctionblock . ELSE_TOK nonfunctionblock
+   40 ifstatement: IF_TOK condexp nonfunctionblock . ifstatementex
+   41            | IF_TOK condexp nonfunctionblock . ifstatementex ELSE_TOK nonfunctionblock
 
-    ELSE_TOK  shift, and go to state 150
+    ELSEIF_TOK  shift, and go to state 150
 
-    ELSE_TOK  [reduce using rule 40 (ifstatement)]
-    $default  reduce using rule 40 (ifstatement)
+    ELSEIF_TOK  [reduce using rule 43 (ifstatementex)]
+    $default    reduce using rule 43 (ifstatementex)
+
+    ifstatementex  go to state 151
 
 
 State 130
@@ -1737,35 +1747,35 @@ State 131
 
 State 132
 
-   58 exp4: LPAREN_TOK exp4 . RPAREN_TOK
+   60 exp4: LPAREN_TOK exp4 . RPAREN_TOK
 
-    RPAREN_TOK  shift, and go to state 151
+    RPAREN_TOK  shift, and go to state 152
 
 
 State 133
 
-   59 exp4: exp3 . OR_TOK exp4
-   60     | exp3 . AND_TOK exp4
-   62     | exp3 .
-   63 exp3: LPAREN_TOK exp3 . RPAREN_TOK
+   61 exp4: exp3 . OR_TOK exp4
+   62     | exp3 . AND_TOK exp4
+   64     | exp3 .
+   65 exp3: LPAREN_TOK exp3 . RPAREN_TOK
 
-    RPAREN_TOK  shift, and go to state 152
+    RPAREN_TOK  shift, and go to state 153
     AND_TOK     shift, and go to state 137
     OR_TOK      shift, and go to state 138
 
-    RPAREN_TOK  [reduce using rule 62 (exp4)]
+    RPAREN_TOK  [reduce using rule 64 (exp4)]
 
 
 State 134
 
-   64 exp3: exp2 . LT_TOK exp2
-   65     | exp2 . GT_TOK exp2
-   66     | exp2 . GTEQ_TOK exp2
-   67     | exp2 . LTEQ_TOK exp2
-   68     | exp2 . COMPARE_TOK exp2
-   69     | exp2 . NOT_EQ_TOK exp2
-   70     | exp2 .
-   78 exp2: LPAREN_TOK exp2 . RPAREN_TOK
+   66 exp3: exp2 . LT_TOK exp2
+   67     | exp2 . GT_TOK exp2
+   68     | exp2 . GTEQ_TOK exp2
+   69     | exp2 . LTEQ_TOK exp2
+   70     | exp2 . COMPARE_TOK exp2
+   71     | exp2 . NOT_EQ_TOK exp2
+   72     | exp2 .
+   80 exp2: LPAREN_TOK exp2 . RPAREN_TOK
 
     RPAREN_TOK   shift, and go to state 55
     GT_TOK       shift, and go to state 139
@@ -1775,49 +1785,27 @@ State 134
     LTEQ_TOK     shift, and go to state 143
     NOT_EQ_TOK   shift, and go to state 144
 
-    RPAREN_TOK  [reduce using rule 70 (exp3)]
-    $default    reduce using rule 70 (exp3)
+    RPAREN_TOK  [reduce using rule 72 (exp3)]
+    $default    reduce using rule 72 (exp3)
 
 
 State 135
 
-   61 exp4: NOT_TOK exp4 .
+   63 exp4: NOT_TOK exp4 .
 
-    $default  reduce using rule 61 (exp4)
+    $default  reduce using rule 63 (exp4)
 
 
 State 136
 
-   57 condexp: LPAREN_TOK exp4 RPAREN_TOK .
+   59 condexp: LPAREN_TOK exp4 RPAREN_TOK .
 
-    $default  reduce using rule 57 (condexp)
+    $default  reduce using rule 59 (condexp)
 
 
 State 137
 
-   60 exp4: exp3 AND_TOK . exp4
-
-    LPAREN_TOK       shift, and go to state 112
-    NOT_TOK          shift, and go to state 113
-    MINUS_MINUS_TOK  shift, and go to state 21
-    PLUS_PLUS_TOK    shift, and go to state 22
-    ID_TOK           shift, and go to state 23
-    INTCONST         shift, and go to state 24
-    DOUBLECONST      shift, and go to state 25
-    CHARCONST        shift, and go to state 26
-
-    funccall  go to state 27
-    exp4      go to state 153
-    exp3      go to state 115
-    exp2      go to state 116
-    exp1      go to state 29
-    exp0      go to state 30
-    var       go to state 31
-
-
-State 138
-
-   59 exp4: exp3 OR_TOK . exp4
+   62 exp4: exp3 AND_TOK . exp4
 
     LPAREN_TOK       shift, and go to state 112
     NOT_TOK          shift, and go to state 113
@@ -1837,11 +1825,12 @@ State 138
     var       go to state 31
 
 
-State 139
+State 138
 
-   65 exp3: exp2 GT_TOK . exp2
+   61 exp4: exp3 OR_TOK . exp4
 
-    LPAREN_TOK       shift, and go to state 20
+    LPAREN_TOK       shift, and go to state 112
+    NOT_TOK          shift, and go to state 113
     MINUS_MINUS_TOK  shift, and go to state 21
     PLUS_PLUS_TOK    shift, and go to state 22
     ID_TOK           shift, and go to state 23
@@ -1850,15 +1839,17 @@ State 139
     CHARCONST        shift, and go to state 26
 
     funccall  go to state 27
-    exp2      go to state 155
+    exp4      go to state 155
+    exp3      go to state 115
+    exp2      go to state 116
     exp1      go to state 29
     exp0      go to state 30
     var       go to state 31
 
 
-State 140
+State 139
 
-   64 exp3: exp2 LT_TOK . exp2
+   67 exp3: exp2 GT_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -1875,9 +1866,9 @@ State 140
     var       go to state 31
 
 
-State 141
+State 140
 
-   68 exp3: exp2 COMPARE_TOK . exp2
+   66 exp3: exp2 LT_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -1894,9 +1885,9 @@ State 141
     var       go to state 31
 
 
-State 142
+State 141
 
-   66 exp3: exp2 GTEQ_TOK . exp2
+   70 exp3: exp2 COMPARE_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -1913,9 +1904,9 @@ State 142
     var       go to state 31
 
 
-State 143
+State 142
 
-   67 exp3: exp2 LTEQ_TOK . exp2
+   68 exp3: exp2 GTEQ_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -1932,9 +1923,9 @@ State 143
     var       go to state 31
 
 
-State 144
+State 143
 
-   69 exp3: exp2 NOT_EQ_TOK . exp2
+   69 exp3: exp2 LTEQ_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -1951,17 +1942,9 @@ State 144
     var       go to state 31
 
 
-State 145
+State 144
 
-   24 nonfunctionblock: exp SEMICOLON_TOK .
-
-    $default  reduce using rule 24 (nonfunctionblock)
-
-
-State 146
-
-   47 varinitlist: ID_TOK EQ_TOK . exp2 COMMA_TOK varinitlist
-   48            | ID_TOK EQ_TOK . exp2 SEMICOLON_TOK
+   71 exp3: exp2 NOT_EQ_TOK . exp2
 
     LPAREN_TOK       shift, and go to state 20
     MINUS_MINUS_TOK  shift, and go to state 21
@@ -1978,162 +1961,186 @@ State 146
     var       go to state 31
 
 
+State 145
+
+   24 nonfunctionblock: exp SEMICOLON_TOK .
+
+    $default  reduce using rule 24 (nonfunctionblock)
+
+
+State 146
+
+   49 varinitlist: ID_TOK EQ_TOK . exp2 COMMA_TOK varinitlist
+   50            | ID_TOK EQ_TOK . exp2 SEMICOLON_TOK
+
+    LPAREN_TOK       shift, and go to state 20
+    MINUS_MINUS_TOK  shift, and go to state 21
+    PLUS_PLUS_TOK    shift, and go to state 22
+    ID_TOK           shift, and go to state 23
+    INTCONST         shift, and go to state 24
+    DOUBLECONST      shift, and go to state 25
+    CHARCONST        shift, and go to state 26
+
+    funccall  go to state 27
+    exp2      go to state 162
+    exp1      go to state 29
+    exp0      go to state 30
+    var       go to state 31
+
+
 State 147
 
-   50 forpart2: SEMICOLON_TOK .
+   52 forpart2: SEMICOLON_TOK .
 
-    $default  reduce using rule 50 (forpart2)
+    $default  reduce using rule 52 (forpart2)
 
 
 State 148
 
-   43 loopstatement: FOR_TOK LPAREN_TOK forpart1 forpart2 . forpart3 RPAREN_TOK nonfunctionblock
+   45 loopstatement: FOR_TOK LPAREN_TOK forpart1 forpart2 . forpart3 RPAREN_TOK nonfunctionblock
 
     MINUS_MINUS_TOK  shift, and go to state 21
     PLUS_PLUS_TOK    shift, and go to state 22
     ID_TOK           shift, and go to state 56
 
-    $default  reduce using rule 54 (forpart3)
+    $default  reduce using rule 56 (forpart3)
 
-    forpart3  go to state 162
-    exp       go to state 163
+    forpart3  go to state 163
+    exp       go to state 164
     exp0      go to state 59
 
 
 State 149
 
-   49 forpart2: exp4 . forpart2ex SEMICOLON_TOK
+   51 forpart2: exp4 . forpart2ex SEMICOLON_TOK
 
-    COMMA_TOK  shift, and go to state 164
+    COMMA_TOK  shift, and go to state 165
 
-    $default  reduce using rule 52 (forpart2ex)
+    $default  reduce using rule 54 (forpart2ex)
 
-    forpart2ex  go to state 165
+    forpart2ex  go to state 166
 
 
 State 150
 
-   41 ifstatement: IF_TOK condexp nonfunctionblock ELSE_TOK . nonfunctionblock
+   42 ifstatementex: ELSEIF_TOK . condexp nonfunctionblock ifstatementex
 
-    CURL_LPAREN_TOK  shift, and go to state 36
-    WHILE_TOK        shift, and go to state 69
-    FOR_TOK          shift, and go to state 70
-    IF_TOK           shift, and go to state 71
-    MINUS_MINUS_TOK  shift, and go to state 21
-    PLUS_PLUS_TOK    shift, and go to state 22
-    ID_TOK           shift, and go to state 72
-    RETURN_TOK       shift, and go to state 74
+    LPAREN_TOK  shift, and go to state 92
 
-    returnstatement   go to state 117
-    funccall          go to state 118
-    block             go to state 119
-    nonfunctionblock  go to state 166
-    ifstatement       go to state 121
-    loopstatement     go to state 122
-    exp               go to state 123
-    exp0              go to state 59
+    condexp  go to state 167
 
 
 State 151
 
-   58 exp4: LPAREN_TOK exp4 RPAREN_TOK .
+   40 ifstatement: IF_TOK condexp nonfunctionblock ifstatementex .
+   41            | IF_TOK condexp nonfunctionblock ifstatementex . ELSE_TOK nonfunctionblock
 
-    $default  reduce using rule 58 (exp4)
+    ELSE_TOK  shift, and go to state 168
+
+    ELSE_TOK  [reduce using rule 40 (ifstatement)]
+    $default  reduce using rule 40 (ifstatement)
 
 
 State 152
 
-   63 exp3: LPAREN_TOK exp3 RPAREN_TOK .
-
-    $default  reduce using rule 63 (exp3)
-
-
-State 153
-
-   60 exp4: exp3 AND_TOK exp4 .
+   60 exp4: LPAREN_TOK exp4 RPAREN_TOK .
 
     $default  reduce using rule 60 (exp4)
 
 
-State 154
+State 153
 
-   59 exp4: exp3 OR_TOK exp4 .
-
-    $default  reduce using rule 59 (exp4)
-
-
-State 155
-
-   65 exp3: exp2 GT_TOK exp2 .
+   65 exp3: LPAREN_TOK exp3 RPAREN_TOK .
 
     $default  reduce using rule 65 (exp3)
 
 
+State 154
+
+   62 exp4: exp3 AND_TOK exp4 .
+
+    $default  reduce using rule 62 (exp4)
+
+
+State 155
+
+   61 exp4: exp3 OR_TOK exp4 .
+
+    $default  reduce using rule 61 (exp4)
+
+
 State 156
 
-   64 exp3: exp2 LT_TOK exp2 .
-
-    $default  reduce using rule 64 (exp3)
-
-
-State 157
-
-   68 exp3: exp2 COMPARE_TOK exp2 .
-
-    $default  reduce using rule 68 (exp3)
-
-
-State 158
-
-   66 exp3: exp2 GTEQ_TOK exp2 .
-
-    $default  reduce using rule 66 (exp3)
-
-
-State 159
-
-   67 exp3: exp2 LTEQ_TOK exp2 .
+   67 exp3: exp2 GT_TOK exp2 .
 
     $default  reduce using rule 67 (exp3)
 
 
+State 157
+
+   66 exp3: exp2 LT_TOK exp2 .
+
+    $default  reduce using rule 66 (exp3)
+
+
+State 158
+
+   70 exp3: exp2 COMPARE_TOK exp2 .
+
+    $default  reduce using rule 70 (exp3)
+
+
+State 159
+
+   68 exp3: exp2 GTEQ_TOK exp2 .
+
+    $default  reduce using rule 68 (exp3)
+
+
 State 160
 
-   69 exp3: exp2 NOT_EQ_TOK exp2 .
+   69 exp3: exp2 LTEQ_TOK exp2 .
 
     $default  reduce using rule 69 (exp3)
 
 
 State 161
 
-   47 varinitlist: ID_TOK EQ_TOK exp2 . COMMA_TOK varinitlist
-   48            | ID_TOK EQ_TOK exp2 . SEMICOLON_TOK
+   71 exp3: exp2 NOT_EQ_TOK exp2 .
 
-    SEMICOLON_TOK  shift, and go to state 167
-    COMMA_TOK      shift, and go to state 168
+    $default  reduce using rule 71 (exp3)
 
 
 State 162
 
-   43 loopstatement: FOR_TOK LPAREN_TOK forpart1 forpart2 forpart3 . RPAREN_TOK nonfunctionblock
+   49 varinitlist: ID_TOK EQ_TOK exp2 . COMMA_TOK varinitlist
+   50            | ID_TOK EQ_TOK exp2 . SEMICOLON_TOK
 
-    RPAREN_TOK  shift, and go to state 169
+    SEMICOLON_TOK  shift, and go to state 169
+    COMMA_TOK      shift, and go to state 170
 
 
 State 163
 
-   53 forpart3: exp . forpart3ex
+   45 loopstatement: FOR_TOK LPAREN_TOK forpart1 forpart2 forpart3 . RPAREN_TOK nonfunctionblock
 
-    COMMA_TOK  shift, and go to state 170
-
-    $default  reduce using rule 56 (forpart3ex)
-
-    forpart3ex  go to state 171
+    RPAREN_TOK  shift, and go to state 171
 
 
 State 164
 
-   51 forpart2ex: COMMA_TOK . exp4 forpart2ex
+   55 forpart3: exp . forpart3ex
+
+    COMMA_TOK  shift, and go to state 172
+
+    $default  reduce using rule 58 (forpart3ex)
+
+    forpart3ex  go to state 173
+
+
+State 165
+
+   53 forpart2ex: COMMA_TOK . exp4 forpart2ex
 
     LPAREN_TOK       shift, and go to state 112
     NOT_TOK          shift, and go to state 113
@@ -2145,7 +2152,7 @@ State 164
     CHARCONST        shift, and go to state 26
 
     funccall  go to state 27
-    exp4      go to state 172
+    exp4      go to state 174
     exp3      go to state 115
     exp2      go to state 116
     exp1      go to state 29
@@ -2153,39 +2160,16 @@ State 164
     var       go to state 31
 
 
-State 165
-
-   49 forpart2: exp4 forpart2ex . SEMICOLON_TOK
-
-    SEMICOLON_TOK  shift, and go to state 173
-
-
 State 166
 
-   41 ifstatement: IF_TOK condexp nonfunctionblock ELSE_TOK nonfunctionblock .
+   51 forpart2: exp4 forpart2ex . SEMICOLON_TOK
 
-    $default  reduce using rule 41 (ifstatement)
+    SEMICOLON_TOK  shift, and go to state 175
 
 
 State 167
 
-   48 varinitlist: ID_TOK EQ_TOK exp2 SEMICOLON_TOK .
-
-    $default  reduce using rule 48 (varinitlist)
-
-
-State 168
-
-   47 varinitlist: ID_TOK EQ_TOK exp2 COMMA_TOK . varinitlist
-
-    ID_TOK  shift, and go to state 125
-
-    varinitlist  go to state 174
-
-
-State 169
-
-   43 loopstatement: FOR_TOK LPAREN_TOK forpart1 forpart2 forpart3 RPAREN_TOK . nonfunctionblock
+   42 ifstatementex: ELSEIF_TOK condexp . nonfunctionblock ifstatementex
 
     CURL_LPAREN_TOK  shift, and go to state 36
     WHILE_TOK        shift, and go to state 69
@@ -2199,84 +2183,172 @@ State 169
     returnstatement   go to state 117
     funccall          go to state 118
     block             go to state 119
-    nonfunctionblock  go to state 175
+    nonfunctionblock  go to state 176
     ifstatement       go to state 121
     loopstatement     go to state 122
     exp               go to state 123
     exp0              go to state 59
 
 
+State 168
+
+   41 ifstatement: IF_TOK condexp nonfunctionblock ifstatementex ELSE_TOK . nonfunctionblock
+
+    CURL_LPAREN_TOK  shift, and go to state 36
+    WHILE_TOK        shift, and go to state 69
+    FOR_TOK          shift, and go to state 70
+    IF_TOK           shift, and go to state 71
+    MINUS_MINUS_TOK  shift, and go to state 21
+    PLUS_PLUS_TOK    shift, and go to state 22
+    ID_TOK           shift, and go to state 72
+    RETURN_TOK       shift, and go to state 74
+
+    returnstatement   go to state 117
+    funccall          go to state 118
+    block             go to state 119
+    nonfunctionblock  go to state 177
+    ifstatement       go to state 121
+    loopstatement     go to state 122
+    exp               go to state 123
+    exp0              go to state 59
+
+
+State 169
+
+   50 varinitlist: ID_TOK EQ_TOK exp2 SEMICOLON_TOK .
+
+    $default  reduce using rule 50 (varinitlist)
+
+
 State 170
 
-   55 forpart3ex: COMMA_TOK . exp forpart3ex
+   49 varinitlist: ID_TOK EQ_TOK exp2 COMMA_TOK . varinitlist
+
+    ID_TOK  shift, and go to state 125
+
+    varinitlist  go to state 178
+
+
+State 171
+
+   45 loopstatement: FOR_TOK LPAREN_TOK forpart1 forpart2 forpart3 RPAREN_TOK . nonfunctionblock
+
+    CURL_LPAREN_TOK  shift, and go to state 36
+    WHILE_TOK        shift, and go to state 69
+    FOR_TOK          shift, and go to state 70
+    IF_TOK           shift, and go to state 71
+    MINUS_MINUS_TOK  shift, and go to state 21
+    PLUS_PLUS_TOK    shift, and go to state 22
+    ID_TOK           shift, and go to state 72
+    RETURN_TOK       shift, and go to state 74
+
+    returnstatement   go to state 117
+    funccall          go to state 118
+    block             go to state 119
+    nonfunctionblock  go to state 179
+    ifstatement       go to state 121
+    loopstatement     go to state 122
+    exp               go to state 123
+    exp0              go to state 59
+
+
+State 172
+
+   57 forpart3ex: COMMA_TOK . exp forpart3ex
 
     MINUS_MINUS_TOK  shift, and go to state 21
     PLUS_PLUS_TOK    shift, and go to state 22
     ID_TOK           shift, and go to state 56
 
-    exp   go to state 176
+    exp   go to state 180
     exp0  go to state 59
-
-
-State 171
-
-   53 forpart3: exp forpart3ex .
-
-    $default  reduce using rule 53 (forpart3)
-
-
-State 172
-
-   51 forpart2ex: COMMA_TOK exp4 . forpart2ex
-
-    COMMA_TOK  shift, and go to state 164
-
-    $default  reduce using rule 52 (forpart2ex)
-
-    forpart2ex  go to state 177
 
 
 State 173
 
-   49 forpart2: exp4 forpart2ex SEMICOLON_TOK .
+   55 forpart3: exp forpart3ex .
 
-    $default  reduce using rule 49 (forpart2)
+    $default  reduce using rule 55 (forpart3)
 
 
 State 174
 
-   47 varinitlist: ID_TOK EQ_TOK exp2 COMMA_TOK varinitlist .
+   53 forpart2ex: COMMA_TOK exp4 . forpart2ex
 
-    $default  reduce using rule 47 (varinitlist)
+    COMMA_TOK  shift, and go to state 165
+
+    $default  reduce using rule 54 (forpart2ex)
+
+    forpart2ex  go to state 181
 
 
 State 175
 
-   43 loopstatement: FOR_TOK LPAREN_TOK forpart1 forpart2 forpart3 RPAREN_TOK nonfunctionblock .
+   51 forpart2: exp4 forpart2ex SEMICOLON_TOK .
 
-    $default  reduce using rule 43 (loopstatement)
+    $default  reduce using rule 51 (forpart2)
 
 
 State 176
 
-   55 forpart3ex: COMMA_TOK exp . forpart3ex
+   42 ifstatementex: ELSEIF_TOK condexp nonfunctionblock . ifstatementex
 
-    COMMA_TOK  shift, and go to state 170
+    ELSEIF_TOK  shift, and go to state 150
 
-    $default  reduce using rule 56 (forpart3ex)
+    ELSEIF_TOK  [reduce using rule 43 (ifstatementex)]
+    $default    reduce using rule 43 (ifstatementex)
 
-    forpart3ex  go to state 178
+    ifstatementex  go to state 182
 
 
 State 177
 
-   51 forpart2ex: COMMA_TOK exp4 forpart2ex .
+   41 ifstatement: IF_TOK condexp nonfunctionblock ifstatementex ELSE_TOK nonfunctionblock .
 
-    $default  reduce using rule 51 (forpart2ex)
+    $default  reduce using rule 41 (ifstatement)
 
 
 State 178
 
-   55 forpart3ex: COMMA_TOK exp forpart3ex .
+   49 varinitlist: ID_TOK EQ_TOK exp2 COMMA_TOK varinitlist .
 
-    $default  reduce using rule 55 (forpart3ex)
+    $default  reduce using rule 49 (varinitlist)
+
+
+State 179
+
+   45 loopstatement: FOR_TOK LPAREN_TOK forpart1 forpart2 forpart3 RPAREN_TOK nonfunctionblock .
+
+    $default  reduce using rule 45 (loopstatement)
+
+
+State 180
+
+   57 forpart3ex: COMMA_TOK exp . forpart3ex
+
+    COMMA_TOK  shift, and go to state 172
+
+    $default  reduce using rule 58 (forpart3ex)
+
+    forpart3ex  go to state 183
+
+
+State 181
+
+   53 forpart2ex: COMMA_TOK exp4 forpart2ex .
+
+    $default  reduce using rule 53 (forpart2ex)
+
+
+State 182
+
+   42 ifstatementex: ELSEIF_TOK condexp nonfunctionblock ifstatementex .
+
+    $default  reduce using rule 42 (ifstatementex)
+
+
+State 183
+
+   57 forpart3ex: COMMA_TOK exp forpart3ex .
+
+    $default  reduce using rule 57 (forpart3ex)

@@ -68,28 +68,29 @@ extern int yydebug;
     FOR_TOK = 278,
     IF_TOK = 279,
     ELSE_TOK = 280,
-    COMPARE_TOK = 281,
-    GTEQ_TOK = 282,
-    LTEQ_TOK = 283,
-    NOT_EQ_TOK = 284,
-    BIT_AND_TOK = 285,
-    BIT_OR_TOK = 286,
-    PLUS_EQ_TOK = 287,
-    MINUS_EQ_TOK = 288,
-    MULT_EQ_TOK = 289,
-    DIVIDE_EQ_TOK = 290,
-    RIGHT_SHIFT_TOK = 291,
-    LEFT_SHIFT_TOK = 292,
-    MINUS_MINUS_TOK = 293,
-    PLUS_PLUS_TOK = 294,
-    MOD_EQ_TOK = 295,
-    ID_TOK = 296,
-    INTCONST = 297,
-    ERROR_TOK = 298,
-    DOUBLECONST = 299,
-    CHARCONST = 300,
-    TYPE_TOK = 301,
-    RETURN_TOK = 302
+    ELSEIF_TOK = 281,
+    COMPARE_TOK = 282,
+    GTEQ_TOK = 283,
+    LTEQ_TOK = 284,
+    NOT_EQ_TOK = 285,
+    BIT_AND_TOK = 286,
+    BIT_OR_TOK = 287,
+    PLUS_EQ_TOK = 288,
+    MINUS_EQ_TOK = 289,
+    MULT_EQ_TOK = 290,
+    DIVIDE_EQ_TOK = 291,
+    RIGHT_SHIFT_TOK = 292,
+    LEFT_SHIFT_TOK = 293,
+    MINUS_MINUS_TOK = 294,
+    PLUS_PLUS_TOK = 295,
+    MOD_EQ_TOK = 296,
+    ID_TOK = 297,
+    INTCONST = 298,
+    ERROR_TOK = 299,
+    DOUBLECONST = 300,
+    CHARCONST = 301,
+    TYPE_TOK = 302,
+    RETURN_TOK = 303
   };
 #endif
 
@@ -103,7 +104,7 @@ union YYSTYPE
     int i;
     char *s;
 
-#line 107 "clikegrammer.tab.h" /* yacc.c:1909  */
+#line 108 "clikegrammer.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

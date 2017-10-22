@@ -16,7 +16,7 @@ extern char* yytext;
 %start DEBUG
 %token LPAREN_TOK RPAREN_TOK CURL_LPAREN_TOK CURL_RPAREN_TOK DEFINE_TOK 
 %token EQ_TOK GT_TOK LT_TOK MINUS_TOK PLUS_TOK MULT_TOK DIVIDE_TOK MOD_TOK XOR_TOK NOT_TOK AND_TOK OR_TOK SEMICOLON_TOK COMMA_TOK 
-%token WHILE_TOK FOR_TOK IF_TOK ELSE_TOK COMPARE_TOK GTEQ_TOK LTEQ_TOK NOT_EQ_TOK 
+%token WHILE_TOK FOR_TOK IF_TOK ELSE_TOK ELSEIF_TOK COMPARE_TOK GTEQ_TOK LTEQ_TOK NOT_EQ_TOK 
 %token BIT_AND_TOK BIT_OR_TOK PLUS_EQ_TOK MINUS_EQ_TOK MULT_EQ_TOK DIVIDE_EQ_TOK RIGHT_SHIFT_TOK LEFT_SHIFT_TOK 
 %token MINUS_MINUS_TOK PLUS_PLUS_TOK MOD_EQ_TOK ID_TOK INTCONST ERROR_TOK DOUBLECONST CHARCONST
 %token TYPE_TOK RETURN_TOK
@@ -63,9 +63,11 @@ statements: exp SEMICOLON_TOK statements
     | exp SEMICOLON_TOK | ifstatement | loopstatement | returnstatement | funccall
     ;
 
-ifstatement: IF_TOK condexp nonfunctionblock
-    | IF_TOK condexp nonfunctionblock ELSE_TOK nonfunctionblock
+ifstatement: IF_TOK condexp nonfunctionblock ifstatementex
+    | IF_TOK condexp nonfunctionblock ifstatementex ELSE_TOK nonfunctionblock
     ;
+
+ifstatementex: ELSEIF_TOK condexp nonfunctionblock ifstatementex | %empty;
 
 loopstatement: WHILE_TOK condexp nonfunctionblock
             | FOR_TOK LPAREN_TOK forpart1 forpart2 forpart3 RPAREN_TOK nonfunctionblock

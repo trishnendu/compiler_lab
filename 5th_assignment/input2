@@ -1,3 +1,9 @@
 int p(){}
-int main(){}
+int main(){
+    if(i == f){g++;}
+    else if(g > 9)  h++;
+    if(j > f) g-=1;
+    if(f < k) v--;
+    else    f-=1;
+}
 int c;
