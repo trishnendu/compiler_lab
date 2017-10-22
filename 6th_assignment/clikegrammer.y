@@ -19,11 +19,11 @@ extern int curscope;
 
 %start DEBUG
 %token LPAREN_TOK RPAREN_TOK CURL_LPAREN_TOK CURL_RPAREN_TOK DEFINE_TOK 
-%token EQ_TOK GT_TOK LT_TOK MINUS_TOK PLUS_TOK MULT_TOK DIVIDE_TOK MOD_TOK XOR_TOK NOT_TOK AND_TOK OR_TOK SEMICOLON_TOK COMMA_TOK 
-%token WHILE_TOK FOR_TOK IF_TOK ELSE_TOK COMPARE_TOK GTEQ_TOK LTEQ_TOK NOT_EQ_TOK 
+%token EQ_TOK GT_TOK LT_TOK MINUS_TOK PLUS_TOK MULT_TOK DIVIDE_TOK MOD_TOK XOR_TOK NOT_TOK AND_TOK OR_TOK COLON_TOK SEMICOLON_TOK COMMA_TOK 
+%token SWITCH_TOK CASE_TOK DEFAULT_TOK WHILE_TOK FOR_TOK IF_TOK ELSE_TOK ELSEIF_TOK COMPARE_TOK GTEQ_TOK LTEQ_TOK NOT_EQ_TOK 
 %token BIT_AND_TOK BIT_OR_TOK PLUS_EQ_TOK MINUS_EQ_TOK MULT_EQ_TOK DIVIDE_EQ_TOK RIGHT_SHIFT_TOK LEFT_SHIFT_TOK 
 %token MINUS_MINUS_TOK PLUS_PLUS_TOK MOD_EQ_TOK ERROR_TOK
-%token MAIN_TOK RETURN_TOK
+%token RETURN_TOK
 
 %token<othertype> INTCONST TYPE_TOK DOUBLECONST CHARCONST
 %token<idtype> ID_TOK
@@ -60,6 +60,7 @@ funccall: ID_TOK LPAREN_TOK paramlist RPAREN_TOK SEMICOLON_TOK {  $$ = symt_gett
 paramlist: exp COMMA_TOK paramlist | exp;
 
 block: CURL_LPAREN_TOK {newscope();} vardeclines statements CURL_RPAREN_TOK {endscope();}
+    | CURL_LPAREN_TOK {newscope();} vardeclines CURL_RPAREN_TOK {endscope();}
     ;
 
 vardeclines: vardeclines vardec | %empty;
@@ -72,24 +73,38 @@ statements: exp SEMICOLON_TOK statements
     | loopstatement statements
     | returnstatement statements
     | funccall statements
-    | exp SEMICOLON_TOK | ifstatement | loopstatement | returnstatement | funccall | %empty
+    | switchstatement statements
+    | exp SEMICOLON_TOK | ifstatement | loopstatement | returnstatement | funccall | switchstatement
     ;
 
-ifstatement: IF_TOK condexp nonfunctionblock
-    | IF_TOK condexp nonfunctionblock ELSE_TOK nonfunctionblock
+ifstatement: IF_TOK condexp nonfunctionblock ifstatementex
+    | IF_TOK condexp nonfunctionblock ifstatementex ELSE_TOK nonfunctionblock
     ;
+
+ifstatementex: ELSEIF_TOK condexp nonfunctionblock ifstatementex | %empty;
+
+switchstatement: SWITCH_TOK condexp switchblock
+
+switchblock:  CURL_LPAREN_TOK vardeclines caseblocks defaultblock CURL_RPAREN_TOK
+
+caseblocks: CASE_TOK var COLON_TOK statements caseblocks | %empty
+
+defaultblock:   DEFAULT_TOK COLON_TOK statements caseblocks | %empty
 
 loopstatement: WHILE_TOK condexp nonfunctionblock
             | FOR_TOK LPAREN_TOK forpart1 forpart2 forpart3 RPAREN_TOK nonfunctionblock
             ;
 
 forpart1: varinitlist | vardec | SEMICOLON_TOK;
+
 varinitlist: ID_TOK EQ_TOK exp2 COMMA_TOK varinitlist | ID_TOK EQ_TOK exp2 SEMICOLON_TOK;
 
 forpart2: exp4 forpart2ex SEMICOLON_TOK | SEMICOLON_TOK;
+
 forpart2ex: COMMA_TOK exp4 forpart2ex | %empty;
 
 forpart3: exp forpart3ex | %empty;
+
 forpart3ex: COMMA_TOK exp forpart3ex | %empty;
 
 condexp: LPAREN_TOK exp4 RPAREN_TOK;
@@ -163,7 +178,7 @@ int check_compatibility(int a, int b){
 
 int main(int argc, char *argv[]){
 	int token;
-    yydebug = 1;
+    yydebug = 0;
 	if(argc != 2){
 		yytext = stdin;
         //fprintf(stderr, "Usage: ./lexer <input_file>");

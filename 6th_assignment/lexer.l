@@ -13,7 +13,11 @@ dgt [0-9]
 "\'"."\'" {yylval.othertype = CHAR; return CHARCONST;}
 "while" {return WHILE_TOK;}
 "for" {return FOR_TOK;}
+"switch"    {return SWITCH_TOK;}
+"case"  {return CASE_TOK;}
+"default"   {return DEFAULT_TOK;}
 "if" {return IF_TOK;}
+"else if" {return ELSEIF_TOK;}
 "else" {return ELSE_TOK;}
 "int"   {yylval.othertype = INT; return TYPE_TOK;}
 "char"  {yylval.othertype = CHAR; return TYPE_TOK;}

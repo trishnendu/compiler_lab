@@ -62,35 +62,39 @@ extern int yydebug;
     NOT_TOK = 272,
     AND_TOK = 273,
     OR_TOK = 274,
-    SEMICOLON_TOK = 275,
-    COMMA_TOK = 276,
-    WHILE_TOK = 277,
-    FOR_TOK = 278,
-    IF_TOK = 279,
-    ELSE_TOK = 280,
-    COMPARE_TOK = 281,
-    GTEQ_TOK = 282,
-    LTEQ_TOK = 283,
-    NOT_EQ_TOK = 284,
-    BIT_AND_TOK = 285,
-    BIT_OR_TOK = 286,
-    PLUS_EQ_TOK = 287,
-    MINUS_EQ_TOK = 288,
-    MULT_EQ_TOK = 289,
-    DIVIDE_EQ_TOK = 290,
-    RIGHT_SHIFT_TOK = 291,
-    LEFT_SHIFT_TOK = 292,
-    MINUS_MINUS_TOK = 293,
-    PLUS_PLUS_TOK = 294,
-    MOD_EQ_TOK = 295,
-    ERROR_TOK = 296,
-    MAIN_TOK = 297,
-    RETURN_TOK = 298,
-    INTCONST = 299,
-    TYPE_TOK = 300,
-    DOUBLECONST = 301,
-    CHARCONST = 302,
-    ID_TOK = 303
+    COLON_TOK = 275,
+    SEMICOLON_TOK = 276,
+    COMMA_TOK = 277,
+    SWITCH_TOK = 278,
+    CASE_TOK = 279,
+    DEFAULT_TOK = 280,
+    WHILE_TOK = 281,
+    FOR_TOK = 282,
+    IF_TOK = 283,
+    ELSE_TOK = 284,
+    ELSEIF_TOK = 285,
+    COMPARE_TOK = 286,
+    GTEQ_TOK = 287,
+    LTEQ_TOK = 288,
+    NOT_EQ_TOK = 289,
+    BIT_AND_TOK = 290,
+    BIT_OR_TOK = 291,
+    PLUS_EQ_TOK = 292,
+    MINUS_EQ_TOK = 293,
+    MULT_EQ_TOK = 294,
+    DIVIDE_EQ_TOK = 295,
+    RIGHT_SHIFT_TOK = 296,
+    LEFT_SHIFT_TOK = 297,
+    MINUS_MINUS_TOK = 298,
+    PLUS_PLUS_TOK = 299,
+    MOD_EQ_TOK = 300,
+    ERROR_TOK = 301,
+    RETURN_TOK = 302,
+    INTCONST = 303,
+    TYPE_TOK = 304,
+    DOUBLECONST = 305,
+    CHARCONST = 306,
+    ID_TOK = 307
   };
 #endif
 
@@ -104,7 +108,7 @@ union YYSTYPE
     char* idtype;
     _datatype othertype;
 
-#line 108 "clikegrammer.tab.h" /* yacc.c:1909  */
+#line 112 "clikegrammer.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

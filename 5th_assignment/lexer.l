@@ -9,6 +9,9 @@ dgt [0-9]
 {dgt}+ {return INTCONST;}
 {dgt}*"."{dgt}+ {return DOUBLECONST;}
 "\'"."\'"   {return CHARCONST;}
+"switch"    {return SWITCH_TOK;}
+"case"  {return CASE_TOK;}
+"default"   {return DEFAULT_TOK;}
 "while" {return WHILE_TOK;}
 "for" {return FOR_TOK;}
 "if" {return IF_TOK;}
@@ -33,6 +36,7 @@ dgt [0-9]
 "--" {return MINUS_MINUS_TOK;}
 "++" {return PLUS_PLUS_TOK;}
 ";" {return SEMICOLON_TOK;}
+":" {return COLON_TOK;}
 "-" {return MINUS_TOK;}
 "+" {return PLUS_TOK;}
 "*" {return MULT_TOK;}
