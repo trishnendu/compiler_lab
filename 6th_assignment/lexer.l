@@ -11,7 +11,6 @@ dgt [0-9]
 {dgt}+ { yylval.othertype = INT; return INTCONST;}
 {dgt}*"."{dgt}+ {yylval.othertype = DOUBLE; return DOUBLECONST;}
 "\'"."\'" {yylval.othertype = CHAR; return CHARCONST;}
-"main" {return MAIN_TOK;}
 "while" {return WHILE_TOK;}
 "for" {return FOR_TOK;}
 "if" {return IF_TOK;}

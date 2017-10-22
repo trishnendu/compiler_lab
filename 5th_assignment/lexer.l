@@ -9,12 +9,11 @@ dgt [0-9]
 {dgt}+ {return INTCONST;}
 {dgt}*"."{dgt}+ {return DOUBLECONST;}
 "\'"."\'"   {return CHARCONST;}
-"main" {return MAIN_TOK;}
 "while" {return WHILE_TOK;}
 "for" {return FOR_TOK;}
 "if" {return IF_TOK;}
 "else" {return ELSE_TOK;}
-"int"|"char"|"char*"|"double" {return TYPE_TOK;}
+"int"|"char"|"char*"|"double"|"void" {return TYPE_TOK;}
 "return" {return RETURN_TOK;}
 [a-zA-Z_][a-zA-Z0-9_]* {return ID_TOK;}
 "/*"([^*]|\*+[^*/])*"*/" {}
@@ -50,6 +49,7 @@ dgt [0-9]
 "=" {return EQ_TOK;}
 ">" {return GT_TOK;}
 "<" {return LT_TOK;}
+"\n" {yylineno++;}
 [ \t\n] ;
 %%
 

@@ -19,30 +19,29 @@ extern char* yytext;
 %token WHILE_TOK FOR_TOK IF_TOK ELSE_TOK COMPARE_TOK GTEQ_TOK LTEQ_TOK NOT_EQ_TOK 
 %token BIT_AND_TOK BIT_OR_TOK PLUS_EQ_TOK MINUS_EQ_TOK MULT_EQ_TOK DIVIDE_EQ_TOK RIGHT_SHIFT_TOK LEFT_SHIFT_TOK 
 %token MINUS_MINUS_TOK PLUS_PLUS_TOK MOD_EQ_TOK ID_TOK INTCONST ERROR_TOK DOUBLECONST CHARCONST
-%token MAIN_TOK TYPE_TOK RETURN_TOK
+%token TYPE_TOK RETURN_TOK
 
 %left PLUS_TOK MINUS_TOK MULT_TOK DIVIDE_TOK
 %%
-DEBUG: START;
+DEBUG: START 
 
-START: vardeclines returntype MAIN_TOK LPAREN_TOK RPAREN_TOK block funcdeflist;
+START: vardec START | funcdef START | %empty ;
 
-vardeclines: vardeclines vardec  | %empty;
+vardeclines: vardeclines vardec | %empty;
 
-vardec: TYPE_TOK ids;
+vardec: TYPE_TOK ID_TOK vardecex SEMICOLON_TOK
+    | TYPE_TOK ID_TOK EQ_TOK exp2 vardecex SEMICOLON_TOK 
+    ;
 
-ids: ID_TOK COMMA_TOK ids 
-  | ID_TOK EQ_TOK exp2 COMMA_TOK ids
-  | ID_TOK SEMICOLON_TOK
-  | ID_TOK EQ_TOK exp2 SEMICOLON_TOK 
-  ;   
+vardecex: vardecex COMMA_TOK ID_TOK  
+  | vardecex COMMA_TOK ID_TOK EQ_TOK exp2  
+  | %empty
+  ;       
 
-funcdeflist: funcdef funcdeflist | %empty;
-
-funcdef: returntype ID_TOK LPAREN_TOK arglist RPAREN_TOK block;
+funcdef: TYPE_TOK ID_TOK LPAREN_TOK arglist RPAREN_TOK block  {printf("reduced\n");}
+    |    ID_TOK LPAREN_TOK arglist RPAREN_TOK block    
 
 returnstatement: RETURN_TOK exp2 SEMICOLON_TOK;
-returntype: TYPE_TOK | %empty;
 
 arglist: TYPE_TOK ID_TOK arglistex | %empty;
 arglistex: COMMA_TOK TYPE_TOK ID_TOK arglistex | COMMA_TOK TYPE_TOK ID_TOK;
@@ -139,7 +138,7 @@ var: ID_TOK
 
 int main(int argc, char *argv[]){
 	int token;
-    yydebug = 0;
+    yydebug = 1;
 	if(argc != 2){
 		fprintf(stderr, "Usage: ./lexer <input_file>");
 		exit(1);		
@@ -147,11 +146,11 @@ int main(int argc, char *argv[]){
 		yyin = fopen(argv[1], "r");
 	}	
     if(!yyparse());
-	    fprintf(stdout, "Parsing success :)\n");
+	    fprintf(stdout, "Total %d line parsed successfully :)\n", yylineno);
     fclose(yyin);
     return 0;
 }
 
 void yyerror (char const *s) {
-    fprintf(stderr, "Parsing error :( - %s \n", yytext);
+    fprintf(stderr, "%s!! @line no - %d:  @symbol '%s' :( \n",s ,yylineno, yytext);
 }

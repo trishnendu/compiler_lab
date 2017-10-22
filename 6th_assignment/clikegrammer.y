@@ -30,29 +30,28 @@ extern int curscope;
 
 %left PLUS_TOK MINUS_TOK MULT_TOK DIVIDE_TOK
 
-%type<othertype> var vardec exp0 exp1 exp2 exp funccall returntype
-%type<idtype> ids
+%type<othertype> var vardec exp0 exp1 exp2 exp funccall funcdef 
 %%
-DEBUG: START;
 
-START:  vardeclines returntype MAIN_TOK LPAREN_TOK RPAREN_TOK block funcdeflist;
+DEBUG: START 
 
-vardeclines: vardeclines vardec | %empty;
+START: vardec START | funcdef START | %empty ;
 
-vardec: TYPE_TOK ids   { symt_insert($2, $1); } ; 
 
-ids: ID_TOK COMMA_TOK ids
-  | ID_TOK EQ_TOK exp2 COMMA_TOK ids
-  | ID_TOK SEMICOLON_TOK
-  | ID_TOK EQ_TOK exp2 SEMICOLON_TOK 
-  ;   
+vardec: TYPE_TOK ID_TOK vardecex SEMICOLON_TOK  { symt_insert($2, $1); } 
+    | TYPE_TOK ID_TOK EQ_TOK exp2 vardecex SEMICOLON_TOK 
+    ;
 
-funcdeflist: funcdef funcdeflist | %empty;
+vardecex: vardecex COMMA_TOK ID_TOK  
+  | vardecex COMMA_TOK ID_TOK EQ_TOK exp2  
+  | %empty
+     
 
-funcdef: returntype ID_TOK LPAREN_TOK arglist RPAREN_TOK block {   symt_insert($2, $1);} ;
+funcdef: TYPE_TOK ID_TOK LPAREN_TOK arglist RPAREN_TOK block  {   symt_insert($2, $1);  }  
+    |    ID_TOK LPAREN_TOK arglist RPAREN_TOK block    {   symt_insert($1, NONE);   } 
+    ;
 
 returnstatement: RETURN_TOK exp2 SEMICOLON_TOK;
-returntype: TYPE_TOK | %empty   { $$ = NONE; };
 
 arglist: TYPE_TOK ID_TOK arglistex | %empty;
 arglistex: COMMA_TOK TYPE_TOK ID_TOK arglistex | COMMA_TOK TYPE_TOK ID_TOK;
@@ -62,6 +61,9 @@ paramlist: exp COMMA_TOK paramlist | exp;
 
 block: CURL_LPAREN_TOK {newscope();} vardeclines statements CURL_RPAREN_TOK {endscope();}
     ;
+
+vardeclines: vardeclines vardec | %empty;
+
 
 nonfunctionblock: exp SEMICOLON_TOK | ifstatement | loopstatement | returnstatement | funccall | block;
 
@@ -176,5 +178,5 @@ int main(int argc, char *argv[]){
 }
 
 void yyerror (char const *s) {
-    fprintf(stderr, "%s!! @line no - %d:  @symbol '%s' :( -  \n",s ,yylineno, yytext);
+    fprintf(stderr, "%s!! @line no - %d:  @symbol '%s' :(  \n",s ,yylineno, yytext);
 }

@@ -1,1 +1,3 @@
-int g; int main(){  int c;}
+int p(){}
+int main(){}
+int c;

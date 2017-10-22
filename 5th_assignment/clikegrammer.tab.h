@@ -88,9 +88,8 @@ extern int yydebug;
     ERROR_TOK = 298,
     DOUBLECONST = 299,
     CHARCONST = 300,
-    MAIN_TOK = 301,
-    TYPE_TOK = 302,
-    RETURN_TOK = 303
+    TYPE_TOK = 301,
+    RETURN_TOK = 302
   };
 #endif
 
@@ -104,7 +103,7 @@ union YYSTYPE
     int i;
     char *s;
 
-#line 108 "clikegrammer.tab.h" /* yacc.c:1909  */
+#line 107 "clikegrammer.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;
