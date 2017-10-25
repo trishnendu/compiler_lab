@@ -59,12 +59,13 @@ arglistex: COMMA_TOK TYPE_TOK ID_TOK arglistex | COMMA_TOK TYPE_TOK ID_TOK;
 funccall: ID_TOK LPAREN_TOK paramlist RPAREN_TOK SEMICOLON_TOK {  $$ = symt_gettype($1); };
 paramlist: exp COMMA_TOK paramlist | exp;
 
-block: CURL_LPAREN_TOK {newscope();} vardeclines statements CURL_RPAREN_TOK {endscope();}
-    | CURL_LPAREN_TOK {newscope();} vardeclines CURL_RPAREN_TOK {endscope();}
-    ;
+nestedblock:    vardeclines estatements block estatements | vardeclines estatements;
+
+estatements: statements | %empty
+
+block: CURL_LPAREN_TOK {newscope();}  nestedblock CURL_RPAREN_TOK {endscope();} ;
 
 vardeclines: vardeclines vardec | %empty;
-
 
 nonfunctionblock: exp SEMICOLON_TOK | ifstatement | loopstatement | returnstatement | funccall | block;
 
@@ -178,7 +179,7 @@ int check_compatibility(int a, int b){
 
 int main(int argc, char *argv[]){
 	int token;
-    yydebug = 0;
+    yydebug = 1;
 	if(argc != 2){
 		yytext = stdin;
         //fprintf(stderr, "Usage: ./lexer <input_file>");
