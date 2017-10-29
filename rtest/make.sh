@@ -1,3 +1,3 @@
-bison -d testbison.y
-flex lexer.l
-gcc -w lex.yy.c testbison.tab.c symt_hashmap.c -o parser
+bison -d -v clikeg.y
+flex clikeg_lexer.l
+gcc -w lex.yy.c clikeg.tab.c symt_hashmap.c -o parser

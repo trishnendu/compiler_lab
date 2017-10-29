@@ -4,7 +4,8 @@
     #define GLOBAL 0
 
     typedef enum {NONE, CHAR, INT, DOUBLE } _datatype;
-
+    typedef enum {VAR, FUNC } _vartype;
+    
     typedef union{
         int ival;
         double dval;

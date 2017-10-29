@@ -9,7 +9,8 @@
 
 typedef struct t{
     char name[50];
-    _datatype type; 
+    _datatype type;
+    _vartype type1; 
     struct t *next;
 } symt_node;
 
@@ -20,14 +21,19 @@ typedef struct ta{
     struct ta *next;    
 } symt_table;
 
-symt_table global;
-symt_table *curscope = &global;
+symt_table global_scope;
+symt_table *curscope = &global_scope;
 
-char printtype[][10] = {"none\0", "char\0", "int\0", "double\0"};   
+char printtype[][10] = {"void\0", "char\0", "int\0", "double\0"};
+char printtype1[][10] = {"variable\0", "function\0"};   
 
 int printhashtable();
 
-int newscope(){
+int symt_wrapup(){
+    wrapup(&global_scope);
+}
+
+int symt_newscope(){
     symt_table *tmpnode = (symt_table *)malloc(sizeof(symt_table));
     tmpnode->next = curscope->down;
     tmpnode->up = curscope;
@@ -36,19 +42,21 @@ int newscope(){
     curscope = curscope->down;
     for(int i = 0; i < HASHSIZE; i++)
         curscope->symt[i] = (symt_node *)0;
+    //printf("scope created\n");
     return 0; 
 }
 
-int endscope(){
+int symt_endscope(){
     if(!curscope->up){
-        printf("Can't delete global scope\n");
+        printf("Can't delete global_scope scope\n");
         return 1;
     }
     curscope = curscope->up;
+    //printf("scope deleted\n");
     return 0;
 }
 
-void symt_wrapup(symt_table *root){
+int wrapup(symt_table *root){
     symt_table *cur = root->down, *prev = (symt_table *)0;
     if(!cur)   return;
     while(cur){
@@ -59,7 +67,8 @@ void symt_wrapup(symt_table *root){
     }
     root->down = prev;
     for( ; prev; prev = prev->next)
-        symt_wrapup(prev);
+        wrapup(prev);
+    return 0;
 }
 
 int symt_hashfunc(char s[]){
@@ -72,10 +81,10 @@ int symt_hashfunc(char s[]){
     return hashval;
 }
 
-int symt_insert(char key[], int type){
+int symt_insert(char key[], int type, int type1){
     int hashkey = symt_hashfunc(key);
     symt_node **tmp;
-    for(tmp = &(curscope->symt[hashkey]); *tmp && strcmp((*tmp)->name,key); *tmp = (*tmp)->next);
+    for(tmp = &(curscope->symt[hashkey]); *tmp && (strcmp((*tmp)->name,key) || type1!=(*tmp)->type1) ; *tmp = (*tmp)->next);
     if(*tmp){    
         printf("Error redifination of same variable '%s'\n", key);
         return 1;
@@ -84,6 +93,8 @@ int symt_insert(char key[], int type){
     strcpy((*tmp)->name, key);
     (*tmp)->type = type;
     (*tmp)->next = (symt_node *)0;
+    (*tmp)->type1 = type1;
+    //printf("added '%s' of <%d>\n", key, type);
     return 0;
 }
 
@@ -103,7 +114,7 @@ _datatype symt_gettype(char key[]){
 } 
 
 int printhashtable(){
-    symt_table *downitr = &global;
+    symt_table *downitr = &global_scope;
     int scopelevel = 0;
     while(1){
         while(1){
@@ -113,7 +124,7 @@ int printhashtable(){
                 if(downitr->symt[i]){
                     symt_node *tmp;
                     for(tmp = downitr->symt[i]; tmp != (symt_node *)0; tmp = tmp->next){
-                        printf("\t(%s, '%s');\t", tmp->name, printtype[tmp->type]);
+                        printf("\t(%s, '%s', '%s');\t", tmp->name, printtype[tmp->type], printtype1[tmp->type1]);
                     }
                     printf("\n");
                 }
@@ -135,7 +146,7 @@ int printhashtable(){
     printf("}\n");
     return 0;
 }
-
+/*
 int main(){
     symt_insert("a",1);
     newscope();
@@ -150,6 +161,6 @@ int main(){
     symt_insert("abcf",3);
     endscope();
     endscope();
-    symt_wrapup(&global);
+    symt_wrapup(&global_scope);
     printhashtable();
-}
+}*/

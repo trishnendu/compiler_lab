@@ -1,13 +1,7 @@
-int X;
-int Y;
-int A;
-int Bcd;
-double z;
-char c;
-X = 2;
-Y = 4;
-A = 6;
-B = 2;
-z = X;
-c = 'a';
-X = Y * A + B;
+int doub(char c){
+    int d = c;
+}
+main(){
+    double f = doub();
+}
+int g;
