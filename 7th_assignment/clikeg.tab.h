@@ -109,9 +109,11 @@ union YYSTYPE
     struct t{
         _datatype othertype;
         char *idtype;
+        char *place;
+        char *code;
     } type;
 
-#line 115 "clikeg.tab.h" /* yacc.c:1909  */
+#line 117 "clikeg.tab.h" /* yacc.c:1909  */
 };
 
 typedef union YYSTYPE YYSTYPE;

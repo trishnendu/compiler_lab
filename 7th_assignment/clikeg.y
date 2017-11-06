@@ -42,75 +42,70 @@ int tmpcnt;
 %left MULT_TOK DIVIDE_TOK
 %nonassoc UMINUS
 
-%type<type> var exp0 exp2 exp exp3 exp4
+%type<type> var exp0 exp2
 %%
 
-DEBUG: condexp DEBUG | exp DEBUG | %empty
-
-nonfunctionblock: exp SEMICOLON_TOK;
-
-ifstatement: IF_TOK condexp nonfunctionblock ifstatementex
-    | IF_TOK condexp nonfunctionblock ifstatementex ELSE_TOK nonfunctionblock
-    ;
-
-ifstatementex: %empty
-
-condexp: CURL_LPAREN_TOK exp4 CURL_RPAREN_TOK;
-
-exp4: LPAREN_TOK exp4 RPAREN_TOK { $$ = $2; }
-    | exp3 OR_TOK exp4 { fprintf(fpout,"||,%s,%s,tmp%d\n", $1.idtype, $3.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt); }
-    | exp3 AND_TOK exp4 { fprintf(fpout,"&&,%s,%s,tmp%d\n", $1.idtype, $3.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt); }
-    | NOT_TOK exp4 { fprintf(fpout,"!,%s, ,tmp%d\n", $2.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt); }
-    | exp3
-    ;
-
-exp3: LPAREN_TOK exp3 RPAREN_TOK { $$ = $2; }
-    | exp2 LT_TOK exp2 { fprintf(fpout,"<,%s,%s,tmp%d\n", $1.idtype, $3.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt); }
-    | exp2 GT_TOK exp2 { fprintf(fpout,">,%s,%s,tmp%d\n", $1.idtype, $3.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt); }
-    | exp2 GTEQ_TOK exp2 { fprintf(fpout,">=,%s,%s,tmp%d\n", $1.idtype, $3.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt); } 
-    | exp2 LTEQ_TOK exp2 { fprintf(fpout,"<=,%s,%s,tmp%d\n", $1.idtype, $3.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt); }
-    | exp2 COMPARE_TOK exp2 { fprintf(fpout,"==,%s,%s,tmp%d\n", $1.idtype, $3.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt); }
-    | exp2 NOT_EQ_TOK exp2 { fprintf(fpout,"!=,%s,%s,tmp%d\n", $1.idtype, $3.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt); }
-    | exp2
-    | exp
-    ;
-
-exp: ID_TOK EQ_TOK exp2     {  $$ = $1; /*$$ = doesexist($1, symt_gettype($1)); check_compatibility($$, $3);*/ fprintf(fpout,"=,%s, ,%s\n", $1.idtype, $3.idtype); }
-    | ID_TOK PLUS_EQ_TOK exp2   {  $$ = $1; /*$$ = doesexist($1, symt_gettype($1)); check_compatibility($$, $3);*/ fprintf(fpout,"+,%s,%s,%s\n", $1.idtype, $3.idtype, $1.idtype); }
-    | ID_TOK MINUS_EQ_TOK exp2  {  $$ = $1; /*$$ = doesexist($1, symt_gettype($1)); check_compatibility($$, $3);*/ fprintf(fpout,"-,%s,%s,%s\n", $1.idtype, $3.idtype, $1.idtype); }
-    | ID_TOK MULT_EQ_TOK exp2   {  $$ = $1; /*$$ = doesexist($1, symt_gettype($1)); check_compatibility($$, $3);*/ fprintf(fpout,"*,%s,%s,%s\n", $1.idtype, $3.idtype, $1.idtype); }
-    | ID_TOK DIVIDE_EQ_TOK exp2 {  $$ = $1; /*$$ = doesexist($1, symt_gettype($1)); check_compatibility($$, $3);*/ fprintf(fpout,"/,%s,%s,%s\n", $1.idtype, $3.idtype, $1.idtype); }
-    | ID_TOK MOD_EQ_TOK exp2    { /*  
-        if(symt_gettype($1)!=INT || $3!=INT)    
-            printf("Modulo operation is not permitted on <int> only\n");
-        $$ = INT;*/ }
-    | exp0
+DEBUG: DEBUG exp2 
+    | exp2 {printf("%s", $1.code);} 
     ;
 
 exp2: LPAREN_TOK exp2 RPAREN_TOK    {   $$ = $2; }
-    | MINUS_TOK exp2 { fprintf(fpout,"-,%d,%s,tmp%d\n", 0, $2.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt); } %prec UMINUS
-    | exp2 PLUS_TOK exp2    {   $$.othertype = MAX($1.othertype, $3.othertype); fprintf(fpout,"+,%s,%s,tmp%d\n", $1.idtype, $3.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt);}
-    | exp2 MINUS_TOK exp2   {   $$.othertype = MAX($1.othertype, $3.othertype); fprintf(fpout,"-,%s,%s,tmp%d\n", $1.idtype, $3.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt);}
-    | exp2 MULT_TOK exp2    {   $$.othertype = MAX($1.othertype, $3.othertype); fprintf(fpout,"*,%s,%s,tmp%d\n", $1.idtype, $3.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt);}
-    | exp2 DIVIDE_TOK exp2   {   $$.othertype = MAX($1.othertype, $3.othertype); fprintf(fpout,"/,%s,%s,tmp%d\n", $1.idtype, $3.idtype, ++tmpcnt); $$.idtype = (char *)malloc(10); sprintf($$.idtype,"tmp%d",tmpcnt); }
+    | exp2 PLUS_TOK exp2    {   $$.othertype = MAX($1.othertype, $3.othertype); addtmptoplace(&$$.place); addtocode(&$$.code, $1.code, $3.code, "+", $1.place, $3.place, $$.place); printf("Plus reduced -> %s \n* %s * %s *\n%s***\n ",$$.place, $1.code, $3.code, $$.code);}
+    | exp2 MINUS_TOK exp2   {   $$.othertype = MAX($1.othertype, $3.othertype); addtmptoplace(&$$.place); addtocode(&$$.code, $1.code, $3.code, "-", $1.place, $3.place, $$.place);  }
+    | exp2 MULT_TOK exp2    {   $$.othertype = MAX($1.othertype, $3.othertype); addtmptoplace(&$$.place); addtocode(&$$.code, $1.code, $3.code, "*", $1.place, $3.place, $$.place);  }
+    | exp2 DIVIDE_TOK exp2   {   $$.othertype = MAX($1.othertype, $3.othertype); addtmptoplace(&$$.place); addtocode(&$$.code, $1.code, $3.code, "/", $1.place, $3.place, $$.place); printf("Divide reduced -> %s \n",$$.place);}
     | exp2 MOD_TOK exp2  
     | exp0
     | var
     ;
 
-exp0: ID_TOK PLUS_PLUS_TOK  {  $$ = $1; /*$$ = doesexist($1, symt_gettype($1));*/ fprintf(fpout,"+,%s,1,%s\n", $1.idtype, $1.idtype); } 
-    | ID_TOK MINUS_MINUS_TOK    {  $$=$1 ; /*$$ = doesexist($1, symt_gettype($1));*/ fprintf(fpout,"-,%s,1,%s\n", $1.idtype, $1.idtype); }
-    | PLUS_PLUS_TOK ID_TOK  { $$ = $2; /*$$ = doesexist($2, symt_gettype($2)); */ fprintf(fpout,"+,%s,1,%s\n", $2.idtype, $2.idtype); }
-    | MINUS_MINUS_TOK ID_TOK    { $$ = $2; /*$$.othertype = doesexist($2, symt_gettype($2)); */  fprintf(fpout,"-,%s,1,%s\n", $2.idtype, $2.idtype); }
+exp0: ID_TOK PLUS_PLUS_TOK  { $$.othertype = $1.othertype; addtoplace(&$$.place, $1.place);  addtocode(&$$.code, 0, 0, "+",$1.place,"1",$1.place); } 
+    | ID_TOK MINUS_MINUS_TOK    { $$.othertype = $1.othertype;  addtoplace(&$$.place, $1.place);  addtocode(&$$.code, 0, 0, "-",$1.place,"1",$1.place); }
+    | PLUS_PLUS_TOK ID_TOK  { $$.othertype = $2.othertype;  addtoplace(&$$.place, $2.place);  addtocode(&$$.code, 0, 0, "+",$2.place,"1",$2.place); }
+    | MINUS_MINUS_TOK ID_TOK    { $$.othertype = $2.othertype;  addtoplace(&$$.place, $2.place); addtocode(&$$.code, 0, 0, "-",$2.place,"1",$2.place); }
     ;
 
-var: ID_TOK { $$ = $1; /*$$.othertype = doesexist($1.type.idtype, symt_gettype($1.type.idtype));*/ }
+var: ID_TOK { $$ = $1; $$.code = "";}
     | INTCONST  { $$ = $1;}
     | DOUBLECONST { $$ = $1;}
     | CHARCONST { $$ = $1;}
     ;
    
 %%
+
+void addtmptoplace(char **dest){
+    *dest = (char *)malloc(10);
+    sprintf(*dest,"tmp%d",++tmpcnt);
+}
+
+void addtoplace(char **dest, const char *src){  
+    *dest = (char *)malloc(strlen(src)+1);
+    strcpy(*dest, src);
+}
+
+void addtocode(char **dest, const char *code1, const char *code2, const char *op, const char *arg1, const char *arg2, const char *res){
+    int l = 0;
+    if(code1)   l += strlen(code1);
+    if(code2)   l += strlen(code2);
+    l += strlen(op) + strlen(arg1) + strlen(arg2) + strlen(res) + 4;
+    
+/*    if(*dest){
+        *dest = (char *)realloc(*dest, strlen(dest)+l+1);
+        sprintf(*dest,"%s%s,%s,%s,%s\n", *dest, op, arg1, arg2, res);
+    }   
+    else{*/
+        *dest = (char *)malloc(l+1);
+        sprintf(*dest,"%s,%s,%s,%s\n", op, arg1, arg2, res );
+        printf("from addtocode -> %s,%s,%s,%s\n%s", op, arg1, arg2, res, *dest );
+        
+    //}
+    if(code2)   sprintf(*dest,"%s%s", code2, *dest);
+    
+    if(code1)   sprintf(*dest,"%s%s", code1, *dest);
+    printf("testing from addtocode -> %s%s\n", code1, *dest);
+    
+    printf("freturning from addtocode -> %s\n", *dest);
+}
 void concat(char *dest, char *src){
     int l1, l2;
     l1 = strlen(dest);
@@ -136,7 +131,7 @@ int check_compatibility(int a, int b){
 
 int main(int argc, char *argv[]){
 	int token;
-    yydebug = 1;
+    yydebug = 0;
 	if(argc != 2){
 		yytext = stdin;
         //fprintf(stderr, "Usage: ./lexer <input_file>");
@@ -149,7 +144,7 @@ int main(int argc, char *argv[]){
 	    fprintf(stdout, "Total %d line parsed successfully :)\n", yylineno);
     fclose(yyin);
     symt_wrapup();
-    printhashtable();
+    //printhashtable();
     return 0;
 }
 

@@ -181,9 +181,11 @@ union YYSTYPE
     struct t{
         _datatype othertype;
         char *idtype;
+        char *place;
+        char *code;
     } type;
 
-#line 187 "clikeg.tab.c" /* yacc.c:355  */
+#line 189 "clikeg.tab.c" /* yacc.c:355  */
 };
 
 typedef union YYSTYPE YYSTYPE;
@@ -200,7 +202,7 @@ int yyparse (void);
 
 /* Copy the second part of user declarations.  */
 
-#line 204 "clikeg.tab.c" /* yacc.c:358  */
+#line 206 "clikeg.tab.c" /* yacc.c:358  */
 
 #ifdef short
 # undef short
@@ -440,18 +442,18 @@ union yyalloc
 #endif /* !YYCOPY_NEEDED */
 
 /* YYFINAL -- State number of the termination state.  */
-#define YYFINAL  32
+#define YYFINAL  17
 /* YYLAST -- Last index in YYTABLE.  */
-#define YYLAST   135
+#define YYLAST   62
 
 /* YYNTOKENS -- Number of terminals.  */
 #define YYNTOKENS  54
 /* YYNNTS -- Number of nonterminals.  */
-#define YYNNTS  9
+#define YYNNTS  5
 /* YYNRULES -- Number of rules.  */
-#define YYNRULES  43
+#define YYNRULES  19
 /* YYNSTATES -- Number of states.  */
-#define YYNSTATES  80
+#define YYNSTATES  30
 
 /* YYTRANSLATE[YYX] -- Symbol number corresponding to YYX as returned
    by yylex, with out-of-bounds checking.  */
@@ -502,11 +504,8 @@ static const yytype_uint8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_uint8 yyrline[] =
 {
-       0,    46,    46,    46,    46,    48,    50,    51,    52,    53,
-      54,    57,    58,    59,    60,    61,    62,    63,    64,    65,
-      68,    69,    70,    71,    72,    73,    77,    80,    81,    82,
-      83,    84,    85,    86,    87,    88,    91,    92,    93,    94,
-      97,    98,    99,   100
+       0,    48,    48,    49,    52,    53,    54,    55,    56,    57,
+      58,    59,    62,    63,    64,    65,    68,    69,    70,    71
 };
 #endif
 
@@ -525,8 +524,8 @@ static const char *const yytname[] =
   "MINUS_EQ_TOK", "MULT_EQ_TOK", "DIVIDE_EQ_TOK", "RIGHT_SHIFT_TOK",
   "LEFT_SHIFT_TOK", "MINUS_MINUS_TOK", "PLUS_PLUS_TOK", "MOD_EQ_TOK",
   "ERROR_TOK", "RETURN_TOK", "INTCONST", "TYPE_TOK", "DOUBLECONST",
-  "CHARCONST", "ID_TOK", "UMINUS", "$accept", "DEBUG", "condexp", "exp4",
-  "exp3", "exp", "exp2", "exp0", "var", YY_NULLPTR
+  "CHARCONST", "ID_TOK", "UMINUS", "$accept", "DEBUG", "exp2", "exp0",
+  "var", YY_NULLPTR
 };
 #endif
 
@@ -549,7 +548,7 @@ static const yytype_uint16 yytoknum[] =
 #define yypact_value_is_default(Yystate) \
   (!!((Yystate) == (-52)))
 
-#define YYTABLE_NINF -27
+#define YYTABLE_NINF -1
 
 #define yytable_value_is_error(Yytable_value) \
   0
@@ -558,14 +557,9 @@ static const yytype_uint16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      20,    -3,   -51,   -49,    -1,     9,    20,    20,   -52,    -3,
-       7,    -3,   -52,   -52,   -52,    -1,    23,     5,   -52,   101,
-      -2,   -52,   -52,   -52,     7,     7,     7,     7,     7,   -52,
-     -52,     7,   -52,   -52,   -52,    11,     1,    73,     7,   -10,
-      -4,   -52,   -52,   -52,    -3,    -3,     7,     7,     7,     7,
-       7,     7,     7,     7,     7,     7,     7,   107,   107,   107,
-     107,   107,   107,   -52,   -52,   -52,   113,   -52,   -52,   107,
-     107,    47,    47,    -4,    -4,   107,   107,   107,   107,   107
+      10,    10,   -51,   -44,   -52,   -52,   -52,   -33,     0,    14,
+     -52,   -52,     3,   -52,   -52,   -52,   -52,   -52,    14,    10,
+      10,    10,    10,    10,   -52,    -9,    -9,    -3,    -3,    14
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -573,99 +567,69 @@ static const yytype_int8 yypact[] =
      means the default is an error.  */
 static const yytype_uint8 yydefact[] =
 {
-       4,     0,     0,     0,     0,     0,     4,     4,    26,     0,
-       0,     0,    41,    42,    43,    40,     0,    10,    19,    18,
-      34,    35,    39,    38,     0,     0,     0,     0,     0,    37,
-      36,     0,     1,     2,     3,     0,     0,    18,     0,    40,
-      28,    34,     9,     5,     0,     0,     0,     0,     0,     0,
-       0,     0,     0,     0,     0,     0,     0,    20,    21,    22,
-      23,    24,    25,     6,    11,    27,     0,     8,     7,    13,
-      12,    30,    29,    31,    32,    33,    16,    14,    15,    17
+       0,     0,     0,     0,    17,    18,    19,    16,     0,     3,
+      10,    11,     0,    15,    14,    13,    12,     1,     2,     0,
+       0,     0,     0,     0,     4,     6,     5,     7,     8,     9
 };
 
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -52,    72,   -52,    64,    17,     6,    43,    21,   -52
+     -52,   -52,     1,   -52,   -52
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
 static const yytype_int8 yydefgoto[] =
 {
-      -1,     5,     6,    16,    17,    18,    19,    41,    21
+      -1,     8,     9,    10,    11
 };
 
   /* YYTABLE[YYPACT[STATE-NUM]] -- What to do in state STATE-NUM.  If
      positive, shift that token.  If negative, reduce the rule whose
      number is the opposite.  If YYTABLE_NINF, syntax error.  */
-static const yytype_int8 yytable[] =
+static const yytype_uint8 yytable[] =
 {
-       9,    22,   -26,    23,   -26,    64,     7,    24,    10,    32,
-      38,    52,     7,     7,    11,    63,   -26,   -26,    10,    44,
-      45,     8,    20,    44,    45,     1,    36,     8,     8,    43,
-      20,     0,    20,    29,    30,     0,    25,    26,    27,    28,
-       2,     3,    29,    30,    31,    12,     0,    13,    14,    15,
-       2,     3,    37,    40,     0,    12,     0,    13,    14,    39,
-      50,    51,    52,     2,     3,    20,    20,    57,    58,    59,
-      60,    61,     4,    35,    62,    42,     0,    65,    33,    34,
-       0,    66,    46,    47,    48,    49,    50,    51,    52,    69,
-      70,    71,    72,    73,    74,    75,    76,    77,    78,    79,
-       0,     0,     0,     0,    53,    54,    55,    56,    67,    68,
-      46,    47,    48,    49,    50,    51,    52,    65,    48,    49,
-      50,    51,    52,     0,    48,    49,    50,    51,    52,     0,
-       0,     0,    53,    54,    55,    56
+      17,    13,    12,     1,    21,    22,    23,    24,    14,    18,
+      15,    16,    23,     1,    19,    20,    21,    22,    23,     0,
+      25,    26,    27,    28,    29,    19,    20,    21,    22,    23,
+       0,     0,     0,     0,     0,     0,     0,     0,     0,     0,
+       0,     0,     0,     2,     3,     0,     0,     0,     4,     0,
+       5,     6,     7,     2,     3,     0,     0,     0,     4,     0,
+       5,     6,     7
 };
 
 static const yytype_int8 yycheck[] =
 {
-       3,    52,     4,    52,     6,     4,     0,     8,    11,     0,
-       3,    15,     6,     7,    17,     4,    18,    19,    11,    18,
-      19,     0,     1,    18,    19,     5,     9,     6,     7,     6,
-       9,    -1,    11,    43,    44,    -1,    37,    38,    39,    40,
-      43,    44,    43,    44,    45,    48,    -1,    50,    51,    52,
-      43,    44,     9,    10,    -1,    48,    -1,    50,    51,    52,
-      13,    14,    15,    43,    44,    44,    45,    24,    25,    26,
-      27,    28,    52,     9,    31,    11,    -1,     4,     6,     7,
-      -1,    38,     9,    10,    11,    12,    13,    14,    15,    46,
-      47,    48,    49,    50,    51,    52,    53,    54,    55,    56,
-      -1,    -1,    -1,    -1,    31,    32,    33,    34,    44,    45,
-       9,    10,    11,    12,    13,    14,    15,     4,    11,    12,
-      13,    14,    15,    -1,    11,    12,    13,    14,    15,    -1,
-      -1,    -1,    31,    32,    33,    34
+       0,    52,     1,     3,    13,    14,    15,     4,    52,     8,
+      43,    44,    15,     3,    11,    12,    13,    14,    15,    -1,
+      19,    20,    21,    22,    23,    11,    12,    13,    14,    15,
+      -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,    -1,
+      -1,    -1,    -1,    43,    44,    -1,    -1,    -1,    48,    -1,
+      50,    51,    52,    43,    44,    -1,    -1,    -1,    48,    -1,
+      50,    51,    52
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_uint8 yystos[] =
 {
-       0,     5,    43,    44,    52,    55,    56,    59,    61,     3,
-      11,    17,    48,    50,    51,    52,    57,    58,    59,    60,
-      61,    62,    52,    52,     8,    37,    38,    39,    40,    43,
-      44,    45,     0,    55,    55,    57,    58,    60,     3,    52,
-      60,    61,    57,     6,    18,    19,     9,    10,    11,    12,
-      13,    14,    15,    31,    32,    33,    34,    60,    60,    60,
-      60,    60,    60,     4,     4,     4,    60,    57,    57,    60,
-      60,    60,    60,    60,    60,    60,    60,    60,    60,    60
+       0,     3,    43,    44,    48,    50,    51,    52,    55,    56,
+      57,    58,    56,    52,    52,    43,    44,     0,    56,    11,
+      12,    13,    14,    15,     4,    56,    56,    56,    56,    56
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_uint8 yyr1[] =
 {
-       0,    54,    55,    55,    55,    56,    57,    57,    57,    57,
-      57,    58,    58,    58,    58,    58,    58,    58,    58,    58,
-      59,    59,    59,    59,    59,    59,    59,    60,    60,    60,
-      60,    60,    60,    60,    60,    60,    61,    61,    61,    61,
-      62,    62,    62,    62
+       0,    54,    55,    55,    56,    56,    56,    56,    56,    56,
+      56,    56,    57,    57,    57,    57,    58,    58,    58,    58
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
 static const yytype_uint8 yyr2[] =
 {
-       0,     2,     2,     2,     0,     3,     3,     3,     3,     2,
-       1,     3,     3,     3,     3,     3,     3,     3,     1,     1,
-       3,     3,     3,     3,     3,     3,     1,     3,     2,     3,
-       3,     3,     3,     3,     1,     1,     2,     2,     2,     2,
-       1,     1,     1,     1
+       0,     2,     2,     1,     3,     3,     3,     3,     3,     3,
+       1,     1,     2,     2,     2,     2,     1,     1,     1,     1
 };
 
 
@@ -1341,197 +1305,92 @@ yyreduce:
   YY_REDUCE_PRINT (yyn);
   switch (yyn)
     {
-        case 6:
-#line 50 "clikeg.y" /* yacc.c:1646  */
-    { (yyval.type) = (yyvsp[-1].type); }
-#line 1348 "clikeg.tab.c" /* yacc.c:1646  */
+        case 3:
+#line 49 "clikeg.y" /* yacc.c:1646  */
+    {printf("%s", (yyvsp[0].type).code);}
+#line 1312 "clikeg.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 4:
+#line 52 "clikeg.y" /* yacc.c:1646  */
+    {   (yyval.type) = (yyvsp[-1].type); }
+#line 1318 "clikeg.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 5:
+#line 53 "clikeg.y" /* yacc.c:1646  */
+    {   (yyval.type).othertype = MAX((yyvsp[-2].type).othertype, (yyvsp[0].type).othertype); addtmptoplace(&(yyval.type).place); addtocode(&(yyval.type).code, (yyvsp[-2].type).code, (yyvsp[0].type).code, "+", (yyvsp[-2].type).place, (yyvsp[0].type).place, (yyval.type).place); printf("Plus reduced -> %s \n* %s * %s *\n%s***\n ",(yyval.type).place, (yyvsp[-2].type).code, (yyvsp[0].type).code, (yyval.type).code);}
+#line 1324 "clikeg.tab.c" /* yacc.c:1646  */
+    break;
+
+  case 6:
+#line 54 "clikeg.y" /* yacc.c:1646  */
+    {   (yyval.type).othertype = MAX((yyvsp[-2].type).othertype, (yyvsp[0].type).othertype); addtmptoplace(&(yyval.type).place); addtocode(&(yyval.type).code, (yyvsp[-2].type).code, (yyvsp[0].type).code, "-", (yyvsp[-2].type).place, (yyvsp[0].type).place, (yyval.type).place);  }
+#line 1330 "clikeg.tab.c" /* yacc.c:1646  */
     break;
 
   case 7:
-#line 51 "clikeg.y" /* yacc.c:1646  */
-    { fprintf(fpout,"||,%s,%s,tmp%d\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt); }
-#line 1354 "clikeg.tab.c" /* yacc.c:1646  */
+#line 55 "clikeg.y" /* yacc.c:1646  */
+    {   (yyval.type).othertype = MAX((yyvsp[-2].type).othertype, (yyvsp[0].type).othertype); addtmptoplace(&(yyval.type).place); addtocode(&(yyval.type).code, (yyvsp[-2].type).code, (yyvsp[0].type).code, "*", (yyvsp[-2].type).place, (yyvsp[0].type).place, (yyval.type).place);  }
+#line 1336 "clikeg.tab.c" /* yacc.c:1646  */
     break;
 
   case 8:
-#line 52 "clikeg.y" /* yacc.c:1646  */
-    { fprintf(fpout,"&&,%s,%s,tmp%d\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt); }
-#line 1360 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 9:
-#line 53 "clikeg.y" /* yacc.c:1646  */
-    { fprintf(fpout,"!,%s, ,tmp%d\n", (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt); }
-#line 1366 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 11:
-#line 57 "clikeg.y" /* yacc.c:1646  */
-    { (yyval.type) = (yyvsp[-1].type); }
-#line 1372 "clikeg.tab.c" /* yacc.c:1646  */
+#line 56 "clikeg.y" /* yacc.c:1646  */
+    {   (yyval.type).othertype = MAX((yyvsp[-2].type).othertype, (yyvsp[0].type).othertype); addtmptoplace(&(yyval.type).place); addtocode(&(yyval.type).code, (yyvsp[-2].type).code, (yyvsp[0].type).code, "/", (yyvsp[-2].type).place, (yyvsp[0].type).place, (yyval.type).place); printf("Divide reduced -> %s \n",(yyval.type).place);}
+#line 1342 "clikeg.tab.c" /* yacc.c:1646  */
     break;
 
   case 12:
-#line 58 "clikeg.y" /* yacc.c:1646  */
-    { fprintf(fpout,"<,%s,%s,tmp%d\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt); }
-#line 1378 "clikeg.tab.c" /* yacc.c:1646  */
+#line 62 "clikeg.y" /* yacc.c:1646  */
+    { (yyval.type).othertype = (yyvsp[-1].type).othertype; addtoplace(&(yyval.type).place, (yyvsp[-1].type).place);  addtocode(&(yyval.type).code, 0, 0, "+",(yyvsp[-1].type).place,"1",(yyvsp[-1].type).place); }
+#line 1348 "clikeg.tab.c" /* yacc.c:1646  */
     break;
 
   case 13:
-#line 59 "clikeg.y" /* yacc.c:1646  */
-    { fprintf(fpout,">,%s,%s,tmp%d\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt); }
-#line 1384 "clikeg.tab.c" /* yacc.c:1646  */
+#line 63 "clikeg.y" /* yacc.c:1646  */
+    { (yyval.type).othertype = (yyvsp[-1].type).othertype;  addtoplace(&(yyval.type).place, (yyvsp[-1].type).place);  addtocode(&(yyval.type).code, 0, 0, "-",(yyvsp[-1].type).place,"1",(yyvsp[-1].type).place); }
+#line 1354 "clikeg.tab.c" /* yacc.c:1646  */
     break;
 
   case 14:
-#line 60 "clikeg.y" /* yacc.c:1646  */
-    { fprintf(fpout,">=,%s,%s,tmp%d\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt); }
-#line 1390 "clikeg.tab.c" /* yacc.c:1646  */
+#line 64 "clikeg.y" /* yacc.c:1646  */
+    { (yyval.type).othertype = (yyvsp[0].type).othertype;  addtoplace(&(yyval.type).place, (yyvsp[0].type).place);  addtocode(&(yyval.type).code, 0, 0, "+",(yyvsp[0].type).place,"1",(yyvsp[0].type).place); }
+#line 1360 "clikeg.tab.c" /* yacc.c:1646  */
     break;
 
   case 15:
-#line 61 "clikeg.y" /* yacc.c:1646  */
-    { fprintf(fpout,"<=,%s,%s,tmp%d\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt); }
-#line 1396 "clikeg.tab.c" /* yacc.c:1646  */
+#line 65 "clikeg.y" /* yacc.c:1646  */
+    { (yyval.type).othertype = (yyvsp[0].type).othertype;  addtoplace(&(yyval.type).place, (yyvsp[0].type).place); addtocode(&(yyval.type).code, 0, 0, "-",(yyvsp[0].type).place,"1",(yyvsp[0].type).place); }
+#line 1366 "clikeg.tab.c" /* yacc.c:1646  */
     break;
 
   case 16:
-#line 62 "clikeg.y" /* yacc.c:1646  */
-    { fprintf(fpout,"==,%s,%s,tmp%d\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt); }
-#line 1402 "clikeg.tab.c" /* yacc.c:1646  */
+#line 68 "clikeg.y" /* yacc.c:1646  */
+    { (yyval.type) = (yyvsp[0].type); (yyval.type).code = "";}
+#line 1372 "clikeg.tab.c" /* yacc.c:1646  */
     break;
 
   case 17:
-#line 63 "clikeg.y" /* yacc.c:1646  */
-    { fprintf(fpout,"!=,%s,%s,tmp%d\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt); }
-#line 1408 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 20:
-#line 68 "clikeg.y" /* yacc.c:1646  */
-    {  (yyval.type) = (yyvsp[-2].type); /*$$ = doesexist($1, symt_gettype($1)); check_compatibility($$, $3);*/ fprintf(fpout,"=,%s, ,%s\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype); }
-#line 1414 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 21:
 #line 69 "clikeg.y" /* yacc.c:1646  */
-    {  (yyval.type) = (yyvsp[-2].type); /*$$ = doesexist($1, symt_gettype($1)); check_compatibility($$, $3);*/ fprintf(fpout,"+,%s,%s,%s\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, (yyvsp[-2].type).idtype); }
-#line 1420 "clikeg.tab.c" /* yacc.c:1646  */
+    { (yyval.type) = (yyvsp[0].type);}
+#line 1378 "clikeg.tab.c" /* yacc.c:1646  */
     break;
 
-  case 22:
+  case 18:
 #line 70 "clikeg.y" /* yacc.c:1646  */
-    {  (yyval.type) = (yyvsp[-2].type); /*$$ = doesexist($1, symt_gettype($1)); check_compatibility($$, $3);*/ fprintf(fpout,"-,%s,%s,%s\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, (yyvsp[-2].type).idtype); }
-#line 1426 "clikeg.tab.c" /* yacc.c:1646  */
+    { (yyval.type) = (yyvsp[0].type);}
+#line 1384 "clikeg.tab.c" /* yacc.c:1646  */
     break;
 
-  case 23:
+  case 19:
 #line 71 "clikeg.y" /* yacc.c:1646  */
-    {  (yyval.type) = (yyvsp[-2].type); /*$$ = doesexist($1, symt_gettype($1)); check_compatibility($$, $3);*/ fprintf(fpout,"*,%s,%s,%s\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, (yyvsp[-2].type).idtype); }
-#line 1432 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 24:
-#line 72 "clikeg.y" /* yacc.c:1646  */
-    {  (yyval.type) = (yyvsp[-2].type); /*$$ = doesexist($1, symt_gettype($1)); check_compatibility($$, $3);*/ fprintf(fpout,"/,%s,%s,%s\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, (yyvsp[-2].type).idtype); }
-#line 1438 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 25:
-#line 73 "clikeg.y" /* yacc.c:1646  */
-    { /*  
-        if(symt_gettype($1)!=INT || $3!=INT)    
-            printf("Modulo operation is not permitted on <int> only\n");
-        $$ = INT;*/ }
-#line 1447 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 27:
-#line 80 "clikeg.y" /* yacc.c:1646  */
-    {   (yyval.type) = (yyvsp[-1].type); }
-#line 1453 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 28:
-#line 81 "clikeg.y" /* yacc.c:1646  */
-    { fprintf(fpout,"-,%d,%s,tmp%d\n", 0, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt); }
-#line 1459 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 29:
-#line 82 "clikeg.y" /* yacc.c:1646  */
-    {   (yyval.type).othertype = MAX((yyvsp[-2].type).othertype, (yyvsp[0].type).othertype); fprintf(fpout,"+,%s,%s,tmp%d\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt);}
-#line 1465 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 30:
-#line 83 "clikeg.y" /* yacc.c:1646  */
-    {   (yyval.type).othertype = MAX((yyvsp[-2].type).othertype, (yyvsp[0].type).othertype); fprintf(fpout,"-,%s,%s,tmp%d\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt);}
-#line 1471 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 31:
-#line 84 "clikeg.y" /* yacc.c:1646  */
-    {   (yyval.type).othertype = MAX((yyvsp[-2].type).othertype, (yyvsp[0].type).othertype); fprintf(fpout,"*,%s,%s,tmp%d\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt);}
-#line 1477 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 32:
-#line 85 "clikeg.y" /* yacc.c:1646  */
-    {   (yyval.type).othertype = MAX((yyvsp[-2].type).othertype, (yyvsp[0].type).othertype); fprintf(fpout,"/,%s,%s,tmp%d\n", (yyvsp[-2].type).idtype, (yyvsp[0].type).idtype, ++tmpcnt); (yyval.type).idtype = (char *)malloc(10); sprintf((yyval.type).idtype,"tmp%d",tmpcnt); }
-#line 1483 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 36:
-#line 91 "clikeg.y" /* yacc.c:1646  */
-    {  (yyval.type) = (yyvsp[-1].type); /*$$ = doesexist($1, symt_gettype($1));*/ fprintf(fpout,"+,%s,1,%s\n", (yyvsp[-1].type).idtype, (yyvsp[-1].type).idtype); }
-#line 1489 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 37:
-#line 92 "clikeg.y" /* yacc.c:1646  */
-    {  (yyval.type)=(yyvsp[-1].type) ; /*$$ = doesexist($1, symt_gettype($1));*/ fprintf(fpout,"-,%s,1,%s\n", (yyvsp[-1].type).idtype, (yyvsp[-1].type).idtype); }
-#line 1495 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 38:
-#line 93 "clikeg.y" /* yacc.c:1646  */
-    { (yyval.type) = (yyvsp[0].type); /*$$ = doesexist($2, symt_gettype($2)); */ fprintf(fpout,"+,%s,1,%s\n", (yyvsp[0].type).idtype, (yyvsp[0].type).idtype); }
-#line 1501 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 39:
-#line 94 "clikeg.y" /* yacc.c:1646  */
-    { (yyval.type) = (yyvsp[0].type); /*$$.othertype = doesexist($2, symt_gettype($2)); */  fprintf(fpout,"-,%s,1,%s\n", (yyvsp[0].type).idtype, (yyvsp[0].type).idtype); }
-#line 1507 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 40:
-#line 97 "clikeg.y" /* yacc.c:1646  */
-    { (yyval.type) = (yyvsp[0].type); /*$$.othertype = doesexist($1.type.idtype, symt_gettype($1.type.idtype));*/ }
-#line 1513 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 41:
-#line 98 "clikeg.y" /* yacc.c:1646  */
     { (yyval.type) = (yyvsp[0].type);}
-#line 1519 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 42:
-#line 99 "clikeg.y" /* yacc.c:1646  */
-    { (yyval.type) = (yyvsp[0].type);}
-#line 1525 "clikeg.tab.c" /* yacc.c:1646  */
-    break;
-
-  case 43:
-#line 100 "clikeg.y" /* yacc.c:1646  */
-    { (yyval.type) = (yyvsp[0].type);}
-#line 1531 "clikeg.tab.c" /* yacc.c:1646  */
+#line 1390 "clikeg.tab.c" /* yacc.c:1646  */
     break;
 
 
-#line 1535 "clikeg.tab.c" /* yacc.c:1646  */
+#line 1394 "clikeg.tab.c" /* yacc.c:1646  */
       default: break;
     }
   /* User semantic actions sometimes alter yychar, and that requires
@@ -1759,7 +1618,49 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 103 "clikeg.y" /* yacc.c:1906  */
+#line 74 "clikeg.y" /* yacc.c:1906  */
+
+
+void addtmptoplace(char **dest){
+    *dest = (char *)malloc(10);
+    sprintf(*dest,"tmp%d",++tmpcnt);
+}
+
+void addtoplace(char **dest, const char *src){  
+    *dest = (char *)malloc(strlen(src)+1);
+    strcpy(*dest, src);
+}
+
+void addtocode(char **dest, const char *code1, const char *code2, const char *op, const char *arg1, const char *arg2, const char *res){
+    int l = 0;
+    if(code1)   l += strlen(code1);
+    if(code2)   l += strlen(code2);
+    l += strlen(op) + strlen(arg1) + strlen(arg2) + strlen(res) + 4;
+    
+/*    if(*dest){
+        *dest = (char *)realloc(*dest, strlen(dest)+l+1);
+        sprintf(*dest,"%s%s,%s,%s,%s\n", *dest, op, arg1, arg2, res);
+    }   
+    else{*/
+        *dest = (char *)malloc(l+1);
+        sprintf(*dest,"%s,%s,%s,%s\n", op, arg1, arg2, res );
+        printf("from addtocode -> %s,%s,%s,%s\n%s", op, arg1, arg2, res, *dest );
+        
+    //}
+    if(code2)   sprintf(*dest,"%s%s", code2, *dest);
+    
+    if(code1)   sprintf(*dest,"%s%s", code1, *dest);
+    printf("testing from addtocode -> %s%s\n", code1, *dest);
+    
+    printf("freturning from addtocode -> %s\n", *dest);
+}
+void concat(char *dest, char *src){
+    int l1, l2;
+    l1 = strlen(dest);
+    l2 = strlen(src);
+    dest = malloc(l1 + l2 + 1);
+    sprintf(dest,"%s%s", dest, src);
+}
 
 int doesexist(char s[], int type){
     if(type == NONE){
@@ -1778,7 +1679,7 @@ int check_compatibility(int a, int b){
 
 int main(int argc, char *argv[]){
 	int token;
-    yydebug = 1;
+    yydebug = 0;
 	if(argc != 2){
 		yytext = stdin;
         //fprintf(stderr, "Usage: ./lexer <input_file>");
@@ -1791,7 +1692,7 @@ int main(int argc, char *argv[]){
 	    fprintf(stdout, "Total %d line parsed successfully :)\n", yylineno);
     fclose(yyin);
     symt_wrapup();
-    printhashtable();
+    //printhashtable();
     return 0;
 }
 
