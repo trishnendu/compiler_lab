@@ -8,9 +8,9 @@ lalpha [a-z]
 calpha [A-Z]
 dgt [0-9]
 %%
-{dgt}+ { yylval.type.othertype = INT; char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; return INTCONST;}
-{dgt}*"."{dgt}+ {yylval.type.othertype = DOUBLE; char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; return DOUBLECONST;}
-"\'"."\'" {yylval.type.othertype = CHAR; char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; return CHARCONST;}
+{dgt}+ { yylval.type.othertype = INT; char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; yylval.type.code = malloc(1); yylval.type.code[0] = 0; return INTCONST;}
+{dgt}*"."{dgt}+ {yylval.type.othertype = DOUBLE; char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; yylval.type.code = malloc(1); yylval.type.code[0] = 0; return DOUBLECONST;}
+"\'"."\'" {yylval.type.othertype = CHAR; char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; yylval.type.code = malloc(1); yylval.type.code[0] = 0; return CHARCONST;}
 "while" {return WHILE_TOK;}
 "for" {return FOR_TOK;}
 "switch"    {return SWITCH_TOK;}
@@ -23,7 +23,7 @@ dgt [0-9]
 "char"  {yylval.type.othertype = CHAR; return TYPE_TOK;}
 "double" {yylval.type.othertype = DOUBLE; return TYPE_TOK;}
 "void" {yylval.type.othertype = NONE; return TYPE_TOK;}
-[a-zA-Z_][a-zA-Z0-9_]* {char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; return ID_TOK;}
+[a-zA-Z_][a-zA-Z0-9_]* {char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; yylval.type.code = malloc(1); yylval.type.code[0] = 0; return ID_TOK;}
 "/*"([^*]|\*+[^*/])*"*/" {}
 "//".*"\n" {}
 "==" {return COMPARE_TOK;}

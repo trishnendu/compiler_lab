@@ -793,17 +793,17 @@ do_action:	/* This label is used only to access EOF actions. */
 case 1:
 YY_RULE_SETUP
 #line 11 "clikeg_lexer.l"
-{ yylval.type.othertype = INT; char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; return INTCONST;}
+{ yylval.type.othertype = INT; char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; yylval.type.code = malloc(1); yylval.type.code[0] = 0; return INTCONST;}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
 #line 12 "clikeg_lexer.l"
-{yylval.type.othertype = DOUBLE; char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; return DOUBLECONST;}
+{yylval.type.othertype = DOUBLE; char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; yylval.type.code = malloc(1); yylval.type.code[0] = 0; return DOUBLECONST;}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
 #line 13 "clikeg_lexer.l"
-{yylval.type.othertype = CHAR; char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; return CHARCONST;}
+{yylval.type.othertype = CHAR; char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; yylval.type.code = malloc(1); yylval.type.code[0] = 0; return CHARCONST;}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
@@ -868,7 +868,7 @@ YY_RULE_SETUP
 case 16:
 YY_RULE_SETUP
 #line 26 "clikeg_lexer.l"
-{char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; return ID_TOK;}
+{char *tmp = (char *)malloc(strlen(yytext)+1); strcpy(tmp, yytext); yylval.type.place = tmp; yylval.type.code = malloc(1); yylval.type.code[0] = 0; return ID_TOK;}
 	YY_BREAK
 case 17:
 /* rule 17 can match eol */

@@ -153,11 +153,6 @@ exp0: ID_TOK PLUS_PLUS_TOK  {  $$.source = 1; $$.idtype = $2; $$ = doesexist($1,
 
 nonfunctionblock: exp SEMICOLON_TOK;
 
-ifstatement: IF_TOK condexp nonfunctionblock ifstatementex
-    | IF_TOK condexp nonfunctionblock ifstatementex ELSE_TOK nonfunctionblock
-    ;
-
-ifstatementex: %empty
 
 condexp: CURL_LPAREN_TOK exp4 CURL_RPAREN_TOK;
 
