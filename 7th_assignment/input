@@ -1,4 +1,5 @@
-res = h*res+c;
 res += a/c + f * 10 - c;
 if(res) res++;
 else    res--;
+while(cond > 0)
+    res = h*res+c;

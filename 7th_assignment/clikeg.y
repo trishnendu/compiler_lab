@@ -42,10 +42,10 @@ int tmpcnt;
 %left MULT_TOK DIVIDE_TOK
 %nonassoc UMINUS
 
-%type<type> var exp0 exp2 exp exp3 exp4 condexp nonfunctionblock ifstatement statement
+%type<type> var exp0 exp2 exp exp3 exp4 condexp nonfunctionblock ifstatement statement loopstatement
 %%
 
-DEBUG: nonfunctionblock {  concatcode(&$1.code, "end ",":)\n"); printf("%s", $1.code);} 
+DEBUG: nonfunctionblock {  concatcode(&$1.code, "end ",":)\n"); fprintf(fpout, "%s", $1.code);} 
     ;
 
 nonfunctionblock: nonfunctionblock statement {$$.place = malloc(1); $$.place[0] = 0; $$.code = 0; concatcode(&$$.code, $1.code, $2.code); }
@@ -54,6 +54,7 @@ nonfunctionblock: nonfunctionblock statement {$$.place = malloc(1); $$.place[0] 
 
 statement: exp SEMICOLON_TOK
     |   ifstatement
+    |   loopstatement 
     ;
 
 ifstatement: IF_TOK condexp nonfunctionblock ifstatementex  
@@ -75,6 +76,21 @@ ifstatement: IF_TOK condexp nonfunctionblock ifstatementex
     ;
 
 ifstatementex: %empty;
+
+loopstatement: WHILE_TOK condexp nonfunctionblock 
+                    {   char outofloop[10];
+                        sprintf(outofloop, "tag%d", ++tmpcnt);
+                        $$.place = malloc(10); sprintf($$.place, "tag%d", ++tmpcnt);
+                        $$.code = 0;
+                        concatcode(&$$.code, $$.place, ":\n\t");
+                        concatcode(&$$.code, $2.code, ",jz,");
+                        concatcode(&$$.code, $2.place, ",");
+                        concatcode(&$$.code, outofloop, "\n");
+                        concatcode(&$$.code, $3.code, $2.code);
+                        concatcode(&$$.code, ",jmp,,", $$.place);
+                        concatcode(&$$.code, outofloop, ":\n\t");
+                    }
+        ;
 
 condexp: LPAREN_TOK exp4 RPAREN_TOK    {  $$ = $2; } ;
 
@@ -158,6 +174,7 @@ void concatcode(char **dest, const char *code1, const char *code2){
         strcat(*dest, code1);
         strcat(*dest, code2);
     }else    sprintf(*dest,"%s%s", code1, code2);
+    
 }
 
 void concat(char *dest, char *src){
