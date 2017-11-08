@@ -3,18 +3,19 @@
 +,tmp1,tmp2,tmp3
 -,tmp3,c,tmp4
 +,res,tmp4,res
-jnz,res,,tag10
+jnz,res,,tag5
 -,res,1,res
-tag9:
-	>,cond,0,tmp5
-,jz,tmp5,tag8
-*,h,res,tmp6
-+,tmp6,c,tmp7
-=,tmp7,,res
->,cond,0,tmp5
-,jmp,,tag9tag8:
-	jmp,,,tag11
-tag10:
-	+,res,1,res
+jmp,,,tag6
+tag5:
++,res,1,res
+tag6:
 tag11:
-	end :)
+>,cond,0,tmp7
+,jz,tmp7,tag10
+*,h,res,tmp8
++,tmp8,c,tmp9
+=,tmp9,,res
+>,cond,0,tmp7
+,jmp,,tag11
+tag10:
+end :)

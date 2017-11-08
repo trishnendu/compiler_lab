@@ -42,15 +42,19 @@ int tmpcnt;
 %left MULT_TOK DIVIDE_TOK
 %nonassoc UMINUS
 
-%type<type> var exp0 exp2 exp exp3 exp4 condexp nonfunctionblock ifstatement statement loopstatement
+%type<type> var exp0 exp2 exp exp3 exp4 condexp nonfunctionblock block ifstatement statement loopstatement
 %%
 
-DEBUG: nonfunctionblock {  concatcode(&$1.code, "end ",":)\n"); fprintf(fpout, "%s", $1.code);} 
+DEBUG: block {  concatcode(&$1.code, "end ",":)\n"); fprintf(fpout, "%s", $1.code);} 
     ;
 
-nonfunctionblock: nonfunctionblock statement {$$.place = malloc(1); $$.place[0] = 0; $$.code = 0; concatcode(&$$.code, $1.code, $2.code); }
+nonfunctionblock: CURL_LPAREN_TOK block CURL_RPAREN_TOK { $$ = $2; }
     |   statement {$$.place = malloc(1); $$.place[0] = 0; $$.code = malloc(strlen($1.code)+1); strcpy($$.code, $1.code);}
     ;
+
+block: nonfunctionblock
+    |  block statement {$$.place = malloc(1); $$.place[0] = 0; $$.code = 0; concatcode(&$$.code, $1.code, $2.code); }
+    |  %empty 
 
 statement: exp SEMICOLON_TOK
     |   ifstatement
@@ -66,11 +70,11 @@ ifstatement: IF_TOK condexp nonfunctionblock ifstatementex
                 {   char tmp[10];
                     $$.place = malloc(10); sprintf($$.place, "tag%d", ++tmpcnt); 
                     addtocode(&$$.code, $2.code, "", "jnz", $2.place, "", $$.place);
-                    strcat($$.place, ":\n\t"); 
+                    strcat($$.place, ":\n"); 
                     sprintf(tmp,"jmp,,,tag%d\n", ++tmpcnt); 
                     concatcode(&$$.code, $6.code, tmp);
                     concatcode(&$$.code, $$.place, $3.code);
-                    sprintf(tmp,"tag%d:\n\t", tmpcnt);
+                    sprintf(tmp,"tag%d:\n", tmpcnt);
                     concatcode(&$$.code, tmp, "");
                 }
     ;
@@ -82,13 +86,14 @@ loopstatement: WHILE_TOK condexp nonfunctionblock
                         sprintf(outofloop, "tag%d", ++tmpcnt);
                         $$.place = malloc(10); sprintf($$.place, "tag%d", ++tmpcnt);
                         $$.code = 0;
-                        concatcode(&$$.code, $$.place, ":\n\t");
+                        concatcode(&$$.code, $$.place, ":\n");
                         concatcode(&$$.code, $2.code, ",jz,");
                         concatcode(&$$.code, $2.place, ",");
                         concatcode(&$$.code, outofloop, "\n");
                         concatcode(&$$.code, $3.code, $2.code);
+                        strcat($$.place, "\n");
                         concatcode(&$$.code, ",jmp,,", $$.place);
-                        concatcode(&$$.code, outofloop, ":\n\t");
+                        concatcode(&$$.code, outofloop, ":\n");
                     }
         ;
 
