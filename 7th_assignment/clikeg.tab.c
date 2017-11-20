@@ -1414,12 +1414,12 @@ yyreduce:
                         (yyval.type).place = malloc(10); sprintf((yyval.type).place, "tag%d", ++tmpcnt);
                         (yyval.type).code = 0;
                         concatcode(&(yyval.type).code, (yyval.type).place, ":\n");
-                        concatcode(&(yyval.type).code, (yyvsp[-1].type).code, ",jz,");
-                        concatcode(&(yyval.type).code, (yyvsp[-1].type).place, ",");
+                        concatcode(&(yyval.type).code, (yyvsp[-1].type).code, "jz,");
+                        concatcode(&(yyval.type).code, (yyvsp[-1].type).place, ",,");
                         concatcode(&(yyval.type).code, outofloop, "\n");
                         concatcode(&(yyval.type).code, (yyvsp[0].type).code, (yyvsp[-1].type).code);
                         strcat((yyval.type).place, "\n");
-                        concatcode(&(yyval.type).code, ",jmp,,", (yyval.type).place);
+                        concatcode(&(yyval.type).code, "jmp,,,", (yyval.type).place);
                         concatcode(&(yyval.type).code, outofloop, ":\n");
                     }
 #line 1426 "clikeg.tab.c" /* yacc.c:1646  */

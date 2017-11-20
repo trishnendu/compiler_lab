@@ -37,7 +37,6 @@ DEBUG: START
 
 START: vardec START | funcdef START | %empty ;
 
-
 vardec: TYPE_TOK ID_TOK vardecex SEMICOLON_TOK  { symt_insert($2, $1); } 
     | TYPE_TOK ID_TOK EQ_TOK exp2 vardecex SEMICOLON_TOK 
     ;

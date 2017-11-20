@@ -87,12 +87,12 @@ loopstatement: WHILE_TOK condexp nonfunctionblock
                         $$.place = malloc(10); sprintf($$.place, "tag%d", ++tmpcnt);
                         $$.code = 0;
                         concatcode(&$$.code, $$.place, ":\n");
-                        concatcode(&$$.code, $2.code, ",jz,");
-                        concatcode(&$$.code, $2.place, ",");
+                        concatcode(&$$.code, $2.code, "jz,");
+                        concatcode(&$$.code, $2.place, ",,");
                         concatcode(&$$.code, outofloop, "\n");
                         concatcode(&$$.code, $3.code, $2.code);
                         strcat($$.place, "\n");
-                        concatcode(&$$.code, ",jmp,,", $$.place);
+                        concatcode(&$$.code, "jmp,,,", $$.place);
                         concatcode(&$$.code, outofloop, ":\n");
                     }
         ;
