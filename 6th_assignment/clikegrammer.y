@@ -44,7 +44,7 @@ vardec: TYPE_TOK ID_TOK vardecex SEMICOLON_TOK  { symt_insert($2, $1); }
 vardecex: vardecex COMMA_TOK ID_TOK  
   | vardecex COMMA_TOK ID_TOK EQ_TOK exp2  
   | %empty
-     
+  ;   
 
 funcdef: TYPE_TOK ID_TOK LPAREN_TOK arglist RPAREN_TOK block  {   symt_insert($2, $1);  }  
     |    ID_TOK LPAREN_TOK arglist RPAREN_TOK block    {   symt_insert($1, NONE);   } 
@@ -60,7 +60,7 @@ paramlist: exp COMMA_TOK paramlist | exp;
 
 nestedblock:    vardeclines estatements block estatements | vardeclines estatements;
 
-estatements: statements | %empty
+estatements: statements | %empty;
 
 block: CURL_LPAREN_TOK {newscope();}  nestedblock CURL_RPAREN_TOK {endscope();} ;
 
